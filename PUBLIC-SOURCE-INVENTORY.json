@@ -1,9 +1,9 @@
 {
   "files": [
     {
-      "bytes": 837,
+      "bytes": 842,
       "path": ".github/workflows/ci.yml",
-      "sha256": "47d20dca921c952053e0d2e6bf72ab4edded1f2f2d0716853154777c90d739d3"
+      "sha256": "80ebbc98b110951696470e36ef397c526160852128081a3738a1bac160bebb0e"
     },
     {
       "bytes": 133,
@@ -1861,5 +1861,5 @@
     "include/openconsole/uefi.h": "ff12621a19e1dc3215d8a60b69927aa7641e657465b6aa4f33222421e720f60f",
     "tools/ocg2.py": "8b58480135e291b5756c7642589f010b3cef5b8918200ee04cad69a79f15a415"
   },
-  "upstreamRevision": "f6992676167441ae42a09e136de842c378817a7b"
+  "upstreamRevision": "f611a8f3df0a23d88d7c8c27f83649962ecf17c6"
 }
