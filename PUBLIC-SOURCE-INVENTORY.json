@@ -26,9 +26,9 @@
       "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
-      "bytes": 70926,
+      "bytes": 70945,
       "path": "Makefile",
-      "sha256": "c263c4f74ef07091f159e23e599b49afd154570815062f1e74ee80f430a906eb"
+      "sha256": "972a5a088b38453121a4dba7a7ce66feb7a8645a0d01b5569b74f6e11b785bfa"
     },
     {
       "bytes": 635,
@@ -1861,5 +1861,5 @@
     "include/openconsole/uefi.h": "ff12621a19e1dc3215d8a60b69927aa7641e657465b6aa4f33222421e720f60f",
     "tools/ocg2.py": "8b58480135e291b5756c7642589f010b3cef5b8918200ee04cad69a79f15a415"
   },
-  "upstreamRevision": "2c98d32d9a619cb041e1c30239caf151441810b8"
+  "upstreamRevision": "5da2f5090aa13e85d50efc60c6511420ada57a28"
 }

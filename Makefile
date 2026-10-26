@@ -61,7 +61,7 @@ test-arm64-aavmf: arm64-image
 	python3 tests/arm64_image_test.py
 	python3 scripts/test-arm64-aavmf.py
 
-test-targets:
+test-targets: edk2-network-stack
 	python3 tests/target_matrix_test.py
 	python3 tests/ethernet_size_budget_test.py
 
