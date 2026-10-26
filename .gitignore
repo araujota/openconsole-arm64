@@ -1,0 +1,9 @@
+/build/
+**/__pycache__/
+*.py[cod]
+.quickstart-bootstrap.log
+web/.agents/
+web/.claude/
+web/skills-lock.json
+web/test-results/
+.vercel

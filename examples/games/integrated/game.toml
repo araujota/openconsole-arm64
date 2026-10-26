@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+format_version = "2.0"
+package_format = "ocg2"
+id = "integrated-io"
+title = "OpenConsole Slice"
+version = "0.1.0"
+entry = "game.efi"
+architecture = "x64"
+required_capabilities = ["openconsole.gles2@0.1"]
+optional_capabilities = ["openconsole.net@0.1", "openconsole.audio@0.2", "uefi.input.pointer@1.0"]
+graphics_api = "gles2"
+accel = "optional"
+min_graphics_abi = 1
+developer = "OpenConsole"
+description = "A minimal interactive GLES2 slice with custom controls, pointer input, placeholder audio, and measured CPU rendering."
+controls = "controls.cfg"
+jacket = "jacket.ocj"

@@ -1,0 +1,16 @@
+diff --git a/NetworkPkg/NetworkPkg.dsc b/NetworkPkg/NetworkPkg.dsc
+index 9b8d9a0..c8b866e 100644
+--- a/NetworkPkg/NetworkPkg.dsc
++++ b/NetworkPkg/NetworkPkg.dsc
+@@ -109,6 +109,11 @@
+ ###################################################################################################
+ 
+ [Components]
++  SecurityPkg/Hash2DxeCrypto/Hash2DxeCrypto.inf
++  OpenConsolePkg/OpenConsoleCryptoDxe/OpenConsoleCryptoDxe.inf {
++    <LibraryClasses>
++      OpensslLib|CryptoPkg/Library/OpensslLib/OpensslLibFull.inf
++  }
+   NetworkPkg/WifiConnectionManagerDxe/WifiConnectionManagerDxe.inf
+   NetworkPkg/Application/VConfig/VConfig.inf
+   NetworkPkg/Library/DxeDpcLib/DxeDpcLib.inf

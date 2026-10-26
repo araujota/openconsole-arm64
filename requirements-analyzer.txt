@@ -1,0 +1,5 @@
+# Host/service analyzer only. Never linked into an EFI binary.
+capstone==5.0.6
+cryptography==41.0.7
+cffi==2.1.1
+pycparser==3.12

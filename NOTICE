@@ -1,0 +1,13 @@
+OpenConsole
+Copyright 2026 OpenConsole contributors
+
+Licensed under the Apache License, Version 2.0. See LICENSE.
+
+This distribution incorporates or builds against third-party components. Their
+copyrights, license identifiers, immutable source pins, local patch digests,
+and upstream locations are recorded in THIRD_PARTY_NOTICES.md,
+dependency-provenance.json, and sbom.cdx.json. Those components remain under
+their respective licenses. No upstream project endorses OpenConsole.
+
+EFI games are trusted native firmware code. Static analysis is not a sandbox
+or a proof of safety. VM evidence is not evidence of physical compatibility.

@@ -1,0 +1,13 @@
+{
+  "schema": "openconsole.public-release.v1",
+  "documentationVersion": "v0.1",
+  "runtimeVersion": "0.1.0-ovmf-preview.1",
+  "runtimeTag": "v0.1.0-ovmf-preview.1",
+  "canonicalSite": "https://openconsole-araujota97gmailcoms-projects.vercel.app",
+  "runtimeRepository": "https://github.com/araujota/openconsole",
+  "catalogRepository": "https://github.com/araujota/openconsole-catalog",
+  "runtimeRelease": "https://github.com/araujota/openconsole/releases/tag/v0.1.0-ovmf-preview.1",
+  "developmentImage": "openconsole-0.1.0-ovmf-preview.1.fat",
+  "sourceArchive": "openconsole-0.1.0-ovmf-preview.1-source.tar.gz",
+  "evidenceTier": "disposable-ovmf-development-preview"
+}

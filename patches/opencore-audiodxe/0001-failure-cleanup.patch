@@ -1,0 +1,145 @@
+diff --git a/Staging/AudioDxe/HdaCodec/HdaCodec.c b/Staging/AudioDxe/HdaCodec/HdaCodec.c
+index c959d21e..23031af4 100644
+--- a/Staging/AudioDxe/HdaCodec/HdaCodec.c
++++ b/Staging/AudioDxe/HdaCodec/HdaCodec.c
+@@ -1104,7 +1104,6 @@ HdaCodecInstallProtocols (
+   HdaCodecInfoData->HdaCodecInfo.GetDefaultAmpCaps      = HdaCodecInfoGetDefaultAmpCaps;
+   HdaCodecInfoData->HdaCodecInfo.GetWidgets             = HdaCodecInfoGetWidgets;
+   HdaCodecInfoData->HdaCodecInfo.FreeWidgetsBuffer      = HdaCodecInfoFreeWidgetsBuffer;
+-  HdaCodecDev->HdaCodecInfoData                         = HdaCodecInfoData;
+ 
+   // Populate I/O protocol data.
+   AudioIoData->Signature                  = HDA_CODEC_PRIVATE_DATA_SIGNATURE;
+@@ -1116,7 +1115,6 @@ HdaCodecInstallProtocols (
+   AudioIoData->AudioIo.StartPlayback      = HdaCodecAudioIoStartPlayback;
+   AudioIoData->AudioIo.StartPlaybackAsync = HdaCodecAudioIoStartPlaybackAsync;
+   AudioIoData->AudioIo.StopPlayback       = HdaCodecAudioIoStopPlayback;
+-  HdaCodecDev->AudioIoData                = AudioIoData;
+ 
+   // Install protocols.
+   Status = gBS->InstallMultipleProtocolInterfaces (
+@@ -1133,6 +1131,8 @@ HdaCodecInstallProtocols (
+     goto FREE_POOLS;
+   }
+ 
++  HdaCodecDev->HdaCodecInfoData = HdaCodecInfoData;
++  HdaCodecDev->AudioIoData      = AudioIoData;
+   DEBUG ((DEBUG_INFO, "HDA: Codec protocols installed\n"));
+   return EFI_SUCCESS;
+ 
+diff --git a/Staging/AudioDxe/HdaController/HdaController.c b/Staging/AudioDxe/HdaController/HdaController.c
+index 6471f85e..4bba9a88 100644
+--- a/Staging/AudioDxe/HdaController/HdaController.c
++++ b/Staging/AudioDxe/HdaController/HdaController.c
+@@ -866,8 +866,7 @@ HdaControllerInstallProtocols (
+   //
+   // Install protocols.
+   //
+-  HdaControllerDev->HdaControllerInfoData = HdaControllerInfoData;
+-  Status                                  = gBS->InstallMultipleProtocolInterfaces (
++  Status = gBS->InstallMultipleProtocolInterfaces (
+                                                    &HdaControllerDev->ControllerHandle,
+                                                    &gEfiHdaControllerInfoProtocolGuid,
+                                                    &HdaControllerInfoData->HdaControllerInfo,
+@@ -876,11 +875,14 @@ HdaControllerInstallProtocols (
+                                                    NULL
+                                                    );
+ 
+-  if (!EFI_ERROR (Status)) {
+-    DEBUG ((DEBUG_INFO, "HDA: Controller protocols installed\n"));
++  if (EFI_ERROR (Status)) {
++    FreePool (HdaControllerInfoData);
++    return Status;
+   }
+ 
+-  return Status;
++  HdaControllerDev->HdaControllerInfoData = HdaControllerInfoData;
++  DEBUG ((DEBUG_INFO, "HDA: Controller protocols installed\n"));
++  return EFI_SUCCESS;
+ }
+ 
+ VOID
+diff --git a/Staging/AudioDxe/HdaController/HdaControllerHdaIo.c b/Staging/AudioDxe/HdaController/HdaControllerHdaIo.c
+index dd27dc7c..d2a7d595 100644
+--- a/Staging/AudioDxe/HdaController/HdaControllerHdaIo.c
++++ b/Staging/AudioDxe/HdaController/HdaControllerHdaIo.c
+@@ -568,16 +568,16 @@ HdaControllerHdaIoStopStream (
+ 
+   // Cancel polling timer.
+   Status = gBS->SetTimer (HdaStream->PollTimer, TimerCancel, 0);
+-  if (EFI_ERROR (Status)) {
+-    return Status;
+-  }
+ 
+   // Stop stream.
+   if (!HdaControllerSetStreamState (HdaStream, FALSE)) {
+-    return EFI_INVALID_PARAMETER;
++    if (!EFI_ERROR (Status)) {
++      Status = EFI_INVALID_PARAMETER;
++    }
+   }
+ 
+   // Remove source buffer pointer.
++  HdaStream->BufferActive         = FALSE;
+   HdaStream->BufferSource         = NULL;
+   HdaStream->BufferSourceLength   = 0;
+   HdaStream->BufferSourcePosition = 0;
+@@ -585,5 +585,5 @@ HdaControllerHdaIoStopStream (
+   HdaStream->CallbackContext1     = NULL;
+   HdaStream->CallbackContext2     = NULL;
+   HdaStream->CallbackContext3     = NULL;
+-  return EFI_SUCCESS;
++  return Status;
+ }
+diff --git a/Staging/AudioDxe/HdaController/HdaControllerMem.c b/Staging/AudioDxe/HdaController/HdaControllerMem.c
+index 3cc871da..4eeb89b0 100644
+--- a/Staging/AudioDxe/HdaController/HdaControllerMem.c
++++ b/Staging/AudioDxe/HdaController/HdaControllerMem.c
+@@ -478,10 +478,14 @@ HdaControllerInitStreams (
+                                &HdaStream->BufferListPhysAddr,
+                                &HdaStream->BufferListMapping
+                                );
+-    if (EFI_ERROR (Status) || (PciLengthActual != HDA_BDL_SIZE)) {
++    if (EFI_ERROR (Status)) {
+       return Status;
+     }
+ 
++    if (PciLengthActual != HDA_BDL_SIZE) {
++      return EFI_NO_MAPPING;
++    }
++
+     if (!HdaControllerResetStream (HdaStream)) {
+       return EFI_UNSUPPORTED;
+     }
+@@ -515,10 +519,14 @@ HdaControllerInitStreams (
+                                &HdaStream->BufferDataPhysAddr,
+                                &HdaStream->BufferDataMapping
+                                );
+-    if (EFI_ERROR (Status) || (PciLengthActual != HDA_STREAM_BUF_SIZE)) {
++    if (EFI_ERROR (Status)) {
+       return Status;
+     }
+ 
++    if (PciLengthActual != HDA_STREAM_BUF_SIZE) {
++      return EFI_NO_MAPPING;
++    }
++
+     //
+     // Fill buffer list.
+     //
+@@ -559,10 +567,14 @@ HdaControllerInitStreams (
+                              &HdaDev->DmaPositionsPhysAddr,
+                              &HdaDev->DmaPositionsMapping
+                              );
+-  if (EFI_ERROR (Status) || (PciLengthActual != HdaDev->DmaPositionsSize)) {
++  if (EFI_ERROR (Status)) {
+     return Status;
+   }
+ 
++  if (PciLengthActual != HdaDev->DmaPositionsSize) {
++    return EFI_NO_MAPPING;
++  }
++
+   //
+   // Set DMA positions lower base address.
+   //

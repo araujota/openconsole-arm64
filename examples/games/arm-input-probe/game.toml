@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+format_version = "2.0"
+package_format = "ocg2"
+id = "arm-input-probe"
+title = "ARM Input Probe"
+developer = "OpenConsole"
+description = "A native ARM64 child used to verify launch, keyboard input, and return to the OpenConsole dashboard."
+version = "0.1.0"
+entry = "game.efi"
+architecture = "arm64"
+required_capabilities = ["uefi.input.keyboard@1.0"]
+optional_capabilities = ["uefi.input.pointer@1.0"]
+graphics_api = "gop"
+accel = "forbidden"
+min_graphics_abi = 0
+jacket = "jacket.ocj"

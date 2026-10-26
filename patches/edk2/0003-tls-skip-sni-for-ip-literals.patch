@@ -1,0 +1,32 @@
+diff --git a/CryptoPkg/Library/TlsLib/TlsConfig.c b/CryptoPkg/Library/TlsLib/TlsConfig.c
+index bd23f2539d..095f8bf476 100644
+--- a/CryptoPkg/Library/TlsLib/TlsConfig.c
++++ b/CryptoPkg/Library/TlsLib/TlsConfig.c
+@@ -602,12 +602,24 @@ TlsSetServerName (
+   TLS_CONNECTION  *TlsConn;
+   UINT32          RetVal;
+   TLS_EXT_CTX     *TlsExtCtx = NULL;
++  UINT8           BinaryAddress[MAX (NS_INADDRSZ, NS_IN6ADDRSZ)];
+ 
+   TlsConn = (TLS_CONNECTION *)Tls;
+   Ctx     = (SSL_CTX *)SslCtx;
+ 
+-  if (TlsConn == NULL) {
++  if ((TlsConn == NULL) || (Ctx == NULL) || (HostName == NULL)) {
+     return EFI_INVALID_PARAMETER;
+   }
+ 
++  //
++  // RFC 6066 permits DNS host names in the SNI host_name field, but not
++  // literal IPv4 or IPv6 addresses.  TlsSetVerifyHost() independently sets
++  // OpenSSL's IP identity check, so omitting SNI here does not weaken peer
++  // certificate validation.
++  //
++  if ((inet_pton (AF_INET, HostName, BinaryAddress) == 1) ||
++      (inet_pton (AF_INET6, HostName, BinaryAddress) == 1)) {
++    return EFI_SUCCESS;
++  }
++
+   TlsExtCtx = AllocateZeroPool (sizeof (TLS_EXT_CTX));
+   if (TlsExtCtx == NULL) {
+     return EFI_OUT_OF_RESOURCES;

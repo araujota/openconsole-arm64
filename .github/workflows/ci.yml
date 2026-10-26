@@ -1,0 +1,30 @@
+name: ARM64 runtime
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  arm64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cross-build and AAVMF dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang lld qemu-system-arm qemu-efi-aarch64 dosfstools mtools python3-pip
+          python3 -m pip install --break-system-packages -r requirements-analyzer.txt
+      - name: Host contracts and native images
+        run: make test-arm64-host arm64-image
+      - name: AAVMF acceptance
+        run: make test-arm64-aavmf
+      - name: Retain VM evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: arm64-aavmf-evidence
+          path: build/arm64/evidence

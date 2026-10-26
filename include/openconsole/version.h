@@ -1,0 +1,6 @@
+#ifndef OPENCONSOLE_VERSION_H
+#define OPENCONSOLE_VERSION_H
+
+#define OPENCONSOLE_VERSION "0.1.0"
+
+#endif

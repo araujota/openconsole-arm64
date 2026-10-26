@@ -1,0 +1,24 @@
+{
+  "bundleId": "40d92e819ed70c96fe0fc71f3666264de156e6fc3b7ac31ed32a65facbf33407",
+  "files": [
+    {
+      "offset": 0,
+      "path": "bin/game.efi",
+      "role": "entry-x64",
+      "sha256": "957063abde0f32de46cf91d30863821bf0af5d6a1d62e89417c6fda541808da8",
+      "size": 4590
+    },
+    {
+      "offset": 4590,
+      "path": "game.toml",
+      "role": "manifest",
+      "sha256": "f6da5541698f6c1337bc434a67374b3bfd15b20d04503c9b7b879647a39e7611",
+      "size": 280
+    }
+  ],
+  "gameId": "golden",
+  "publisherKeyId": "83eea05eab796833df9449815de4d0b4cf8f9d77374f55b1e46ab3860161de7a",
+  "schema": "openconsole.ocg2.inspect.v1",
+  "signatureVerified": true,
+  "version": "1.0.0"
+}

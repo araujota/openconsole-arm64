@@ -1,0 +1,7 @@
+# First boot without OPENCONSOLE-AUDIO.CFG and inspect the enumerated output
+# names in OPENCONSOLE-AUDIO-EVIDENCE.LOG. Then copy this file to
+# OPENCONSOLE-AUDIO.CFG and choose the exact reported index, PCI function, and
+# port type. Replace the nonnumeric placeholder before booting the probe.
+output_index=REPLACE_WITH_ENUMERATED_INDEX
+pci_id=1022:15E3
+device=line

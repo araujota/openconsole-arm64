@@ -1,0 +1,44 @@
+# Audit snapshot, resolved 2026-10-24. These are immutable commit IDs, not
+# dependency declarations and not claims that the projects can build for UEFI.
+
+[[source]]
+name = "edk2"
+url = "https://github.com/tianocore/edk2.git"
+commit = "02c1141a0e5b5c958630e81ac6ebb4b03c1e836f"
+role = "UEFI/OVMF reference"
+
+[[source]]
+name = "mesa"
+url = "https://gitlab.freedesktop.org/mesa/mesa.git"
+commit = "c515ec0fe77da9f42f390e442379f2d0629d908c"
+role = "Gallium, Softpipe, Radeonsi"
+
+[[source]]
+name = "libdrm"
+url = "https://gitlab.freedesktop.org/mesa/drm.git"
+commit = "b97cbde15c5c3abfe44d78e8f57139e50f612fec"
+role = "AMDGPU userspace/kernel ABI reference"
+
+[[source]]
+name = "linux"
+url = "https://github.com/torvalds/linux.git"
+commit = "5b0764a53235d3c77e1ed674e836e1b3fe1a4b1f"
+role = "AMDGPU kernel implementation reference"
+
+[[source]]
+name = "llvm-project"
+url = "https://github.com/llvm/llvm-project.git"
+commit = "5916210dbe10049c264ecf0a0ad685d101c392d9"
+role = "shader compiler reference"
+
+[[source]]
+name = "tinygrad"
+url = "https://github.com/tinygrad/tinygrad.git"
+commit = "667f08c87162ca118dd03fe8754b1cc7ecc90158"
+role = "direct-driver reference only"
+
+[[source]]
+name = "qemu"
+url = "https://gitlab.com/qemu-project/qemu.git"
+commit = "11aa0b1ff115b86160c4d37e7c37e6a6b13b77ea"
+role = "VM GPU model reference (upstream v8.2.2)"

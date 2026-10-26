@@ -1,0 +1,43 @@
+diff --git a/Staging/AudioDxe/HdaCodec/HdaCodecAudioIo.c b/Staging/AudioDxe/HdaCodec/HdaCodecAudioIo.c
+index f93c7885..c0671bd5 100644
+--- a/Staging/AudioDxe/HdaCodec/HdaCodecAudioIo.c
++++ b/Staging/AudioDxe/HdaCodec/HdaCodecAudioIo.c
+@@ -10,15 +10,6 @@
+ #include <Library/OcMiscLib.h>
+ #include <Library/PcdLib.h>
+ 
+-//
+-// Cache playback setup.
+-//
+-STATIC UINT64                      mOutputIndexMask = 0;
+-STATIC INT8                        mGain            = APPLE_SYSTEM_AUDIO_VOLUME_DB_MIN;
+-STATIC EFI_AUDIO_IO_PROTOCOL_FREQ  mFreq            = 0;
+-STATIC EFI_AUDIO_IO_PROTOCOL_BITS  mBits            = 0;
+-STATIC UINT8                       mChannels        = 0xFFU;
+-
+ // HDA I/O Stream callback.
+ VOID
+ EFIAPI
+@@ -359,22 +351,6 @@ HdaCodecAudioIoSetupPlayback (
+ 
+   DEBUG ((DEBUG_VERBOSE, "HdaCodecAudioIoSetupPlayback(): start\n"));
+ 
+-  // Basic settings caching.
+-  if (  (mOutputIndexMask == OutputIndexMask)
+-     && (mGain == Gain)
+-     && (mFreq == Freq)
+-     && (mBits == Bits)
+-     && (mChannels == Channels))
+-  {
+-    return EFI_SUCCESS;
+-  }
+-
+-  mOutputIndexMask = OutputIndexMask;
+-  mGain            = Gain;
+-  mFreq            = Freq;
+-  mBits            = Bits;
+-  mChannels        = Channels;
+-
+   // If a parameter is invalid, return error.
+   if (This == NULL) {
+     return EFI_INVALID_PARAMETER;

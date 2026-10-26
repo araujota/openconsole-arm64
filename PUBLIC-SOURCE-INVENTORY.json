@@ -1,0 +1,1445 @@
+{
+  "files": [
+    {
+      "bytes": 828,
+      "path": ".github/workflows/ci.yml",
+      "sha256": "095f8c326c08f530b5f38bd7e641a15f54249e6aa36ebc9fe8c8883204c554f7"
+    },
+    {
+      "bytes": 133,
+      "path": ".gitignore",
+      "sha256": "b1ea8bf37c9e5f9ffe65ab18b2ff330b88598ad1754dde511fb7d73a8ba40593"
+    },
+    {
+      "bytes": 2677,
+      "path": "CODE_OF_CONDUCT.md",
+      "sha256": "697b48d7496cea0e2f4b1108b7b5ebb3c4dc8987c5f4d02115262afe219fd93f"
+    },
+    {
+      "bytes": 1412,
+      "path": "CONTRIBUTING.md",
+      "sha256": "726ee57ecd84a60828b18e54787ac5b030d0ecd329809a761165c2d80c6d08bf"
+    },
+    {
+      "bytes": 11358,
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "bytes": 66028,
+      "path": "Makefile",
+      "sha256": "6dafcc9c7d83a1540824d54a903612d509420454659dcc476e5113774249cce8"
+    },
+    {
+      "bytes": 635,
+      "path": "NOTICE",
+      "sha256": "3da27c7050c1db9ae328907803bd0405d279eef1af24615d2c9591486ca6e958"
+    },
+    {
+      "bytes": 1944,
+      "path": "README.md",
+      "sha256": "0dadbb373b772663b5bd2c0a6ca826d1699166425546f01c895e6ab21e63e8d3"
+    },
+    {
+      "bytes": 1784,
+      "path": "SECURITY.md",
+      "sha256": "bd8a6d785a806fe18792d5495466c5c26668ffb96083b76c605e266c30025083"
+    },
+    {
+      "bytes": 23829,
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "251fbe2f027f705d0ce05537291544b20917bd93c3d4d469689bf55946d811f8"
+    },
+    {
+      "bytes": 755,
+      "path": "config/targets.json",
+      "sha256": "2d49e45ac01cb6813f812dade025cc320d2e0bab57e3466fa64cd3f94e40299c"
+    },
+    {
+      "bytes": 194977,
+      "path": "dependency-provenance.json",
+      "sha256": "3222b5854d8c20068c2fea5206a88faa6e5b0438eb8b29ae5b00127886d127f6"
+    },
+    {
+      "bytes": 1484,
+      "path": "docs/adr/0001-freestanding-efi-build.md",
+      "sha256": "fa3fd125f98d438d9623201bfc7c01e9e1ff78e5b256c51db0f81b21d52056f0"
+    },
+    {
+      "bytes": 1385,
+      "path": "docs/adr/0002-gles-binding-abi.md",
+      "sha256": "3d784ecb5d96aff11e8502fb07d896b56a844f1a534187fb5f0276a0acd37450"
+    },
+    {
+      "bytes": 1078,
+      "path": "docs/adr/0003-mesa-softpipe-viability.md",
+      "sha256": "c28db4322b22526e989ea6ab6c428a5d1dde3394bd689d0089db0961ea0a2139"
+    },
+    {
+      "bytes": 971,
+      "path": "docs/adr/0004-radeonsi-drm-winsys-boundary.md",
+      "sha256": "63363612388cece0698b2c66832fe25095aec169cb0cfa6aa880eca169c7dd20"
+    },
+    {
+      "bytes": 1087,
+      "path": "docs/adr/0005-gpu-gop-ownership.md",
+      "sha256": "07c63e52a5aa9e11b20564355fd50cd6bc2da1f5e9b54188dbffbd2bd6f7c8e4"
+    },
+    {
+      "bytes": 1032,
+      "path": "docs/adr/0006-shader-compiler-strategy.md",
+      "sha256": "92f1aca3be7070fcf9b74cd338d0fba5f42260eec898159ae62eddf72bb7ebfd"
+    },
+    {
+      "bytes": 1619,
+      "path": "docs/adr/0007-vm-gpu-strategy.md",
+      "sha256": "7a78c249ca1b54138ca02068377a4ad32f5e42b303223683695129570796b3b2"
+    },
+    {
+      "bytes": 2495,
+      "path": "docs/analyzer-report-v1.md",
+      "sha256": "ab5e8b4d213009f94bfa657a44053543a04da7cfcd7126aa7d8005ed7a520086"
+    },
+    {
+      "bytes": 1619,
+      "path": "docs/arm64-maintenance.md",
+      "sha256": "6a3ef8d5cda32a5a7dddb827b872890586b9e33822011f6760cf9ddfce4edd85"
+    },
+    {
+      "bytes": 3724,
+      "path": "docs/boot-volume-format-v1.md",
+      "sha256": "c8cfcc8bac69a1863572208ce054f89913fc9e62dd1f05654dab69eb4fa5957c"
+    },
+    {
+      "bytes": 5712,
+      "path": "docs/building-an-ocg2-game.md",
+      "sha256": "005610cc87987363163a39a57dd30aa93630b007569e967d91e52e44f833aa99"
+    },
+    {
+      "bytes": 2066,
+      "path": "docs/catalog-deployment.md",
+      "sha256": "0106a4e93bb022a29c39eb48d5158130b544e19c73fc61a073f76fdec4a966d9"
+    },
+    {
+      "bytes": 925,
+      "path": "docs/dependencies/capstone.md",
+      "sha256": "be298c147bd6349aff069fa9d7ac21339d02202de351f75220965d1749f29fa8"
+    },
+    {
+      "bytes": 2085,
+      "path": "docs/development-image.md",
+      "sha256": "3d1368fba92a04b400e0dfed938961ea2413b17df00c3a3231de4f404b739a5b"
+    },
+    {
+      "bytes": 1706,
+      "path": "docs/edk2-network-stack-audit.md",
+      "sha256": "85e85c693f892c16c738bfa6ccdba1378aba3efba11213fc0fd3dfd8b4e76cec"
+    },
+    {
+      "bytes": 1816,
+      "path": "docs/g1-lifecycle.md",
+      "sha256": "6630ac29381a06140b30c9d8feb6ebba1d9cda9b4ec3999cb903a16ae7db5abd"
+    },
+    {
+      "bytes": 5662,
+      "path": "docs/game-bundle-v2.md",
+      "sha256": "0f61ca18dd3db0109e2bd0842b8c798ca87655cd56aa8913f9151be354d2232e"
+    },
+    {
+      "bytes": 4316,
+      "path": "docs/game-manifest-v2.md",
+      "sha256": "1dc5333590ce3949635370dbe76b2ede0ca4b86e26a7499a30c45680d9031fac"
+    },
+    {
+      "bytes": 3812,
+      "path": "docs/game-package-lifecycle.md",
+      "sha256": "8153c09863ef40b3163634e89833be4e7299d1584143e8772eaab40d7de6c903"
+    },
+    {
+      "bytes": 921,
+      "path": "docs/game-sdk-examples.md",
+      "sha256": "3569beec4e7cc7980b0ca78fdf349beee37bcd60354b4ce66229a4ab5d853a3a"
+    },
+    {
+      "bytes": 2306,
+      "path": "docs/game-storage-fault-matrix.md",
+      "sha256": "5c1e35ab6256304c8ee644488665bd90bf9e8885b695c7b13c4a678834ccd9b2"
+    },
+    {
+      "bytes": 1317,
+      "path": "docs/gles-software-reference.md",
+      "sha256": "5b93ee2c01c05704630eca5b4b1d3a766769a3abc881c79c5a75ad49848f5a0e"
+    },
+    {
+      "bytes": 4267,
+      "path": "docs/hosted-acceptance-2026-10-25.md",
+      "sha256": "b8e0e4452046f5a6a6b9685f48d33e73fa58402492398a3a45aed146af45639e"
+    },
+    {
+      "bytes": 1568,
+      "path": "docs/integrated-io-evidence.md",
+      "sha256": "37d8f1a4012c9a23e7345e17a849dba13be141b58fb570760011cc3f82df3272"
+    },
+    {
+      "bytes": 6071,
+      "path": "docs/io-evidence-matrix.md",
+      "sha256": "f3c82c9f0ce25ad2c0ea8a5eb4c0a4c878f66b4fa24c4a39b1d6551555f7abe4"
+    },
+    {
+      "bytes": 1066,
+      "path": "docs/jacket-format.md",
+      "sha256": "44d17e7f5ae80386e9fe5c869ad17b2a2b5121226eb6bf02335b5e2cc41586ef"
+    },
+    {
+      "bytes": 1094,
+      "path": "docs/licensing.md",
+      "sha256": "e6a736eddf59d74fc6e41d8563b8eebaba7e164da570b674cd0c31a1d6508fee"
+    },
+    {
+      "bytes": 1465,
+      "path": "docs/manifest-format.md",
+      "sha256": "8b94e795f157b553b655d6fa17b441f7f405a0b5ee935d5a257df3eba39013bd"
+    },
+    {
+      "bytes": 3371,
+      "path": "docs/opencore-audiodxe-failure-audit.md",
+      "sha256": "0bcc029caeb8aa86f7d68a300dd727c2c6480d3edf815c8e8440d83d9eae5fe8"
+    },
+    {
+      "bytes": 12312,
+      "path": "docs/physical-io-bringup.md",
+      "sha256": "d6931fd090b172a1578c465eb8a079dcc0fef12f56c28f975e4c5c99df1651a5"
+    },
+    {
+      "bytes": 2681,
+      "path": "docs/platform-inventory-v1.md",
+      "sha256": "bf28fd1e870bb39efc1ab17b53d76e00055d7f1d2afb81808c6aef72e98ff8a0"
+    },
+    {
+      "bytes": 1481,
+      "path": "docs/publisher-key-store-v1.md",
+      "sha256": "91dfaa01ec9d84a65405800fe97ba7551c1f4f893a2296c2c36c9dcc0c4e27f5"
+    },
+    {
+      "bytes": 5678,
+      "path": "docs/release-readiness.md",
+      "sha256": "4b154728ae72882f5b7df07c60c14ad12a218d0f67d924b79b2949d7ced8ceed"
+    },
+    {
+      "bytes": 2412,
+      "path": "docs/research-plan.md",
+      "sha256": "91ba65740b503075eb21c027e18a4d64b6707b3e3b7906519be6b668d705f38a"
+    },
+    {
+      "bytes": 2368,
+      "path": "docs/runtime-integrity-ovmf-matrix.md",
+      "sha256": "508ee38bf8170aea2b2756c62958bc2fb2a8ca60f893aaa1b3db4b9d422aad6c"
+    },
+    {
+      "bytes": 2473,
+      "path": "docs/status.md",
+      "sha256": "00604be3107cf82b27398d89cac617a956d8c15789f57d325c1285cfe7b1ee58"
+    },
+    {
+      "bytes": 2666,
+      "path": "docs/threat-model.md",
+      "sha256": "9d60ef58ef99942460bded1c387454624d166f0fea9822c34f381ee83495c436"
+    },
+    {
+      "bytes": 2447,
+      "path": "docs/update-metadata-format.md",
+      "sha256": "044458d3e6127a7c18707f046117ba6bfad032ee8056ec19c5971ce25e03fa07"
+    },
+    {
+      "bytes": 1940,
+      "path": "docs/update-storage.md",
+      "sha256": "4a2a297d1691c1d11741527e7105ad10e159e7e03657526df4f307d64bf7219d"
+    },
+    {
+      "bytes": 4170,
+      "path": "docs/update-verification.md",
+      "sha256": "065731f01944b12bc96924a04203c3c1267a42a3ca229ff710f2d215e28b4e61"
+    },
+    {
+      "bytes": 231,
+      "path": "examples/fixtures/physical-network-qemu.cfg",
+      "sha256": "258ce6401ef2dbdf59a750bc8ec40d64ef3ff6225d595ffd73216db1718b9712"
+    },
+    {
+      "bytes": 524,
+      "path": "examples/games/arm-input-probe/game.toml",
+      "sha256": "e9cfe09da6560e331ae67492f07a327ce6ff7a221db0c1deaf796ec2bbc2567e"
+    },
+    {
+      "bytes": 335,
+      "path": "examples/games/audio/game.toml",
+      "sha256": "d55549671bfbecd8cfb3e1303e2a6e7ce2cb6dd415fc5ff37b435a10b52ec51d"
+    },
+    {
+      "bytes": 328,
+      "path": "examples/games/gles/game.toml",
+      "sha256": "852e9e7c0ab78dc63bcf4d799151b48438f83ba349e83e0648dc4d798e73cbd4"
+    },
+    {
+      "bytes": 343,
+      "path": "examples/games/hello/game.toml",
+      "sha256": "4f3ef8649d2364eeff955f2c08fe55c70dbd7ae9ad9102d8f02cdbf32685389b"
+    },
+    {
+      "bytes": 30,
+      "path": "examples/games/integrated/controls.cfg",
+      "sha256": "3db1d684893540caa412457c0dfacfcc62363b7bd6f353935236522a6a7a2aae"
+    },
+    {
+      "bytes": 612,
+      "path": "examples/games/integrated/game.toml",
+      "sha256": "edabf095e77d92b07154495b644673f22798a023b39b93e2bbf1eab0931585f4"
+    },
+    {
+      "bytes": 337,
+      "path": "examples/games/physical-network/game.toml",
+      "sha256": "1b08fab97b505a6aa8256765413984508ff1ee0f8c71a43a7c5897d0f76716fa"
+    },
+    {
+      "bytes": 351,
+      "path": "examples/games/second/game.toml",
+      "sha256": "ab2cba122d7b373ebc68fd21c6d31d780724cf75267b9ddaf373f1bf2c2ad24e"
+    },
+    {
+      "bytes": 450,
+      "path": "examples/games/slice-installer/game.toml",
+      "sha256": "0bb550fbf5d669a5bab56451fdb8d3ca2589bdf6366c81be5680f5fda202969e"
+    },
+    {
+      "bytes": 368,
+      "path": "examples/physical/OPENCONSOLE-AUDIO.CFG.example",
+      "sha256": "b2da8fc6cbf8a2d76f0c4da480aaccf12df9848e295851ada887115c3225cc4b"
+    },
+    {
+      "bytes": 889,
+      "path": "examples/sdk/c/minimal_game.c",
+      "sha256": "bbb5639f6d84111d858ad90ea32b2bf8eb0e5313378c8a280b45ab25744c1e0b"
+    },
+    {
+      "bytes": 3319,
+      "path": "examples/sdk/c/package_root.c",
+      "sha256": "78399cf5043d007f9ee0bd5220052745a7d3c6b7070bca21efb4cf2f8e9a4c0e"
+    },
+    {
+      "bytes": 479,
+      "path": "examples/sdk/c/package_root.h",
+      "sha256": "51723b26104fd1a91be0787469de9640ed6afaaa02377f6682f3100dcc2a53e0"
+    },
+    {
+      "bytes": 1166,
+      "path": "examples/sdk/rust/abi_layout.rs",
+      "sha256": "55bf7fd443a019f6682212ae32603f69f0be9cae4d8706bb8b686a049858cb0c"
+    },
+    {
+      "bytes": 1264,
+      "path": "examples/sdk/zig/abi_layout.zig",
+      "sha256": "07dae9dace0dc50ef43b16110faf27cbd9fde0a14fc42404dc0718ed9bc767b8"
+    },
+    {
+      "bytes": 4550,
+      "path": "include/openconsole/audio_protocol.h",
+      "sha256": "0a628cddbd8af42419e9f06368ea179905708e5df3f8b9d5c22d12592ae9ceed"
+    },
+    {
+      "bytes": 2313,
+      "path": "include/openconsole/audio_provider.h",
+      "sha256": "654dcfa53a148229cdac597e702e43ceeb469996352c6c96febd094e07321efd"
+    },
+    {
+      "bytes": 3185,
+      "path": "include/openconsole/audioio_backend.h",
+      "sha256": "30b26b6e3b0b91ecd9b7e978025c3be162099e02a9c61544e7209b6f57b70f2d"
+    },
+    {
+      "bytes": 1094,
+      "path": "include/openconsole/authenticated_load.h",
+      "sha256": "c045391ecb132d3065e732f0c71bba0e7582c830e5645429b7c9a1caf25cd0ee"
+    },
+    {
+      "bytes": 779,
+      "path": "include/openconsole/capabilities.h",
+      "sha256": "fe90ece80b83c9067a50202289b5a77012b9bbee579822109984fb73829b29ff"
+    },
+    {
+      "bytes": 963,
+      "path": "include/openconsole/crypto_protocol.h",
+      "sha256": "bf2043c3b5646bdca6c1e13e51fc67fc5f2cd2d4eadc21267ea42661ad70972d"
+    },
+    {
+      "bytes": 2793,
+      "path": "include/openconsole/dashboard.h",
+      "sha256": "42f20c0645d7715000da4a7dea8f21f90b5a5210c659afa01fbbbd3373600efa"
+    },
+    {
+      "bytes": 1078,
+      "path": "include/openconsole/delete_policy.h",
+      "sha256": "3d9c8a1d48d4fd7ba4e9eda7bfcb620dca5aabe4e2d021439baee45f0a6e8a05"
+    },
+    {
+      "bytes": 983,
+      "path": "include/openconsole/details_input.h",
+      "sha256": "e4f4e8aed788555dbd5d1841165a629fa3873322a6f3caa2c3b6ef63b66848dc"
+    },
+    {
+      "bytes": 4060,
+      "path": "include/openconsole/game_storage.h",
+      "sha256": "36b9cf7c0d381cefc5c3f6e379aef2bdd44d4c5322b655253fdf3628c269f4f7"
+    },
+    {
+      "bytes": 3066,
+      "path": "include/openconsole/gles2.h",
+      "sha256": "8589ec82b940119c16fa609013ba11baa0f9b02b0715798f819bca231687d6fa"
+    },
+    {
+      "bytes": 2191,
+      "path": "include/openconsole/gles2_protocol.h",
+      "sha256": "27b4435e65ef2f5b4e3f16790d64a5e6fde19dcaf821316c1832ab88af888382"
+    },
+    {
+      "bytes": 898,
+      "path": "include/openconsole/gles_provider.h",
+      "sha256": "1f884dcd26a6bff49b0db845b07c4c774b93e06100c9c1970a36cb520d75b1cf"
+    },
+    {
+      "bytes": 450,
+      "path": "include/openconsole/gpu_probe.h",
+      "sha256": "eaccd36da797b862b1c9589dfc47975d17bf186debdd7ba721741eda5e991eb2"
+    },
+    {
+      "bytes": 1462,
+      "path": "include/openconsole/io_inventory.h",
+      "sha256": "8f5cd1a702b0fb4285609b3a84939fd02402131be24e89f2eacb82d76a9047bf"
+    },
+    {
+      "bytes": 883,
+      "path": "include/openconsole/io_mock_provider.h",
+      "sha256": "a6ee183bb2051715a8c74d3f98844afdd314ecf437c82738906e5d1fa67f46ef"
+    },
+    {
+      "bytes": 909,
+      "path": "include/openconsole/launch_recovery.h",
+      "sha256": "1412c121040f12c15b3298c6bdf2ac089b20cc867bca3c852b725cfea3f1063c"
+    },
+    {
+      "bytes": 2031,
+      "path": "include/openconsole/manifest.h",
+      "sha256": "ee6e1686f5e0270f49153c055e2420922687eb3f86f793e8d2a3f9626ee1f4f9"
+    },
+    {
+      "bytes": 5637,
+      "path": "include/openconsole/net_protocol.h",
+      "sha256": "83431ce9182c2ef0fb4d08414bc92c26fc36e5f7654e132703dce73e9fb2759f"
+    },
+    {
+      "bytes": 3535,
+      "path": "include/openconsole/net_provider.h",
+      "sha256": "a9eeeb5828699ac21d01402c27a44f6c3eabec7dd98a282b910ea0d49ef07054"
+    },
+    {
+      "bytes": 892,
+      "path": "include/openconsole/net_stack_loader.h",
+      "sha256": "f097ce5989974633bfa4ddc42e6ca7a99d174cf60a246589773005a49509ac6c"
+    },
+    {
+      "bytes": 1881,
+      "path": "include/openconsole/ocg2.h",
+      "sha256": "b525c273fab5547ff336b72ed7c499fd99c22b979f40452f8f0f87bc4696747a"
+    },
+    {
+      "bytes": 811,
+      "path": "include/openconsole/package_measure.h",
+      "sha256": "c1b4d925e26bf76b9e23308cdc7bc97da93da1747432df773e26fec5a2240f5c"
+    },
+    {
+      "bytes": 1598,
+      "path": "include/openconsole/pe_image.h",
+      "sha256": "7a32ca3e6649f74e1dec8e19ead2fc8b9c9bf6437aabd87d337915d70b57cbb3"
+    },
+    {
+      "bytes": 891,
+      "path": "include/openconsole/platform_debug.h",
+      "sha256": "171f70b0734dfd92778efc7206cdc82e7ede4b42f6c4f28737402c8a55cbca19"
+    },
+    {
+      "bytes": 2506,
+      "path": "include/openconsole/platform_inventory.h",
+      "sha256": "b783627bea8f60f79ca244b97f8c994ef19bc4f01364d1c36622a9fd854f269a"
+    },
+    {
+      "bytes": 1131,
+      "path": "include/openconsole/publisher_keys.h",
+      "sha256": "9e0613a9174e6d75ad1e349a45dca4fe3eacf65e32c4834932fa5b6dcc19d400"
+    },
+    {
+      "bytes": 493,
+      "path": "include/openconsole/sha256.h",
+      "sha256": "bebf7822e7d43f73548973b9606da814e296bb6c6b130013d780a3f0f79e682d"
+    },
+    {
+      "bytes": 853,
+      "path": "include/openconsole/target.h",
+      "sha256": "2e407c73b7884822fb4c54f525cff85ef01dca452bf0f6c13ce734e4b155303a"
+    },
+    {
+      "bytes": 285,
+      "path": "include/openconsole/time_format.h",
+      "sha256": "cbb23024e5152cf5f6d3916811d82ace97c17cbc06808d1e82a78fbd9982aa09"
+    },
+    {
+      "bytes": 265,
+      "path": "include/openconsole/tls_ca.h",
+      "sha256": "787c4eaa75c0a54d0d90ac02be31c9c23d97d3bd86ebb1c9b6873350a93eab57"
+    },
+    {
+      "bytes": 12542,
+      "path": "include/openconsole/uefi.h",
+      "sha256": "ff12621a19e1dc3215d8a60b69927aa7641e657465b6aa4f33222421e720f60f"
+    },
+    {
+      "bytes": 857,
+      "path": "include/openconsole/uefi_game_storage.h",
+      "sha256": "3dac93bf4caeffeeb9004436363319ed56dc8664daa3e837d44c67f6198b20f3"
+    },
+    {
+      "bytes": 12656,
+      "path": "include/openconsole/uefi_net_backend.h",
+      "sha256": "ebbbdc47dfe1cd6259191ecaac28246e79cb38146f3cc73d153c8a2ff2c760e2"
+    },
+    {
+      "bytes": 758,
+      "path": "include/openconsole/uefi_update_crypto.h",
+      "sha256": "180838b9eda009a3edb4b61f528605c44b29d75695f5b8f7f1b87aa6918b2c6d"
+    },
+    {
+      "bytes": 817,
+      "path": "include/openconsole/uefi_update_storage.h",
+      "sha256": "500d5a32df745cc1a2ba21311328ba4deca5f7d2c7a4d82fdf1da0e39a5054bc"
+    },
+    {
+      "bytes": 2745,
+      "path": "include/openconsole/update_metadata.h",
+      "sha256": "7680c044dabb109c2767fd155373c496178c20ab593bd3c57133e31a0760120c"
+    },
+    {
+      "bytes": 1445,
+      "path": "include/openconsole/update_storage.h",
+      "sha256": "3c166d97606cec5b9671e74ef00ca8683694a8a94c694ff7fd35f4bd567c3bad"
+    },
+    {
+      "bytes": 1718,
+      "path": "include/openconsole/update_verify.h",
+      "sha256": "af5fdd2b2808aee934f61d4b2007b08f057f833f75b9dca9d8eba742c9f4d782"
+    },
+    {
+      "bytes": 105,
+      "path": "include/openconsole/version.h",
+      "sha256": "1329b2bb5dcc0eae5dd91c0077639e778dbec177f0a4cd3b46e3deff85bb0807"
+    },
+    {
+      "bytes": 1196,
+      "path": "patches/edk2/0001-ovmf-snp-only.patch",
+      "sha256": "82bb2d45f55c4b4fabcc5896b376cbcbcee1e99f3ccc28e4d475d72cf5c3e29c"
+    },
+    {
+      "bytes": 667,
+      "path": "patches/edk2/0002-networkpkg-hash2-component.patch",
+      "sha256": "93603b0317322baa463f7069677250cece405f778782f990e3877daca0610895"
+    },
+    {
+      "bytes": 1136,
+      "path": "patches/edk2/0002-ovmf-usb-mouse-test.patch",
+      "sha256": "ae70798e2c6116a9a3c965069c4223d943719a27ac88c5efea7f49436a14c6f2"
+    },
+    {
+      "bytes": 1165,
+      "path": "patches/edk2/0003-tls-skip-sni-for-ip-literals.patch",
+      "sha256": "d7de30209eb005c453eaeb3b276167ee15c55c518b074168083aca98a77752c0"
+    },
+    {
+      "bytes": 506,
+      "path": "patches/edk2/0004-networkpkg-http-timeout-fixed.patch",
+      "sha256": "da655b5dab21538ecd515d4dd464a5400a93a90de93d576bd689de0481f2cf3c"
+    },
+    {
+      "bytes": 5580,
+      "path": "patches/opencore-audiodxe/0001-failure-cleanup.patch",
+      "sha256": "7877b847af571e2b064d2628693e24d31affe78b3fd9ab21ccdda9f3ad57e343"
+    },
+    {
+      "bytes": 1333,
+      "path": "patches/opencore-audiodxe/0002-instance-safe-playback-setup.patch",
+      "sha256": "26a0278a23d38a887348eb7c80f633f386643b541c862911c883fe7d08a922a8"
+    },
+    {
+      "bytes": 675,
+      "path": "release-version.json",
+      "sha256": "5e1c1d7e76f803e48d7218c53885f1600b3dd54bbde81318bb0bba621c62d06d"
+    },
+    {
+      "bytes": 128,
+      "path": "requirements-analyzer.txt",
+      "sha256": "e5a03787db2db78fcb0354258338a7de13fe6c41333bf211b450a4dc73ffab96"
+    },
+    {
+      "bytes": 1852,
+      "path": "research/amd-backend-service-map.md",
+      "sha256": "39e5e34c588961e0cd703a3da4487bd354e4aa0a92402acc4238de4fb70e5422"
+    },
+    {
+      "bytes": 5017,
+      "path": "research/initial-source-audit.md",
+      "sha256": "1787260b63954a7788f580691a59b4c8dfc544d3f40664bc11a75e21dc3f40ca"
+    },
+    {
+      "bytes": 4655,
+      "path": "research/io-source-policy.md",
+      "sha256": "80cf1707e3989d520020d2ae955295d15a93e7d2920d1390db99363f92b53af3"
+    },
+    {
+      "bytes": 3528,
+      "path": "research/io-sources.lock.toml",
+      "sha256": "5cd55e5da693476674b196ec4242343fbd0c95bc878010d9274c20b9851fa103"
+    },
+    {
+      "bytes": 3342,
+      "path": "research/mesa-softpipe-symbol-map.md",
+      "sha256": "26ecd2e7dbe28d76719028e4dbb301a0077a5ea00d78b1e766ba55149d866e25"
+    },
+    {
+      "bytes": 2488,
+      "path": "research/qemu-gpu-capability.md",
+      "sha256": "0dbdbc6c3a3fc57871002554e61ab967a9e156334e9eb9432fae10795a809d64"
+    },
+    {
+      "bytes": 1343,
+      "path": "research/sources.lock.toml",
+      "sha256": "b9f82a2fa867e139064574a40402f6fe17fdad686d51e8f58efeaa920c9f15cd"
+    },
+    {
+      "bytes": 6587,
+      "path": "research/uefi-network-backend.md",
+      "sha256": "a6a518dbaa043c369a0bc38d087a3d813158ee7af3932602545bd5fe15216a87"
+    },
+    {
+      "bytes": 2287,
+      "path": "research/virgl-uefi-dependency-map.md",
+      "sha256": "0338047c4ba1da4429175263edf2abda642ee1314a3d9622f9b44e7cbbd48381"
+    },
+    {
+      "bytes": 135057,
+      "path": "sbom.cdx.json",
+      "sha256": "745b4e4692b42713dc515dcedc977acda1f908392a6b00c652ffd7da877271d1"
+    },
+    {
+      "bytes": 1610,
+      "path": "scripts/analyze-audio-wav.py",
+      "sha256": "81d9f4cac0661176630bd9690b1cc04bed115371c9fddefb96e9dea06e1c9850"
+    },
+    {
+      "bytes": 5243,
+      "path": "scripts/analyze-ovmf-audio.py",
+      "sha256": "16b1bf72ea1a8845b606d07664680fb84beae9f63e2809fb69d2ade9bf6522bf"
+    },
+    {
+      "bytes": 10160,
+      "path": "scripts/analyze-physical-audio-evidence.py",
+      "sha256": "970d9f42dd78813a2c87ab0063addb4d2c61bd5fff3fdc35f82f7f1622c73092"
+    },
+    {
+      "bytes": 5655,
+      "path": "scripts/analyze-physical-inventory.py",
+      "sha256": "cf228a68cbec441c078ea8fdb3f692b85cb6a0de17c7a5706f2a32564bc25af2"
+    },
+    {
+      "bytes": 7818,
+      "path": "scripts/analyze-physical-network-evidence.py",
+      "sha256": "f3f492159efddf7e9623fb039a5fabf475c3e1c48a96cc474506c5195831a730"
+    },
+    {
+      "bytes": 7732,
+      "path": "scripts/audit-edk2-network-stack.py",
+      "sha256": "3a7122bf5afac2e8f0cdedeea49d207eb1e751b3deaf86547e0c7f8e36902cb0"
+    },
+    {
+      "bytes": 5139,
+      "path": "scripts/audit-opencore-audiodxe.py",
+      "sha256": "61783c74e86c3967d3fb8ac61a25571161c788913e36e76e79e8977c675301f3"
+    },
+    {
+      "bytes": 5486,
+      "path": "scripts/build-arm64-image.py",
+      "sha256": "b1b0bac084ef1b52bb36b7edd0e845d2aae9ef8615c68f029f8362484b2c6fa4"
+    },
+    {
+      "bytes": 7790,
+      "path": "scripts/build-development-image.py",
+      "sha256": "eff86b86af62004123beaa436bdd42e38226bbfcb1d388c6926e02e6f2d7a59e"
+    },
+    {
+      "bytes": 3268,
+      "path": "scripts/build-edk2-network-stack.sh",
+      "sha256": "0d2705aa527751884825d4e124827d7f0559b9b31bfe61b57061f5f538edd537"
+    },
+    {
+      "bytes": 3626,
+      "path": "scripts/build-opencore-audiodxe.sh",
+      "sha256": "e0a90f2d512c47b9683ace583d8bcb3757139695cb9052f091e06591f7b45850"
+    },
+    {
+      "bytes": 2373,
+      "path": "scripts/build-ovmf-pointer.sh",
+      "sha256": "ce88a99355ecd5825cd8dde6c74fa8ccdde576e32a8d73b0adeca15f68063780"
+    },
+    {
+      "bytes": 2033,
+      "path": "scripts/build-ovmf-snp-only.sh",
+      "sha256": "eef40b1a8b30a685de249e56b5ad5e650c7cafceafba86cc695232d2b6e27957"
+    },
+    {
+      "bytes": 2402,
+      "path": "scripts/build-physical-test-disk-image.sh",
+      "sha256": "bc94929c38f910ffba78fd2879766d764e9db3a5125065b716870fa473b61cd0"
+    },
+    {
+      "bytes": 6709,
+      "path": "scripts/build-release-candidate.py",
+      "sha256": "b70005e1dcf537252600b7c5a409f397cafaf778f60df7d1a905be4e244bd282"
+    },
+    {
+      "bytes": 684,
+      "path": "scripts/build-slice-bundle.py",
+      "sha256": "28a2ae4c1913876a54fdb996416c694851854b48432a07d61980220eefc39ea2"
+    },
+    {
+      "bytes": 1812,
+      "path": "scripts/build-update-crypto-dxe.sh",
+      "sha256": "9b28fc67365bc9cc869d7c0c1b2b03d7c4314bc638bff76d25c33e68058bdeeb"
+    },
+    {
+      "bytes": 1765,
+      "path": "scripts/ci-development-image-test.sh",
+      "sha256": "6a56305348eff436bdb7fdc3a8961477bc0e69ae607e1be081b3a12907099a17"
+    },
+    {
+      "bytes": 1256,
+      "path": "scripts/compare-development-images.py",
+      "sha256": "eb5599929715b82e743ef2a7ee84c908a96fd31fa228756367a633d4754dff17"
+    },
+    {
+      "bytes": 6056,
+      "path": "scripts/export-public-repositories.py",
+      "sha256": "1bfb9cf829f39685ccf695d903e2475519990b316c21eab100e9119025c094e0"
+    },
+    {
+      "bytes": 1532,
+      "path": "scripts/generate-platform-trust-header.py",
+      "sha256": "81f9da427b0b295b57a1fbfaf844038ae739556c39572c7dbd69e80e054a72ac"
+    },
+    {
+      "bytes": 4542,
+      "path": "scripts/generate-release-metadata.py",
+      "sha256": "8f604e300b42ba3b0269e8990a5dd99515a564e062823bdcb3e8776e6bb9f78f"
+    },
+    {
+      "bytes": 3087,
+      "path": "scripts/generate-tls-fixtures.py",
+      "sha256": "2f4cdff5d4127ab73460eeb9c3acd86fc1502b0bc34703b2e40d09743a520a77"
+    },
+    {
+      "bytes": 2743,
+      "path": "scripts/generate-update-fixtures.py",
+      "sha256": "49e7013295e8f0deeaf9198e83806b44108ebacf46a5fbc8ccedae5944d649f8"
+    },
+    {
+      "bytes": 6369,
+      "path": "scripts/inspect-uefi-driver.py",
+      "sha256": "44cecf6ba508f1060407719d539c19ae0b480f7cd61f8da289264de81e77c5ed"
+    },
+    {
+      "bytes": 2472,
+      "path": "scripts/normalize-fat.py",
+      "sha256": "dff4cfb0cc78e52c91b136b9c8be3a406e99ef2bcc90eb7a6325079fc1b466d5"
+    },
+    {
+      "bytes": 571,
+      "path": "scripts/ovmf-common.sh",
+      "sha256": "ae568f2a27de6f154ec245ba9fa2a0de3ca229397fb55e40ddf25e4dd6fd5233"
+    },
+    {
+      "bytes": 84408,
+      "path": "scripts/ovmf_interaction_test.py",
+      "sha256": "3e2f60146f83250eb0082074223c9a3f8a3ed1f109a1aa9d1cdffffdf9dcb9a6"
+    },
+    {
+      "bytes": 1350,
+      "path": "scripts/package-physical-test-esp.sh",
+      "sha256": "a84630a19f9584f9bd772a0d6e77578538ac4813e634a417126ae656a93c7be7"
+    },
+    {
+      "bytes": 3249,
+      "path": "scripts/prepare-game-details-esp.py",
+      "sha256": "8d33b967a5199219498f311c55b47558f55c7eddc42e514f4ba3baa581ae9abb"
+    },
+    {
+      "bytes": 5453,
+      "path": "scripts/prepare-physical-network-test.py",
+      "sha256": "c716a77ac3b49b7d33c6b88f8974fca97b27c5981d1edf46f7f91a57903634a3"
+    },
+    {
+      "bytes": 1470,
+      "path": "scripts/prepare-pointer-pagination-esp.py",
+      "sha256": "faa97103a60cbf73576be66b86c0780663c2711566e31b9b8bbddec8bd721897"
+    },
+    {
+      "bytes": 564,
+      "path": "scripts/run-ovmf.sh",
+      "sha256": "dac3e932672c7b73ddf82ed83183fa34f5036e2a45090a3dee8aeac1a73a7213"
+    },
+    {
+      "bytes": 3738,
+      "path": "scripts/run-physical-network-fixture.py",
+      "sha256": "f2912e0d736330bd95e0b72ef8a943df62557e7642f6259efaddafd19aa021fa"
+    },
+    {
+      "bytes": 8429,
+      "path": "scripts/test-arm64-aavmf.py",
+      "sha256": "63aa493ff2731343017b68513de6cbf2aa434e295af61170afad95a06efd54f0"
+    },
+    {
+      "bytes": 1195,
+      "path": "scripts/test-game-storage-ovmf-matrix.sh",
+      "sha256": "b933857c53943b30a16a4f90ca1c0fe5fd2fa715585c467f87cdbab79a6d078b"
+    },
+    {
+      "bytes": 3628,
+      "path": "scripts/test-ovmf.sh",
+      "sha256": "d2c68849b28200b2e23e055164f474b6ccc8f050d8ad758298d23a852d93417b"
+    },
+    {
+      "bytes": 2269,
+      "path": "scripts/test-runtime-integrity-ovmf.sh",
+      "sha256": "86800c330bc87374bccc92064691fca9bdbae1f2b8a32ab15f0aa8ffee7f288a"
+    },
+    {
+      "bytes": 5239,
+      "path": "scripts/verify-physical-test-media.py",
+      "sha256": "ab3171ad67da4d20533f84c98f6e33635111d48d4a352b9a6fe2bac7a594dc4b"
+    },
+    {
+      "bytes": 4216,
+      "path": "scripts/verify-release-candidate.py",
+      "sha256": "475758c23696e5471fc6aca7af700549c9c6b9dac7c857621f3861dba47a5a6b"
+    },
+    {
+      "bytes": 1096,
+      "path": "scripts/verify-release-clean.sh",
+      "sha256": "45270ff11af571aba80135e1fe1ba17120e35f88c57efab1b3232fbc536445e3"
+    },
+    {
+      "bytes": 15213,
+      "path": "src/audio/audioio_backend.c",
+      "sha256": "48407096d9949147cf0b7b0394f10bef3c975243ec65048df15115d71d656d5b"
+    },
+    {
+      "bytes": 16765,
+      "path": "src/audio/provider.c",
+      "sha256": "3c5cc04c7766e7cef010835a8c8b80ebcf460e978c04a8f5a6c0aa3166c68e07"
+    },
+    {
+      "bytes": 115436,
+      "path": "src/boot/main.c",
+      "sha256": "0d3744cc446ca7efea7c9b4916a439d3378625c71e81068093f85825539e4e6e"
+    },
+    {
+      "bytes": 3293,
+      "path": "src/core/authenticated_load.c",
+      "sha256": "0c9b048aee1f940c531f2ae614f55cd7a1fbccb655d3f96aa6d4f4f4cbb99d55"
+    },
+    {
+      "bytes": 2917,
+      "path": "src/core/capabilities.c",
+      "sha256": "461a42a9a2893ed52a0c4153bd8c9657b946d0890394db405575b01928ef21b0"
+    },
+    {
+      "bytes": 1967,
+      "path": "src/core/delete_policy.c",
+      "sha256": "a53ba0cf2e35bde3a4d4284807628d585342ebaa124137f49012b9890393142d"
+    },
+    {
+      "bytes": 739,
+      "path": "src/core/freestanding_memory.c",
+      "sha256": "be231c34ba0c9c7934f35a9a01e0a5ffca40ed13a1e406a1e88859eeac818760"
+    },
+    {
+      "bytes": 22410,
+      "path": "src/core/game_storage.c",
+      "sha256": "ff005bbfa5da7a33779ce8277c4fb3d1aeeabd0f4acfec3dc9d2bc63a7127fd2"
+    },
+    {
+      "bytes": 3616,
+      "path": "src/core/launch_recovery.c",
+      "sha256": "969b32911bcca4252a3dc6652f01d7580e915c5662cdfdb0a34a864ed6b9ddf8"
+    },
+    {
+      "bytes": 18148,
+      "path": "src/core/manifest.c",
+      "sha256": "830e6a1ab92dc7073f686afecb06da9dd2b3dadac2681fa47c9af4ef9a5554ea"
+    },
+    {
+      "bytes": 7396,
+      "path": "src/core/ocg2.c",
+      "sha256": "ca5fd4396317bf5ba885230d0034709398101f4f2186f4a0ce57bb72b9872c15"
+    },
+    {
+      "bytes": 1249,
+      "path": "src/core/package_measure.c",
+      "sha256": "f500bec964a8814c47b817250025cdd45adc1f70d9f6b8f52c75ac73345214de"
+    },
+    {
+      "bytes": 5664,
+      "path": "src/core/pe_image.c",
+      "sha256": "6e0b05c55e3d4690a57a1cbd1a0993f4af863d52ddb38987941c95a7bd39f367"
+    },
+    {
+      "bytes": 7348,
+      "path": "src/core/platform_inventory.c",
+      "sha256": "735a3a39bc43cfa67171f8e80639f28e08bc8c4dca41ef731c5166b0af66e242"
+    },
+    {
+      "bytes": 3353,
+      "path": "src/core/publisher_keys.c",
+      "sha256": "a973aaa5d7ed1290fe4db3f8ba4d09b00cba64eb2ab008087a11ae9738996408"
+    },
+    {
+      "bytes": 3591,
+      "path": "src/core/sha256.c",
+      "sha256": "ed3a959d596362c656061789b5886602d5b10f4109c0be4198e62a01de7f367b"
+    },
+    {
+      "bytes": 1073,
+      "path": "src/core/time_format.c",
+      "sha256": "78b8043635b5694dbbf46db0b39600d004e321951d0aaeafe118e58e8c7aaefa"
+    },
+    {
+      "bytes": 10715,
+      "path": "src/core/uefi_game_storage.c",
+      "sha256": "f7b74dc7805aa7a0c6e2376d562fe553f219d81f379ad8c1c9c6b4763d5dab18"
+    },
+    {
+      "bytes": 12528,
+      "path": "src/games/audio_probe.c",
+      "sha256": "71d16e79a33b83ff27cb76e20d5c32b253266a1bca52e3944bee2b0d14230c9a"
+    },
+    {
+      "bytes": 9060,
+      "path": "src/games/crypto_probe.c",
+      "sha256": "f4202193cceb067e86aaa81b32e18d9cb7ba5333d6c1d26cffa85055b0da1661"
+    },
+    {
+      "bytes": 4524,
+      "path": "src/games/gles_triangle.c",
+      "sha256": "f55877ba796e16ad48ac4d6f82f5b09ea1dccdaac6da5226e50854da8c1c1017"
+    },
+    {
+      "bytes": 509,
+      "path": "src/games/hang_probe.c",
+      "sha256": "7692a11967d30881b2688d6469d64e597e1fff0c6913490f7cb9101c27a9be52"
+    },
+    {
+      "bytes": 1610,
+      "path": "src/games/input_probe.c",
+      "sha256": "2f0a235bb4850b22cd4a6626c2d7abc95f19a5efae44415ce315638f68e06f7f"
+    },
+    {
+      "bytes": 18949,
+      "path": "src/games/integrated_io_game.c",
+      "sha256": "69b003469673f1198aa265f9907f9ee6dff5ed37c466c4cb3af35aa53165e550"
+    },
+    {
+      "bytes": 2480,
+      "path": "src/games/io_probe.c",
+      "sha256": "03f918b09f186309511a87c35c0b28b722bd26c3bf4a0300826fa51e23d6f624"
+    },
+    {
+      "bytes": 13948,
+      "path": "src/games/network_probe.c",
+      "sha256": "f14695e29f4cb9762574f73b91ec1717581c661d05dba6796840b5e665a0e299"
+    },
+    {
+      "bytes": 13476,
+      "path": "src/games/physical_network_probe.c",
+      "sha256": "ac7495fa9f224c6d6a8ad59416e0f6d8fdff156e3e4c47db4ff0a9e3c3a26471"
+    },
+    {
+      "bytes": 7921,
+      "path": "src/games/slice_installer.c",
+      "sha256": "fac5c25c91c3ceabbd0e4dedcb7a662a6f8c4ba6af56b9dce3fa8455cec60419"
+    },
+    {
+      "bytes": 15311,
+      "path": "src/games/update_e2e_probe.c",
+      "sha256": "7aa3bb0f03f25d624954fba137fb0ad5d74654fbd5f670a8cf1eb9d7d77e59ad"
+    },
+    {
+      "bytes": 4330,
+      "path": "src/games/update_storage_probe.c",
+      "sha256": "28098c5dd20bea31a320e4567f077f871e90753a30ce998ece37792cbf9cc436"
+    },
+    {
+      "bytes": 21636,
+      "path": "src/gles/provider.c",
+      "sha256": "09860bfe76093f0740e4e2003df795540803766cae31ac75d285b1b217888072"
+    },
+    {
+      "bytes": 1674,
+      "path": "src/gpu/pci_probe.c",
+      "sha256": "b31c5ab35a6bb817e4bc1dd9805e42b11975558bfef9212e1abb4ea03cb43446"
+    },
+    {
+      "bytes": 15445,
+      "path": "src/io/inventory.c",
+      "sha256": "f85cb558956f4b92cf2da6250a8c2d677c14689a14552939604a49b0e685b4f2"
+    },
+    {
+      "bytes": 14992,
+      "path": "src/io/mock_provider.c",
+      "sha256": "f898fdb8a19db164fae46c76d4e1310cf2ff0f2a780b16c7c33ff8be242e0b11"
+    },
+    {
+      "bytes": 20613,
+      "path": "src/net/provider.c",
+      "sha256": "bfc76a683514dab0a50c99356edf3d5c9321fcabbd0c2090b9c65a24ba8e6d42"
+    },
+    {
+      "bytes": 4030,
+      "path": "src/net/stack_loader.c",
+      "sha256": "2c718f039e33fd95e9769e5152849adb08945bf4408c389f4d523bb3d31cf125"
+    },
+    {
+      "bytes": 2331,
+      "path": "src/net/tls_ca.c",
+      "sha256": "7b927ad076a16e0d8407b0d13077b8109af5ba5622b93f3a7c0cb5092cbc0936"
+    },
+    {
+      "bytes": 45463,
+      "path": "src/net/uefi_backend.c",
+      "sha256": "34e775b4fafb1ddf959b69eacfed9bf3c796fb987d46a43e5ef18df724e361b4"
+    },
+    {
+      "bytes": 2796,
+      "path": "src/net/uefi_update_crypto.c",
+      "sha256": "bd0960a97c67610defa6d0859931a864274ec04d48334adb4a9aaa211eec34dd"
+    },
+    {
+      "bytes": 7533,
+      "path": "src/net/uefi_update_storage.c",
+      "sha256": "f62a2a7e73ea2150a0cebd5433d4b24a11448a01b7a226bd5d0192b7cae0835a"
+    },
+    {
+      "bytes": 9321,
+      "path": "src/net/update_metadata.c",
+      "sha256": "946171845a4cfc7419cf3cc03f7e0e741bd3ea594debf54d8d9e7e2e0d847011"
+    },
+    {
+      "bytes": 9097,
+      "path": "src/net/update_storage.c",
+      "sha256": "32ff49640b5fcc0c1d92995e1bb6b694f0e33c80aa7209287c4a134d3da24d67"
+    },
+    {
+      "bytes": 3196,
+      "path": "src/net/update_verify.c",
+      "sha256": "73fdbf6c79ee4be2217d753fd0905522c06d9e1cdd432dd9513394125013d11c"
+    },
+    {
+      "bytes": 12848,
+      "path": "src/ui/dashboard.c",
+      "sha256": "c8c707dfdaa6573b02fbccfc38a4013a03cace4824ebde67e0772de74b819d04"
+    },
+    {
+      "bytes": 2703,
+      "path": "src/ui/details_input.c",
+      "sha256": "3925e432ba9d23eed0f27c101f39630674434f87129c1d71b3ea3eb492a7f202"
+    },
+    {
+      "bytes": 2530,
+      "path": "tests/analyzer_stage_parity_test.py",
+      "sha256": "b9e607606871866b718ffb200b6216fd8d1e2926ccbe95d5b079b35ca614b37b"
+    },
+    {
+      "bytes": 9038,
+      "path": "tests/analyzer_test.py",
+      "sha256": "cbdc116bbbb278df150774fc3c60612a53ab85d9db8217b75fdfa089efb468fc"
+    },
+    {
+      "bytes": 1501,
+      "path": "tests/arm64_image_test.py",
+      "sha256": "1ec1c1422c9c68690c6d8de2f964270913d40461901c1497a9a4848c470c6327"
+    },
+    {
+      "bytes": 5578,
+      "path": "tests/audio_golden_test.c",
+      "sha256": "a0c636ec1a32c2e2cf0fd2a69f74d152c2d2be4dee05a2542436ee1a165d3394"
+    },
+    {
+      "bytes": 7748,
+      "path": "tests/audio_provider_test.c",
+      "sha256": "dfd19fc769a0bf4ad0c34cc1460b749c24e615081d7011b67a213f0b0d6f32f3"
+    },
+    {
+      "bytes": 9684,
+      "path": "tests/audioio_backend_test.c",
+      "sha256": "4c774c0f948471ebbf5d8090eab257ef25c486de3ad0e486591bf9c1e84c02ce"
+    },
+    {
+      "bytes": 1778,
+      "path": "tests/authenticated_load_test.c",
+      "sha256": "b043bed070cba6e21743f45c804bd4918644af64469fe058aafef0cb1792756c"
+    },
+    {
+      "bytes": 1472,
+      "path": "tests/capabilities_test.c",
+      "sha256": "1b439834cb5e876530633ae3b51f1a475d150222a73abbf401f3f7446344135b"
+    },
+    {
+      "bytes": 5376,
+      "path": "tests/dashboard_test.c",
+      "sha256": "55f48ec86fcadaf2604def6e74775185e04c80a01b518a63200b4f212c7d1e6b"
+    },
+    {
+      "bytes": 1937,
+      "path": "tests/delete_policy_test.c",
+      "sha256": "221066e97799f1eb75727ea97c8967478efba603f46659cf440e21f7b433251a"
+    },
+    {
+      "bytes": 2154,
+      "path": "tests/details_input_test.c",
+      "sha256": "cf80e3882e772bc4269fe23c5ca81eed4ecb1c93fe0039e0a5c53fca238484d7"
+    },
+    {
+      "bytes": 706,
+      "path": "tests/fixtures/ocg2/arm64-minimal.json",
+      "sha256": "28eea664a121e3b2a77e41e097895bc7c08e3a9a4374e6cd0ea84b58b48f4187"
+    },
+    {
+      "bytes": 2862,
+      "path": "tests/fixtures/ocg2/arm64-minimal.ocg",
+      "sha256": "bec54a99bc02bc797828b7efaf79e8975a936cb108aad062c929634ef5a972fb"
+    },
+    {
+      "bytes": 688,
+      "path": "tests/fixtures/ocg2/golden-minimal.json",
+      "sha256": "6f0d3f11bc1a4d7576216c6ea4643414dcccc6173a1fda8386c56db65a205425"
+    },
+    {
+      "bytes": 5336,
+      "path": "tests/fixtures/ocg2/golden-minimal.ocg",
+      "sha256": "ecda6979e46b24ff70effe5a548ae63b78ef0992eba07bb2b76b2986e6b22122"
+    },
+    {
+      "bytes": 1418,
+      "path": "tests/game_assets_test.py",
+      "sha256": "67f13932ad9a429979dc45e722ef80179ae565fd39f3ac7dc21ce41f6acabcd5"
+    },
+    {
+      "bytes": 2193,
+      "path": "tests/game_storage_test.c",
+      "sha256": "8e2279c8a4c2e6882ac57f0e0829554006a0c529a0b59a202246dbe50aab0338"
+    },
+    {
+      "bytes": 12663,
+      "path": "tests/game_transaction_test.c",
+      "sha256": "7976c144feef90966bdac804e243b5626af90acb59d860201228348c2eb9e35a"
+    },
+    {
+      "bytes": 571,
+      "path": "tests/gles_abi_test.c",
+      "sha256": "6c5c6b329614742ee4b034008de88e19f0838d40e235d6f65b803f8601cd1338"
+    },
+    {
+      "bytes": 4984,
+      "path": "tests/gles_provider_test.c",
+      "sha256": "6e70b229cac4a297115e6f9439578058325eea6e50193882a34de232f87c006f"
+    },
+    {
+      "bytes": 1841,
+      "path": "tests/io_abi_test.c",
+      "sha256": "9979be988b8bdea8e40058978a6e9c97f3910ac1415454d7c6caacecd194f0bc"
+    },
+    {
+      "bytes": 7699,
+      "path": "tests/io_inventory_test.c",
+      "sha256": "0d8ab0eb4f3ec0edae2034c3e12ede438b73f1efe54e24b3105636fcd5f45fe2"
+    },
+    {
+      "bytes": 1791,
+      "path": "tests/io_mock_provider_test.c",
+      "sha256": "c04860f141f4d7666a97c08cacda6299c461a527f80432f50bcf31dd4b140240"
+    },
+    {
+      "bytes": 941,
+      "path": "tests/launch_recovery_test.c",
+      "sha256": "9b18a3c30c402820c1c5d4ea1c98a8dc9b23baed2fcedcbb924a6dd80e4b915f"
+    },
+    {
+      "bytes": 1210,
+      "path": "tests/make_authenticated_game_fixture.py",
+      "sha256": "fca40ab11c911d5ba97d541fabbb142fbe6d3eaba63939f3fd50c773859791f4"
+    },
+    {
+      "bytes": 839,
+      "path": "tests/make_platform_inventory_c_fixture.py",
+      "sha256": "c6df2302ddb1bb079db332f20dce63e89059d9362e3eae92b055f8e72961074b"
+    },
+    {
+      "bytes": 6041,
+      "path": "tests/manifest_test.c",
+      "sha256": "16c1cd6483497e9367942f787c8618b80b84f9033800db7435f0492262c75df0"
+    },
+    {
+      "bytes": 6604,
+      "path": "tests/net_failure_test.c",
+      "sha256": "53f211c700d15229cef92719c685e138c1ff5f906a067dab2f77147d39461905"
+    },
+    {
+      "bytes": 7896,
+      "path": "tests/net_provider_test.c",
+      "sha256": "1673526e5507adc46e000e39f2a822d720dccdbe09912dd5ac598da3195d8898"
+    },
+    {
+      "bytes": 2522,
+      "path": "tests/net_stack_loader_test.c",
+      "sha256": "12419f7f50dcb09a0f777d9ef7bd9c594178474e818e4b0755a424a2236ea784"
+    },
+    {
+      "bytes": 3600,
+      "path": "tests/ocg2_arm64_test.py",
+      "sha256": "3f89808b91ad44c235312771f5aa879c0a6c7daf87a630da6fcf497b106ae541"
+    },
+    {
+      "bytes": 1658,
+      "path": "tests/ocg2_c_test.c",
+      "sha256": "0bf3fd88b4d2ed00b51d8340314936b0855e3f7155320f041c0a5c1bcb3bc15b"
+    },
+    {
+      "bytes": 4267,
+      "path": "tests/ocg2_tool_test.py",
+      "sha256": "d4753f95690d74f6ed8dae2dedc9a05f40c83ba0e5ac930e64da4073d34e825c"
+    },
+    {
+      "bytes": 1244,
+      "path": "tests/package_measure_test.c",
+      "sha256": "8a7ee7b6d951410e260a0d281a5f3765160a50d44a7784c7c0ba5d00250c29f1"
+    },
+    {
+      "bytes": 2241,
+      "path": "tests/pe_image_test.c",
+      "sha256": "3978a7e31d4a7bd25f93430695bf40c6c995e1cf1d3b8ee19db4786493277b28"
+    },
+    {
+      "bytes": 3658,
+      "path": "tests/physical_audio_analyzer_test.py",
+      "sha256": "e25b53023f168b0ebfab704dffccf2b8e83519ae736e29af2f988f96c3f6b3bb"
+    },
+    {
+      "bytes": 2799,
+      "path": "tests/physical_inventory_analyzer_test.py",
+      "sha256": "63cec4266167f1a231ec297094a7803107a7c9628d8836b1e32880004527fd13"
+    },
+    {
+      "bytes": 2954,
+      "path": "tests/physical_media_verifier_test.py",
+      "sha256": "7bf3cdbe55465a5c2fec507ae22f8c8559f060292e31b28ec828468b190c70e8"
+    },
+    {
+      "bytes": 4263,
+      "path": "tests/physical_network_analyzer_test.py",
+      "sha256": "70b24b52ab40d81000d8ca91d76ca1d40df6d66cb3952280eabbb47cfebd10e9"
+    },
+    {
+      "bytes": 2477,
+      "path": "tests/platform_inventory_c_test.c",
+      "sha256": "a466355e261fdc252f5473fab368958aa2080cbb7104d2f8a36c6e85be4dbea8"
+    },
+    {
+      "bytes": 1835,
+      "path": "tests/platform_inventory_test.py",
+      "sha256": "c58f78011ae92f8ff0ef44a6719973356415ed3f32c9b83c8e6d7acfdce72e56"
+    },
+    {
+      "bytes": 1971,
+      "path": "tests/prepare_authenticated_installed_game.py",
+      "sha256": "1b7d96d643b4450ce1042ab4d81aa98196b79640dfec8a62e3fe2f59c0992510"
+    },
+    {
+      "bytes": 823,
+      "path": "tests/prepare_incomplete_launch_record.py",
+      "sha256": "fb0306d2d8def99ed7ed53bfea888d5f660d7d87fd255fb293d8c5c2c770a0e4"
+    },
+    {
+      "bytes": 3529,
+      "path": "tests/prepare_runtime_integrity_fixtures.py",
+      "sha256": "754205127b62b7493753fecc811150ba2ad4b8aaff97f3b0be7faa773155c6f8"
+    },
+    {
+      "bytes": 5381,
+      "path": "tests/prepare_storage_recovery_matrix.py",
+      "sha256": "cbbeeca5373b5703822798dffbbea33758524fa286e81e89093b05f5fcb924da"
+    },
+    {
+      "bytes": 2247,
+      "path": "tests/public_repository_export_test.py",
+      "sha256": "5fd552401af035cbf094234a9dc83d2706f3d48bacf81331b2689c5d2aac420f"
+    },
+    {
+      "bytes": 973,
+      "path": "tests/publisher_keys_c_test.c",
+      "sha256": "2b12ce7f4664451b803b4beccb30c4364261ec7aabd8a57fcb8a89c36a93190f"
+    },
+    {
+      "bytes": 1346,
+      "path": "tests/publisher_keys_test.py",
+      "sha256": "b4f2fe92833ea32997c3a376d6b28bc7694ae35ad82dffbb45aa726b9f3aa2d1"
+    },
+    {
+      "bytes": 1244,
+      "path": "tests/sdk_examples_test.py",
+      "sha256": "a80659a05c64d50cba5a264181ce4bb79a6bedf2d2f11fe31fdff338e67ed45f"
+    },
+    {
+      "bytes": 986,
+      "path": "tests/sha256_test.c",
+      "sha256": "73e78bfb6a9db71ede264dcd5b4e97747770d28bb55a350c8a19b9beef971c3c"
+    },
+    {
+      "bytes": 1069,
+      "path": "tests/target_abi_test.c",
+      "sha256": "fe4129755d1d3ece874527bfbcdc8b0cc0cb57753e4fc227826421e1e9acb275"
+    },
+    {
+      "bytes": 1236,
+      "path": "tests/target_matrix_test.py",
+      "sha256": "2299ffe06e42e58b51ee8c1c8e08ef7f7ef6c15e5cd28ca80cefe04b043025e7"
+    },
+    {
+      "bytes": 1000,
+      "path": "tests/time_format_test.c",
+      "sha256": "6726ebbca9ec019961145e892ae8eb79c0b736216ef11ac374bb85bd70c95fb5"
+    },
+    {
+      "bytes": 1888,
+      "path": "tests/tls_ca_test.c",
+      "sha256": "12c275e61a69a8ff0f8d49fd8bc5a3cb91bde8ac7a1d0b32155e33c6b050e027"
+    },
+    {
+      "bytes": 3170,
+      "path": "tests/uefi_driver_inspector_test.py",
+      "sha256": "fc190583b8779acad4bea27d41dcb7c83b1987ea163679b7bb3b6f2d583de227"
+    },
+    {
+      "bytes": 24002,
+      "path": "tests/uefi_net_backend_test.c",
+      "sha256": "5335f0bbb72d7957b5c06b00c823d30ba63062a52487d6b0adeb47b46ff4a4d6"
+    },
+    {
+      "bytes": 2141,
+      "path": "tests/uefi_update_crypto_test.c",
+      "sha256": "abdef09ea53042b172fbc5d95bc464d9e1393c76ee7674ddbc032e7388b73fae"
+    },
+    {
+      "bytes": 4909,
+      "path": "tests/update_metadata_test.c",
+      "sha256": "0353e9bea832b00f1982ca8080ffdc8f5a956b4daa40aa86c8ab9731006fba2b"
+    },
+    {
+      "bytes": 4853,
+      "path": "tests/update_storage_test.c",
+      "sha256": "e167a95c10854ff665a0dccafdc7958518f867e97aa1434eb80a9036c266afa2"
+    },
+    {
+      "bytes": 6222,
+      "path": "tests/update_verify_test.c",
+      "sha256": "982728b48e49af6a82f28cb97e63c727e3222079667cf78167b8220e52f6cfcb"
+    },
+    {
+      "bytes": 2490,
+      "path": "tools/game_assets.py",
+      "sha256": "5f22b84998cf37b05ce3aed95e4d71699874eba29cbe858524eb307b78e64c68"
+    },
+    {
+      "bytes": 1008,
+      "path": "tools/jacket-gen.c",
+      "sha256": "33781594d06a9371b7de48e7f72e5c4ed63cd5a4fd1dd465426cbfa5e864de77"
+    },
+    {
+      "bytes": 1650,
+      "path": "tools/manifest-check.c",
+      "sha256": "7cfe3e9b6f439646442afebf70531b7bb0be80db0c2552e2413025fa41b76445"
+    },
+    {
+      "bytes": 29645,
+      "path": "tools/ocg2.py",
+      "sha256": "8b58480135e291b5756c7642589f010b3cef5b8918200ee04cad69a79f15a415"
+    },
+    {
+      "bytes": 29156,
+      "path": "tools/openconsole_analyzer.py",
+      "sha256": "6abe308a058f2a80449164af912d510e07ca0482c55a03df55900128e02e1092"
+    },
+    {
+      "bytes": 11630,
+      "path": "tools/platform_inventory.py",
+      "sha256": "832cf9f429eefb8a1b5496a4e771d0646120b1f7afda3bebb0fff1b5444a3bad"
+    },
+    {
+      "bytes": 4166,
+      "path": "tools/publisher_keys.py",
+      "sha256": "d4cc1531f25300776d8fe4e929b886ab2dc348a91c29e337201b0581c961aed7"
+    },
+    {
+      "bytes": 3263,
+      "path": "tools/verify_efi.py",
+      "sha256": "b9b7e05a9a6583901593669a13f39d3aae1215ab769bc35fc7fd9debcb1522f7"
+    },
+    {
+      "bytes": 1391,
+      "path": "tools/verify_efi_tree.py",
+      "sha256": "fccec5a6e88a54ac956cfcdbef6d7b563302e1582918f50ff91c8531ee394090"
+    },
+    {
+      "bytes": 2747,
+      "path": "vendor/edk2/OpenConsoleCryptoDxe/OpenConsoleCryptoDxe.c",
+      "sha256": "836cca79c0547ed5c898efe0332f582e20dfaa6ce71db826c8b2acb93eb11e96"
+    },
+    {
+      "bytes": 585,
+      "path": "vendor/edk2/OpenConsoleCryptoDxe/OpenConsoleCryptoDxe.inf",
+      "sha256": "cb2d1724ce6609645e114f861d517d9863284ded92bcffceccc360a63eb12e1b"
+    },
+    {
+      "bytes": 1417,
+      "path": "vendor/edk2/README.openconsole.md",
+      "sha256": "3e8beec261921cf1476d175d020157d0577157a7ea92295a02aff635f61e8953"
+    },
+    {
+      "bytes": 2049,
+      "path": "vendor/opencore/README.openconsole.md",
+      "sha256": "1f65740657a94f4a9a93eb3e2741f2c34fc7dfde15c037857ebc25a0b3f449ef"
+    }
+  ],
+  "kind": "runtime-arm64",
+  "schema": "openconsole.public-tree.v2",
+  "sharedContractHashes": {
+    "include/openconsole/gles2_protocol.h": "27b4435e65ef2f5b4e3f16790d64a5e6fde19dcaf821316c1832ab88af888382",
+    "include/openconsole/manifest.h": "ee6e1686f5e0270f49153c055e2420922687eb3f86f793e8d2a3f9626ee1f4f9",
+    "include/openconsole/ocg2.h": "b525c273fab5547ff336b72ed7c499fd99c22b979f40452f8f0f87bc4696747a",
+    "include/openconsole/target.h": "2e407c73b7884822fb4c54f525cff85ef01dca452bf0f6c13ce734e4b155303a",
+    "include/openconsole/uefi.h": "ff12621a19e1dc3215d8a60b69927aa7641e657465b6aa4f33222421e720f60f",
+    "tools/ocg2.py": "8b58480135e291b5756c7642589f010b3cef5b8918200ee04cad69a79f15a415"
+  },
+  "upstreamRevision": "15b5211819e40ed7d98e327478069f637b0fe391"
+}

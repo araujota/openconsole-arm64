@@ -1,0 +1,26 @@
+{
+  "schema": "openconsole.targets.v1",
+  "default": "x64",
+  "targets": {
+    "x64": {
+      "compilerTriple": "x86_64-unknown-windows",
+      "peMachine": "0x8664",
+      "bootFilename": "BOOTX64.EFI",
+      "ocg2EntryRole": "entry-x64",
+      "buildDirectory": "build/x64",
+      "qemuBinary": "qemu-system-x86_64",
+      "qemuMachine": "q35",
+      "firmwareEnvironment": "OPENCONSOLE_OVMF_CODE"
+    },
+    "arm64": {
+      "compilerTriple": "aarch64-unknown-windows",
+      "peMachine": "0xaa64",
+      "bootFilename": "BOOTAA64.EFI",
+      "ocg2EntryRole": "entry-arm64",
+      "buildDirectory": "build/arm64",
+      "qemuBinary": "qemu-system-aarch64",
+      "qemuMachine": "virt",
+      "firmwareEnvironment": "OPENCONSOLE_AAVMF_CODE"
+    }
+  }
+}

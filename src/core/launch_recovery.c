@@ -1,0 +1,18 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+#include "openconsole/launch_recovery.h"
+static uint32_t crc32(const uint8_t*p,size_t n){uint32_t c=~0u;while(n--){unsigned b;c^=*p++;for(b=0;b<8;b++)c=(c>>1)^((0u-(c&1u))&0xedb88320u);}return~c;}
+static void p32(uint8_t*p,uint32_t v){p[0]=(uint8_t)v;p[1]=(uint8_t)(v>>8);p[2]=(uint8_t)(v>>16);p[3]=(uint8_t)(v>>24);}
+static uint32_t g32(const uint8_t*p){return(uint32_t)p[0]|(uint32_t)p[1]<<8|(uint32_t)p[2]<<16|(uint32_t)p[3]<<24;}
+static void p64(uint8_t*p,uint64_t v){unsigned i;for(i=0;i<8;i++)p[i]=(uint8_t)(v>>(8*i));}
+static uint64_t g64(const uint8_t*p){uint64_t v=0;unsigned i;for(i=0;i<8;i++)v|=(uint64_t)p[i]<<(8*i);return v;}
+static void zero(void*p,size_t n){uint8_t*d=p;while(n--)*d++=0;}
+static void copy(void*d,const void*s,size_t n){uint8_t*o=d;const uint8_t*i=s;while(n--)*o++=*i++;}
+static size_t len(const char*s,size_t m){size_t n=0;if(!s)return m+1;while(n<=m&&s[n])n++;return n;}
+static int id(const char*s,size_t n){size_t i;if(!n||n>64||!((s[0]>='a'&&s[0]<='z')||(s[0]>='0'&&s[0]<='9')))return 0;for(i=1;i<n;i++)if(!((s[i]>='a'&&s[i]<='z')||(s[i]>='0'&&s[i]<='9')||s[i]=='-'||s[i]=='_'))return 0;return 1;}
+static int ver(const char*s,size_t n){size_t i;if(!n||n>32)return 0;for(i=0;i<n;i++)if(!((s[i]>='A'&&s[i]<='Z')||(s[i]>='a'&&s[i]<='z')||(s[i]>='0'&&s[i]<='9')||s[i]=='.'||s[i]=='+'||s[i]=='_'||s[i]=='-'))return 0;return 1;}
+static int eq(const uint8_t*a,const uint8_t*b,size_t n){uint8_t d=0;while(n--)d|=*a++^*b++;return d==0;}
+int oc_launch_record_encode(const oc_launch_record*r,uint8_t out[196]){size_t a,b;if(!r||!out||!r->generation||r->slot>1||r->state<1||r->state>3)return 0;a=len(r->game_id,64);b=len(r->version,32);if(!id(r->game_id,a)||!ver(r->version,b))return 0;zero(out,196);copy(out,"OCLR",4);out[4]=1;out[5]=r->state;out[6]=r->slot;p64(out+8,r->generation);copy(out+16,r->bundle_id,32);out[48]=(uint8_t)a;out[49]=(uint8_t)b;copy(out+56,r->game_id,a);copy(out+120,r->version,b);p32(out+192,crc32(out,192));return 1;}
+int oc_launch_record_decode(const uint8_t*in,size_t n,uint8_t slot,oc_launch_record*r){size_t a,b,i;if(!in||!r||n!=196||slot>1||in[0]!='O'||in[1]!='C'||in[2]!='L'||in[3]!='R'||in[4]!=1||in[5]<1||in[5]>3||in[6]!=slot||in[7]||g32(in+192)!=crc32(in,192))return 0;for(i=50;i<56;i++)if(in[i])return 0;a=in[48];b=in[49];if(!id((const char*)in+56,a)||!ver((const char*)in+120,b))return 0;for(i=56+a;i<120;i++)if(in[i])return 0;for(i=120+b;i<192;i++)if(in[i])return 0;zero(r,sizeof(*r));r->generation=g64(in+8);if(!r->generation)return 0;r->state=in[5];r->slot=slot;copy(r->bundle_id,in+16,32);copy(r->game_id,in+56,a);copy(r->version,in+120,b);return 1;}
+int oc_launch_record_recover(const uint8_t*a,size_t an,const uint8_t*b,size_t bn,oc_launch_record*r){oc_launch_record x,y;int ax=oc_launch_record_decode(a,an,0,&x),by=oc_launch_record_decode(b,bn,1,&y);if(!r||(!ax&&!by))return 0;*r=!ax?y:(!by||x.generation>=y.generation?x:y);return 1;}
+int oc_launch_record_next(const oc_launch_record*cur,const char*gid,const char*v,const uint8_t bid[32],oc_launch_state state,oc_launch_record*out){size_t a=len(gid,64),b=len(v,32);if(!out||!bid||!id(gid,a)||!ver(v,b)||state<1||state>3)return 0;zero(out,sizeof(*out));out->generation=cur?cur->generation+1:1;if(!out->generation)return 0;out->slot=cur?(uint8_t)(1-cur->slot):0;out->state=(uint8_t)state;copy(out->bundle_id,bid,32);copy(out->game_id,gid,a);copy(out->version,v,b);return 1;}
+int oc_launch_record_quarantines(const oc_launch_record*r,const uint8_t bid[32]){return r&&bid&&(r->state==OC_LAUNCH_ATTEMPT||r->state==OC_LAUNCH_QUARANTINE)&&eq(r->bundle_id,bid,32);}

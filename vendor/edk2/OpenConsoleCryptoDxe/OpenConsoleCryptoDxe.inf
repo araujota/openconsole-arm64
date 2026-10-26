@@ -1,0 +1,21 @@
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = OpenConsoleCryptoDxe
+  FILE_GUID                      = 89eaf909-bca4-45ea-b2a4-8db2c3b6e052
+  MODULE_TYPE                    = UEFI_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = OpenConsoleCryptoEntryPoint
+  UNLOAD_IMAGE                   = OpenConsoleCryptoUnload
+
+[Sources]
+  OpenConsoleCryptoDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  CryptoPkg/CryptoPkg.dec
+
+[LibraryClasses]
+  BaseCryptLib
+  BaseMemoryLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint

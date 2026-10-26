@@ -1,0 +1,33 @@
+diff --git a/OvmfPkg/OvmfPkgX64.dsc b/OvmfPkg/OvmfPkgX64.dsc
+index 9b865a5e8f..f92b29ef41 100644
+--- a/OvmfPkg/OvmfPkgX64.dsc
++++ b/OvmfPkg/OvmfPkgX64.dsc
+@@ -1040,6 +1040,14 @@
+   #
+ !include NetworkPkg/NetworkComponents.dsc.inc
+ !include OvmfPkg/Include/Dsc/NetworkComponents.dsc.inc
++!if $(OPENCONSOLE_SNP_ONLY) == TRUE
++  OvmfPkg/VirtioNetDxe/VirtioNet.inf {
++    <LibraryClasses>
++      UefiDriverEntryPoint|OvmfPkg/Library/UefiDriverEntryPointFwCfgOverrideLib/UefiDriverEntryPointFwCfgOverrideLib.inf
++    <PcdsFixedAtBuild>
++      gUefiOvmfPkgTokenSpaceGuid.PcdEntryPointOverrideFwCfgVarName|"opt/org.tianocore/VirtioNetSupport"
++  }
++!endif
+ !include OvmfPkg/Include/Dsc/UsbComponents.dsc.inc
+ !include OvmfPkg/Include/Dsc/ShellComponents.dsc.inc
+ !include OvmfPkg/Include/Dsc/MorLock.dsc.inc
+diff --git a/OvmfPkg/OvmfPkgX64.fdf b/OvmfPkg/OvmfPkgX64.fdf
+index dd42cf005d..379496eced 100644
+--- a/OvmfPkg/OvmfPkgX64.fdf
++++ b/OvmfPkg/OvmfPkgX64.fdf
+@@ -294,6 +294,9 @@ INF OvmfPkg/TdxDxe/TdxDxe.inf
+ !if $(NETWORK_ENABLE) == TRUE
+   INF  OvmfPkg/VirtioNetDxe/VirtioNet.inf
+ !endif
++!if $(OPENCONSOLE_SNP_ONLY) == TRUE
++  INF  OvmfPkg/VirtioNetDxe/VirtioNet.inf
++!endif
+ 
+ #
+ # Usb Support

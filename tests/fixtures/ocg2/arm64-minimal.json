@@ -1,0 +1,24 @@
+{
+  "bundleId": "cde1aa8a13accbdfbc31e6522b999bb6b8978fb5fc0d3da39378e5dcb7ad497b",
+  "files": [
+    {
+      "offset": 0,
+      "path": "bin/input-probe.efi",
+      "role": "entry-arm64",
+      "sha256": "c96f76555d930dce33e4c7e2e95d58d55c1bf2c9a2d35645d28dcf3862527c17",
+      "size": 2048
+    },
+    {
+      "offset": 2048,
+      "path": "game.toml",
+      "role": "manifest",
+      "sha256": "a5cd759aa488425a722fd9ed6d5e2ad92188ded402a9cce512df873da3ad8ffd",
+      "size": 332
+    }
+  ],
+  "gameId": "arm-input-probe",
+  "publisherKeyId": "83eea05eab796833df9449815de4d0b4cf8f9d77374f55b1e46ab3860161de7a",
+  "schema": "openconsole.ocg2.inspect.v1",
+  "signatureVerified": true,
+  "version": "0.1.0"
+}

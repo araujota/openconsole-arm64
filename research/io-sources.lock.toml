@@ -1,0 +1,80 @@
+# Network/audio research inputs pinned 2026-10-24. Git commits are immutable;
+# specification URLs include an immutable published revision in their path.
+
+[[source]]
+name = "edk2"
+url = "https://github.com/tianocore/edk2.git"
+commit = "0a503bc2f5bd37c7a5d39d0ba31008f446f0298d"
+license = "BSD-2-Clause-Patent (file-level notices still authoritative)"
+role = "UEFI protocols, NetworkPkg stack, OVMF VirtioNet reference"
+
+[[source]]
+name = "opencore-audiodxe"
+url = "https://github.com/acidanthera/OpenCorePkg.git"
+commit = "78d5ff824992d5b227f842e34d8221eb8f31baf1"
+paths = ["Staging/AudioDxe", "Include/Acidanthera/Protocol/AudioIo.h"]
+license = "MIT for AudioDxe/AudioIo files; repository aggregation is BSD-3-Clause"
+role = "Generic HDA controller/codec and raw PCM AudioIo reference"
+
+[[source]]
+name = "acidanthera-audk"
+url = "https://github.com/acidanthera/audk.git"
+commit = "dfd5516702b4911f1fc1919a429d637b456df913"
+license = "BSD-2-Clause-Patent aggregate; file-level notices and pinned submodule licenses authoritative"
+role = "OpenCore-compatible EDK II build base for the pinned AudioDxe module"
+
+[[source]]
+name = "ipxe"
+url = "https://github.com/ipxe/ipxe.git"
+commit = "4b7e1df9c513d43e9e79c63463aa2470f34de7e3"
+paths = ["src/drivers/net/realtek.c", "src/interface/efi/efi_snp.c"]
+license = "Generally GPL; determine the exact linked image license with iPXE tooling"
+role = "SNP and Realtek feasibility reference only; its PCI table omits 10ec:8125"
+
+[[source]]
+name = "uefi-specification"
+url = "https://uefi.org/specs/UEFI/2.11/"
+version = "2.11"
+license = "UEFI Forum specification terms"
+role = "Normative SNP, network service binding, PCI I/O, event, and driver-model ABI"
+
+[[source]]
+name = "qemu"
+url = "https://gitlab.com/qemu-project/qemu.git"
+commit = "11aa0b1ff115b86160c4d37e7c37e6a6b13b77ea"
+runtime_package = "QEMU 8.2.2 (Debian 1:8.2.2+ds-0ubuntu1.18)"
+license = "GPL-2.0-or-later aggregate; per-file notices authoritative"
+role = "virtio/e1000 and Intel HDA VM models plus WAV capture"
+
+[[source]]
+name = "linux-r8169"
+url = "https://github.com/torvalds/linux.git"
+commit = "5b0764a53235d3c77e1ed674e836e1b3fe1a4b1f"
+paths = ["drivers/net/ethernet/realtek/r8169_main.c", "drivers/net/ethernet/realtek/r8169_phy_config.c"]
+license = "GPL-2.0-only; reference-only unless a later reviewed license plan says otherwise"
+role = "RTL8125 behavior and exact revision reference, not reusable UEFI code"
+
+[[source]]
+name = "intel-hda-specification"
+url = "https://www.intel.com/content/www/us/en/standards/high-definition-audio-specification.html"
+version = "1.0a"
+license = "Intel specification terms"
+role = "HDA controller, stream descriptor, BDL, codec command, and timing reference"
+
+[[source]]
+name = "stormnic-realtek"
+url = "https://github.com/glennswest/stormnic-realtek.git"
+commit = "fe6d2297cabc9759e216d66c5faf0957da7ee33c"
+license = "MIT"
+role = "Feasibility record only: README says RTL8125 UEFI SNP implementation is not started"
+
+[[source]]
+name = "realtek-uefi-undi-candidate"
+url = "https://www.realtek.com/Download/List?cate_id=584"
+download_id = "3413"
+version = "2.081"
+published = "2026-10-21"
+claimed_architectures = ["X86", "X64", "ARM", "loongarch64"]
+claimed_devices = ["RTL8125", "RTL8125B(G)", "RTL8125D", "RTL8125K", "RTL8125BP", "RTL8125CP"]
+license = "Not published on the download listing; redistribution not approved"
+role = "Preferred exact-device binary candidate if firmware exposes no RTL8125 SNP; not yet downloaded, hashed, reviewed, packaged, or physically proven"
