@@ -330,19 +330,25 @@ oc_game_storage_result oc_game_stage_and_commit(
     oc_game_selection current,next;oc_game_storage_result recovered,result;
     char bundle_path[OC_GAME_STORAGE_PATH_MAX],inventory_path[OC_GAME_STORAGE_PATH_MAX];
     char staging_path[OC_GAME_STORAGE_PATH_MAX];uint8_t marker[48],digest[32];
-    uint64_t persisted_size=0u;size_t i,j,total_files=0u;
+    uint64_t persisted_size=0u,required_bytes=0u,available_bytes=0u;
+    size_t i,j,total_files=0u;
     if(ops==0||game_id==0||version==0||bundle==0||bundle_sha256==0||
        bundle_id==0||descriptor==0||descriptor_sha256==0||files==0||committed==0||
        bundle_size==0u||bundle_size>OC_GAME_BUNDLE_MAX||descriptor_size==0u||
        descriptor_size>OC_GAME_INVENTORY_MAX||file_count==0u||
        file_count>OC_GAME_INSTALL_MAX_FILES||ops->write_file==0||
        ops->flush_file==0||ops->read_file==0||ops->digest_file==0||
-       ops->validate_slot==0)return OC_GAME_STORAGE_INVALID;
+       ops->validate_slot==0||ops->available_bytes==0||
+       (uint64_t)bundle_size>OC_FAT32_MAX_FILE_BYTES||
+       (uint64_t)descriptor_size>OC_FAT32_MAX_FILE_BYTES)
+        return OC_GAME_STORAGE_INVALID;
     for(i=0u;i<file_count;++i) {
         char checked[OC_GAME_STORAGE_PATH_MAX];
         size_t a,b;
         if(files[i].path==0||(files[i].data==0&&files[i].size!=0u)||files[i].sha256==0||
-           files[i].size>32u*1024u*1024u||total_files>OC_GAME_BUNDLE_MAX-files[i].size||
+           files[i].size>32u*1024u*1024u||
+           (uint64_t)files[i].size>OC_FAT32_MAX_FILE_BYTES||
+           total_files>OC_GAME_BUNDLE_MAX-files[i].size||
            oc_game_package_path(game_id,0u,files[i].path,checked,sizeof(checked))!=OC_GAME_STORAGE_OK)
             return OC_GAME_STORAGE_INVALID;
         total_files+=files[i].size;
@@ -356,6 +362,11 @@ oc_game_storage_result oc_game_stage_and_commit(
             if(left[a]=='\0'&&right[b]=='\0')return OC_GAME_STORAGE_INVALID;
         }
     }
+    required_bytes=(uint64_t)bundle_size+(uint64_t)descriptor_size+
+                   (uint64_t)total_files+48u+OC_GAME_SELECTION_BYTES;
+    if(required_bytes<(uint64_t)bundle_size||
+       !ops->available_bytes(ops->context,&available_bytes)||
+       available_bytes<required_bytes)return OC_GAME_STORAGE_NO_SPACE;
     recovered=recover_without_cleanup(ops,game_id,&current);
     if(recovered!=OC_GAME_STORAGE_OK&&recovered!=OC_GAME_STORAGE_NO_SELECTION)return recovered;
     result=oc_game_selection_next(recovered==OC_GAME_STORAGE_OK?&current:0,game_id,

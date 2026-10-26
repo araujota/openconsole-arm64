@@ -24,6 +24,16 @@ dashboard screenshot, input, launch, and return evidence. Promote a capability
 only from evidence on the same architecture. In particular, x64 network, audio,
 or GPU results do not imply ARM64 support.
 
+The pinned EDK II upper network stack is the first shared source-based driver
+portfolio. `make edk2-network-stack` produces X64 modules with GCC and AARCH64
+modules with CLANGDWARF from the same pinned revision. Every output is rejected
+unless it has the expected PE machine, EFI boot-service-driver subsystem, no
+hosted imports, and a zero timestamp. `make arm64-image` packages only the
+AARCH64 outputs under `EFI/OpenConsole/Drivers/Network` and records each with
+its `network` or supporting `crypto` role in the signed `platform.ocp`; the
+deterministic-image test verifies both the signature and every inventoried file
+digest.
+
 Security fixes to shared parsing, authentication, launch lifecycle, and public
 headers must be exported to both repositories under compatibility-aligned tags.
 Architecture-only fixes are labeled in their own repository and backported only

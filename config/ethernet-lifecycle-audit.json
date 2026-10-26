@@ -1,0 +1,64 @@
+{
+  "schema": "openconsole.ethernet-lifecycle-audit.v1",
+  "asOf": "2026-10-26",
+  "policy": {
+    "persistentWrites": "forbidden",
+    "dma": "platform-mapped-owned-buffers-only",
+    "teardownOrder": ["stop-device-activity", "disable-interrupts", "unmap-dma", "disable-bus-master", "free-buffers", "unload-image"],
+    "unknownIsReleaseBlocking": true
+  },
+  "providers": [
+    {
+      "id": "edk2-snpdxe-0a503bc",
+      "kind": "undi-to-snp-wrapper",
+      "sourceAudited": true,
+      "initialization": "pass",
+      "dmaMapping": "pass-platform-pci-io-map-unmap",
+      "persistentMutation": "pass-nvdata-write-rejected",
+      "failureCleanup": "pass",
+      "disconnectUnload": "pass-wrapper-scope",
+      "busMastering": "delegated-to-undi-provider",
+      "releaseDecision": "admitted-as-wrapper-only",
+      "limitations": [
+        "SnpDxe cannot prove teardown inside the underlying UNDI provider.",
+        "A vendor provider requires its own source or physical DMA/bus-master teardown evidence."
+      ]
+    },
+    {
+      "id": "realtek-undi-2.081-x64",
+      "kind": "candidate-hardware-provider",
+      "sourceAudited": false,
+      "initialization": "unknown",
+      "dmaMapping": "unknown",
+      "persistentMutation": "fail-static-config-ui-advertises-nvram-write",
+      "failureCleanup": "unknown",
+      "disconnectUnload": "unknown",
+      "busMastering": "unknown",
+      "releaseDecision": "rejected-for-baseline"
+    },
+    {
+      "id": "realtek-undi-2.081-arm64",
+      "kind": "candidate-hardware-provider",
+      "sourceAudited": false,
+      "initialization": "unknown",
+      "dmaMapping": "unknown",
+      "persistentMutation": "unknown-static-markers-absent",
+      "failureCleanup": "unknown",
+      "disconnectUnload": "unknown",
+      "busMastering": "unknown",
+      "releaseDecision": "blocked"
+    },
+    {
+      "id": "intel-preboot-31.3",
+      "kind": "user-acquired-hardware-provider",
+      "sourceAudited": false,
+      "initialization": "unknown",
+      "dmaMapping": "unknown",
+      "persistentMutation": "unknown",
+      "failureCleanup": "unknown",
+      "disconnectUnload": "unknown",
+      "busMastering": "unknown",
+      "releaseDecision": "blocked-for-baseline"
+    }
+  ]
+}

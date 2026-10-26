@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "architecture": "x64",
+      "bytes": 201616,
+      "id": "realtek-2.081-msi-7e12-r05",
+      "path": "EFI/OpenConsole/Drivers/Network/RtkUndiDxe-x64.efi",
+      "pci": {"device": 33061, "revisionMax": 5, "revisionMin": 5,
+              "subsystemDevice": 32274, "subsystemVendor": 5218, "vendor": 4332},
+      "priority": 100,
+      "protocols": ["nii", "undi"],
+      "sha256": "2f7f22e0a76230308d1a8ea67b9be51dc23d55705f40efef7e8c3d964f0bba20"
+    }
+  ],
+  "schema": "openconsole.ethernet-catalog.v1"
+}

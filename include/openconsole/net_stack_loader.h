@@ -4,6 +4,7 @@
 #include "openconsole/uefi.h"
 
 #define OC_NET_STACK_MODULE_COUNT 12u
+#define OC_NET_DRIVER_HANDLE_CAPACITY 16u
 
 typedef int (*oc_net_stack_protocol_present)(void *, const EFI_GUID *);
 typedef EFI_STATUS (*oc_net_stack_load_driver)(void *, const CHAR16 *,

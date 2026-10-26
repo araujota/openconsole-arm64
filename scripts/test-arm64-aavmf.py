@@ -76,6 +76,8 @@ def main() -> int:
     parser.add_argument("--evidence", type=pathlib.Path,
                         default=ROOT / "build/arm64/evidence")
     parser.add_argument("--timeout", type=float, default=45.0)
+    parser.add_argument("--data-image", action="append", type=pathlib.Path, default=[])
+    parser.add_argument("--expect-data-volume")
     arguments = parser.parse_args()
     qemu_name = os.environ.get("OPENCONSOLE_AARCH64_QEMU", "qemu-system-aarch64")
     qemu = shutil.which(qemu_name)
@@ -109,9 +111,15 @@ def main() -> int:
             "-drive", f"if=none,format=raw,snapshot=on,id=suitcase,file={arguments.image.resolve()}",
             "-device", "virtio-blk-pci,drive=suitcase", "-device", "virtio-gpu-pci",
             "-device", "qemu-xhci", "-device", "usb-kbd",
+            "-netdev", "user,id=net0", "-device", "virtio-net-pci,netdev=net0",
             "-serial", f"file:{serial.resolve()}", "-monitor", "none", "-display", "none",
             "-qmp", f"unix:{qmp_path},server=on,wait=off",
         ]
+        for index, data_image in enumerate(arguments.data_image):
+            if not data_image.is_file():
+                raise RuntimeError(f"missing data image: {data_image}")
+            command += ["-drive", f"if=none,format=raw,snapshot=on,id=ocdata{index},file={data_image.resolve()}",
+                        "-device", f"virtio-blk-pci,drive=ocdata{index}"]
         process = subprocess.Popen(command, cwd=ROOT)
         qmp = None
         try:
@@ -132,7 +140,11 @@ def main() -> int:
             except subprocess.TimeoutExpired as error:
                 raise TimeoutError("parent did not terminate after successful child return") from error
             required = [
-                "OPENCONSOLE_PARENT_BOOTED", "OPENCONSOLE_DASHBOARD_HEADER_READY",
+                "OPENCONSOLE_PARENT_BOOTED", "OPENCONSOLE_CRYPTO_PROVIDER_READY",
+                "OPENCONSOLE_INPUT_DRIVER_STARTED", "OPENCONSOLE_POINTER_READY",
+                "OPENCONSOLE_IO_AUDIO_DRIVER_NO_COMPATIBLE_BACKEND_IDENTIFIED",
+                "OPENCONSOLE_NET_SNP_FIRMWARE_PRESENT", "OPENCONSOLE_NET_PROVIDER_READY",
+                "OPENCONSOLE_DASHBOARD_HEADER_READY",
                 "OPENCONSOLE_DASHBOARD_RESULTS_0000000000000001",
                 "OPENCONSOLE_DASHBOARD_LAUNCH_ID_arm-input-probe",
                 "OPENCONSOLE_CHILD_ABI_NEGOTIATED_UEFI_INPUT_1_0",
@@ -142,6 +154,8 @@ def main() -> int:
             positions = [log.index(marker) for marker in required]
             if positions != sorted(positions):
                 raise RuntimeError("ARM64 lifecycle checkpoints were not ordered")
+            if arguments.expect_data_volume and arguments.expect_data_volume not in log:
+                raise RuntimeError(f"missing data-volume routing evidence: {arguments.expect_data_volume}")
             if not dashboard.is_file() or dashboard.stat().st_size < 1024:
                 raise RuntimeError("dashboard framebuffer evidence is missing")
             if not child.is_file() or child.stat().st_size < 1024:
@@ -161,8 +175,8 @@ def main() -> int:
                 "capabilities": {
                     "parentBoot": "aavmf-validated", "dashboard": "aavmf-validated",
                     "arm64ChildLaunch": "aavmf-validated", "keyboardInput": "aavmf-validated",
-                    "physicalHardware": "unverified", "networking": "unverified",
-                    "audio": "unverified", "gpuAcceleration": "unverified",
+                    "physicalHardware": "unverified", "networking": "aavmf-virtio-snp-validated",
+                    "audio": "aavmf-no-device-nonfatal", "gpuAcceleration": "unverified",
                 },
                 "elapsedSeconds": round(time.monotonic() - started, 3),
             }

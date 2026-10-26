@@ -39,4 +39,6 @@ mkdir -p "$recovery_esp"
 mcopy -s -i "$project_root/build/ci-image-a/openconsole-development.fat" '::*' "$recovery_esp/"
 python3 tests/prepare_incomplete_launch_record.py "$recovery_esp"
 OPENCONSOLE_TEST_ESP=ci-recovery-esp OPENCONSOLE_TEST_SCENE=recovery \
-  OPENCONSOLE_TEST_NETWORK=none ./scripts/test-ovmf.sh
+  OPENCONSOLE_TEST_NETWORK=user ./scripts/test-ovmf.sh
+grep -q '^OPENCONSOLE_ETH_CATALOG_AUTHENTICATED$' build/ovmf-test-recovery.log
+grep -q '^OPENCONSOLE_ETH_SELECT_0000000000000001$' build/ovmf-test-recovery.log

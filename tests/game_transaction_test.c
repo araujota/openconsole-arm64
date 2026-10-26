@@ -27,6 +27,7 @@ typedef struct {
     int fault_kind;
     size_t fault_nth;
     size_t fault_count[8];
+    uint64_t available;
 } fixture;
 
 enum {FAULT_NONE,FAULT_WRITE,FAULT_SHORT_WRITE,FAULT_FLUSH,FAULT_READ,
@@ -102,12 +103,15 @@ static int validate_slot(void *context,const char *bundle_path,const char *inven
     digest_bytes(inventory->data,inventory->size,digest);
     return memcmp(digest,selection->inventory_digest,32u)==0;
 }
+static int available_bytes(void *context,uint64_t *bytes) {
+    fixture *f=context;*bytes=f->available;return 1;
+}
 static oc_game_storage_ops operations(fixture *f) {
     oc_game_storage_ops ops;
     ops.context=f;ops.write_file=write_file;ops.flush_file=flush_file;
     ops.read_file=read_file;ops.digest_file=digest_file;ops.delete_file=delete_file;
     ops.cleanup_slot=cleanup_slot;
-    ops.validate_slot=validate_slot;return ops;
+    ops.validate_slot=validate_slot;ops.available_bytes=available_bytes;return ops;
 }
 static void make_artifacts(uint8_t seed,uint8_t bundle[64],uint8_t inventory[48],
                            uint8_t bundle_id[32],uint8_t bundle_hash[32],uint8_t inventory_hash[32]) {
@@ -123,7 +127,7 @@ int main(void) {
     uint8_t id1[32],id2[32],bundle_hash1[32],bundle_hash2[32],inventory_hash1[32],inventory_hash2[32];
     oc_game_install_file files1[1],files2[1];
     char path[OC_GAME_STORAGE_PATH_MAX];mock_file *file;size_t cleaned=0u;
-    memset(&f,0,sizeof(f));ops=operations(&f);
+    memset(&f,0,sizeof(f));f.available=UINT64_C(1024)*1024u*1024u;ops=operations(&f);
     make_artifacts(0x10u,bundle1,inventory1,id1,bundle_hash1,inventory_hash1);
     make_artifacts(0x40u,bundle2,inventory2,id2,bundle_hash2,inventory_hash2);
     files1[0].path="game.toml";files1[0].data=inventory1;files1[0].size=sizeof(inventory1);files1[0].sha256=inventory_hash1;
@@ -132,6 +136,11 @@ int main(void) {
     assert(oc_game_storage_path("game",OC_GAME_PATH_BUNDLE,0u,path,sizeof(path))==OC_GAME_STORAGE_OK);
     assert(strcmp(path,"\\EFI\\OpenConsole\\State\\Games\\game\\slot-a\\bundle.ocg")==0);
     assert(oc_game_storage_path("../game",OC_GAME_PATH_BUNDLE,0u,path,sizeof(path))==OC_GAME_STORAGE_INVALID);
+    f.available=1u;
+    assert(oc_game_stage_and_commit(&ops,"game","1.0.0",bundle1,sizeof(bundle1),bundle_hash1,
+                                    id1,inventory1,sizeof(inventory1),inventory_hash1,files1,1u,&first)==OC_GAME_STORAGE_NO_SPACE);
+    assert(f.writes==0u);
+    f.available=UINT64_C(1024)*1024u*1024u;
     assert(oc_game_stage_and_commit(&ops,"game","1.0.0",bundle1,sizeof(bundle1),bundle_hash1,
                                     id1,inventory1,sizeof(inventory1),inventory_hash1,files1,1u,&first)==OC_GAME_STORAGE_OK);
     assert(first.generation==1u&&first.slot==0u&&first.selector==0u);

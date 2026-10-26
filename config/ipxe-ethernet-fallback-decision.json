@@ -1,0 +1,25 @@
+{
+  "schema": "openconsole.ipxe-fallback-decision.v1",
+  "decision": "rejected-for-baseline",
+  "reviewedAt": "2026-10-26",
+  "scope": "wired-ethernet-only",
+  "technical": {
+    "x64NativePciAggregate": "available-upstream-not-qualified",
+    "arm64NativePciAggregate": "upstream-documents-incomplete",
+    "efiDriverTarget": "exists-upstream-persistent-service-not-proven",
+    "openConsoleProtocolHandoff": "not-designed",
+    "dmaAndUnloadAudit": "not-performed"
+  },
+  "licensing": {
+    "default": "GPL-2.0-or-later-with-some-GPL-2.0-only-components",
+    "unmodifiedBinaryAlternative": "target-and-file-dependent-UBDL",
+    "requiredPerBuildEvidence": ["generated-.licence-report", "corresponding-public-source", "unmodified-binary-proof"],
+    "approvedForPermissiveCoreLinking": false,
+    "approvedForBaselineRedistribution": false
+  },
+  "result": {
+    "sourceImported": false,
+    "binaryBundled": false,
+    "separateOpenSpecAuthorized": false
+  }
+}

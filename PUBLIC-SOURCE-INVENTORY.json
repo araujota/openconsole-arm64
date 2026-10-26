@@ -26,9 +26,9 @@
       "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
     },
     {
-      "bytes": 66028,
+      "bytes": 70926,
       "path": "Makefile",
-      "sha256": "6dafcc9c7d83a1540824d54a903612d509420454659dcc476e5113774249cce8"
+      "sha256": "c263c4f74ef07091f159e23e599b49afd154570815062f1e74ee80f430a906eb"
     },
     {
       "bytes": 635,
@@ -46,9 +46,59 @@
       "sha256": "bd8a6d785a806fe18792d5495466c5c26668ffb96083b76c605e266c30025083"
     },
     {
-      "bytes": 23829,
+      "bytes": 24367,
       "path": "THIRD_PARTY_NOTICES.md",
-      "sha256": "251fbe2f027f705d0ce05537291544b20917bd93c3d4d469689bf55946d811f8"
+      "sha256": "c6ec3bca360be8b61602f661f9e1bfda0f7519666707809eaadbaed4e0911453"
+    },
+    {
+      "bytes": 432,
+      "path": "config/baseline-driver-roles.json",
+      "sha256": "f73dadb39cb13eb22a2f91ea878b0f5bb477ccd0353018e29e77de0002433549"
+    },
+    {
+      "bytes": 67,
+      "path": "config/ethernet-catalog-arm64.json",
+      "sha256": "6b905bd6d5111f96e933884b1e783925cd24615d48ec4c89f141245868e5c531"
+    },
+    {
+      "bytes": 67,
+      "path": "config/ethernet-catalog-x64.json",
+      "sha256": "6b905bd6d5111f96e933884b1e783925cd24615d48ec4c89f141245868e5c531"
+    },
+    {
+      "bytes": 15933,
+      "path": "config/ethernet-coverage-matrix.json",
+      "sha256": "71b0c999e1a5b9003984e75e79142816487fcb1396d8c1e1c78e1dbeb2910ba6"
+    },
+    {
+      "bytes": 2231,
+      "path": "config/ethernet-lifecycle-audit.json",
+      "sha256": "b7e35fc0af29527fa6e534e26b6d3f681dbab8f4c717709b1bc2713eac69e03f"
+    },
+    {
+      "bytes": 540,
+      "path": "config/ethernet-release-size-budget.json",
+      "sha256": "78b59b9324af8d0a5083ef2d9145ca38b202ed300a9915c5d60123fff328ddc8"
+    },
+    {
+      "bytes": 2498,
+      "path": "config/intel-preboot-31.3-audit.json",
+      "sha256": "8ad453d24eb38d154181a3b602707fd66e21fb40484a57abfefeb2af24537fb7"
+    },
+    {
+      "bytes": 964,
+      "path": "config/ipxe-ethernet-fallback-decision.json",
+      "sha256": "3c3185ea0f38eb198a2ab71c3413de12281f5473a08e7a6b2c1cf6bc2381a6e6"
+    },
+    {
+      "bytes": 1708,
+      "path": "config/realtek-undi-2.081-acquisition.json",
+      "sha256": "81f83ca9d09725f31172f725e7ca3828be8bd5869a81e008d80eb945e81f8510"
+    },
+    {
+      "bytes": 1249,
+      "path": "config/realtek-undi-2.081-static-lifecycle.json",
+      "sha256": "833b559e904cef47da74237d87974f71f1ee3fcc0223051db83d415228397fca"
     },
     {
       "bytes": 755,
@@ -56,9 +106,9 @@
       "sha256": "2d49e45ac01cb6813f812dade025cc320d2e0bab57e3466fa64cd3f94e40299c"
     },
     {
-      "bytes": 194977,
+      "bytes": 195636,
       "path": "dependency-provenance.json",
-      "sha256": "3222b5854d8c20068c2fea5206a88faa6e5b0438eb8b29ae5b00127886d127f6"
+      "sha256": "7d4b217991a253f418695d358396ce9023b4ccca0167cb4916f70ef6fde02cd5"
     },
     {
       "bytes": 1484,
@@ -101,9 +151,14 @@
       "sha256": "ab5e8b4d213009f94bfa657a44053543a04da7cfcd7126aa7d8005ed7a520086"
     },
     {
-      "bytes": 1619,
+      "bytes": 2251,
       "path": "docs/arm64-maintenance.md",
-      "sha256": "6a3ef8d5cda32a5a7dddb827b872890586b9e33822011f6760cf9ddfce4edd85"
+      "sha256": "2121ed103a974c03f638c5f2b5a430fdb62ab05641dd6fc0ebd8e8b1633fd7fb"
+    },
+    {
+      "bytes": 3064,
+      "path": "docs/arm64-release-readiness.md",
+      "sha256": "dbe73285355f03dbbe53d009ffd581f91ea4b8a77dc4f0c651712fefab71b7d3"
     },
     {
       "bytes": 3724,
@@ -134,6 +189,26 @@
       "bytes": 1706,
       "path": "docs/edk2-network-stack-audit.md",
       "sha256": "85e85c693f892c16c738bfa6ccdba1378aba3efba11213fc0fd3dfd8b4e76cec"
+    },
+    {
+      "bytes": 8438,
+      "path": "docs/ethernet-coverage-matrix.md",
+      "sha256": "2fa1b960866de48d854818c50581810d7b8d07b58fd7685cb099edfd13720f1b"
+    },
+    {
+      "bytes": 2374,
+      "path": "docs/ethernet-driver-manifest-v1.md",
+      "sha256": "6163c54b73c3439a39558607041b9c8c71e422fae78d793ba284b69c7e2e4c4d"
+    },
+    {
+      "bytes": 3023,
+      "path": "docs/ethernet-firmware-setup.md",
+      "sha256": "8f6cf7fabf0c835b58a2195a69e9d86da1a6e5fc51bbb51356e30c3357b5e0b8"
+    },
+    {
+      "bytes": 2271,
+      "path": "docs/ethernet-lifecycle-audit.md",
+      "sha256": "aba09b303717fce82e04dd90329517b747ad6294fdc9949a1b76918593e3901d"
     },
     {
       "bytes": 1816,
@@ -171,9 +246,19 @@
       "sha256": "5b93ee2c01c05704630eca5b4b1d3a766769a3abc881c79c5a75ad49848f5a0e"
     },
     {
+      "bytes": 3386,
+      "path": "docs/host-reboot-launchers.md",
+      "sha256": "9fe43cbdcaa168e8ccabb4ca5b0f0d577d6813cafbb0b1801aab6ce50e096863"
+    },
+    {
       "bytes": 4267,
       "path": "docs/hosted-acceptance-2026-10-25.md",
       "sha256": "b8e0e4452046f5a6a6b9685f48d33e73fa58402492398a3a45aed146af45639e"
+    },
+    {
+      "bytes": 4048,
+      "path": "docs/installing-openconsole-usb.md",
+      "sha256": "dcd02f37503d8cb8ddff7db99db7182f204d88a3a824674fdd1758d6f8997345"
     },
     {
       "bytes": 1568,
@@ -181,9 +266,19 @@
       "sha256": "37d8f1a4012c9a23e7345e17a849dba13be141b58fb570760011cc3f82df3272"
     },
     {
+      "bytes": 2461,
+      "path": "docs/intel-preboot-package-audit.md",
+      "sha256": "d9293005daadc39ab5020248ce7da63741f4f0ade40d835e35291d067a9c588a"
+    },
+    {
       "bytes": 6071,
       "path": "docs/io-evidence-matrix.md",
       "sha256": "f3c82c9f0ce25ad2c0ea8a5eb4c0a4c878f66b4fa24c4a39b1d6551555f7abe4"
+    },
+    {
+      "bytes": 2381,
+      "path": "docs/ipxe-ethernet-fallback-decision.md",
+      "sha256": "e006ad14c3f3f53fe995e426eb3d9a93dbcfe6b56cda582517f16f4cd6ff6906"
     },
     {
       "bytes": 1066,
@@ -221,9 +316,19 @@
       "sha256": "91dfaa01ec9d84a65405800fe97ba7551c1f4f893a2296c2c36c9dcc0c4e27f5"
     },
     {
+      "bytes": 2080,
+      "path": "docs/realtek-undi-acquisition.md",
+      "sha256": "91406fa13e6abcd038c581664db156c47138aff5f0619ab305c95f5d8e40cab2"
+    },
+    {
       "bytes": 5678,
       "path": "docs/release-readiness.md",
       "sha256": "4b154728ae72882f5b7df07c60c14ad12a218d0f67d924b79b2949d7ced8ceed"
+    },
+    {
+      "bytes": 1436,
+      "path": "docs/removable-media-layout-v1.md",
+      "sha256": "116c0445703292e73045d2653e48a15bc7bf52703be21037f6c3997180669e1c"
     },
     {
       "bytes": 2412,
@@ -259,6 +364,11 @@
       "bytes": 4170,
       "path": "docs/update-verification.md",
       "sha256": "065731f01944b12bc96924a04203c3c1267a42a3ca229ff710f2d215e28b4e61"
+    },
+    {
+      "bytes": 858,
+      "path": "docs/windows-fat32-formatter.md",
+      "sha256": "b0e1cbed696d5273581e4716b527018a5a0927d65e0c593ad05bd37605549bbc"
     },
     {
       "bytes": 231,
@@ -341,6 +451,36 @@
       "sha256": "07dae9dace0dc50ef43b16110faf27cbd9fde0a14fc42404dc0718ed9bc767b8"
     },
     {
+      "bytes": 148,
+      "path": "host-tools/Open OpenConsole on next reboot.cmd",
+      "sha256": "5e20bcd57a18df06cba82e492e159a4a82475e23b08558b29565b7f267d6e3f0"
+    },
+    {
+      "bytes": 8485,
+      "path": "host-tools/Open OpenConsole on next reboot.ps1",
+      "sha256": "0dd69b53f6883e52fbfa6ff529f33ccd68041f2681a159366232fc299818f767"
+    },
+    {
+      "bytes": 3127,
+      "path": "host-tools/Open OpenConsole on next reboot.sh",
+      "sha256": "083505081c5bc0e19b5e51efa13d998105ba273488daa6c805c42467f3d533c3"
+    },
+    {
+      "bytes": 539,
+      "path": "host-tools/README.txt",
+      "sha256": "118b54a8ef85234b9a0f1fd4334518fb7f6f9075da4a1f236537a71cc0da8552"
+    },
+    {
+      "bytes": 287,
+      "path": "host-tools/manifest.json",
+      "sha256": "afa1672e02f37755e1373db66d2f0435a09d0fced87c9170f33ff76437f1c73d"
+    },
+    {
+      "bytes": 10707,
+      "path": "host-tools/openconsole_host.py",
+      "sha256": "d15b47a921e2b0f0078f2691ec12a0d1582760212a8f06c9f3404aee694c0cd7"
+    },
+    {
       "bytes": 4550,
       "path": "include/openconsole/audio_protocol.h",
       "sha256": "0a628cddbd8af42419e9f06368ea179905708e5df3f8b9d5c22d12592ae9ceed"
@@ -386,9 +526,19 @@
       "sha256": "e4f4e8aed788555dbd5d1841165a629fa3873322a6f3caa2c3b6ef63b66848dc"
     },
     {
-      "bytes": 4060,
+      "bytes": 1371,
+      "path": "include/openconsole/ethernet_catalog.h",
+      "sha256": "bc00b7a97988d7bad2c8c1c02076b63876f99cbccb131fa009ab45134a799c76"
+    },
+    {
+      "bytes": 3084,
+      "path": "include/openconsole/ethernet_driver_selector.h",
+      "sha256": "81be8592b24920b855e1cdee443f58bc9c632b725ecdfdd61453202dc8d412fa"
+    },
+    {
+      "bytes": 4256,
       "path": "include/openconsole/game_storage.h",
-      "sha256": "36b9cf7c0d381cefc5c3f6e379aef2bdd44d4c5322b655253fdf3628c269f4f7"
+      "sha256": "67c01dec02e270e901cc8a57ab7afb88880b6267b05b6ced9090bf0c6455e94a"
     },
     {
       "bytes": 3066,
@@ -441,9 +591,14 @@
       "sha256": "a9eeeb5828699ac21d01402c27a44f6c3eabec7dd98a282b910ea0d49ef07054"
     },
     {
-      "bytes": 892,
+      "bytes": 901,
+      "path": "include/openconsole/net_snp_bridge.h",
+      "sha256": "0b3bbfcf9ee31faafe2472db8c93cdfadd5efc5019926f1825d854c2aff33eb4"
+    },
+    {
+      "bytes": 934,
       "path": "include/openconsole/net_stack_loader.h",
-      "sha256": "f097ce5989974633bfa4ddc42e6ca7a99d174cf60a246589773005a49509ac6c"
+      "sha256": "605f31084df0e4ed57a5c29142827656fbcf16837abccd973b9400308491546e"
     },
     {
       "bytes": 1881,
@@ -576,6 +731,16 @@
       "sha256": "26a0278a23d38a887348eb7c80f633f386643b541c862911c883fe7d08a922a8"
     },
     {
+      "bytes": 491,
+      "path": "patches/opencore-audiodxe/0003-aarch64-build-profile.patch",
+      "sha256": "be9e245d0b011ca7cfea3b0c114dc48c9bd7641e4e57bf2ca5f8b2085ab3a375"
+    },
+    {
+      "bytes": 2203,
+      "path": "patches/opencore-audiodxe/0004-aarch64-audio-load-options-stub.patch",
+      "sha256": "e1cb40128555eeade561cd2df7f73a414abda61623bbec46f8a99b74fb6efa05"
+    },
+    {
       "bytes": 675,
       "path": "release-version.json",
       "sha256": "5e1c1d7e76f803e48d7218c53885f1600b3dd54bbde81318bb0bba621c62d06d"
@@ -631,9 +796,14 @@
       "sha256": "0338047c4ba1da4429175263edf2abda642ee1314a3d9622f9b44e7cbbd48381"
     },
     {
-      "bytes": 135057,
+      "bytes": 136076,
       "path": "sbom.cdx.json",
-      "sha256": "745b4e4692b42713dc515dcedc977acda1f908392a6b00c652ffd7da877271d1"
+      "sha256": "3bc30cce364df66d0fdc1efa02c285e8d4cb3fb6c70786c5d8d83d1ed2e1ddd6"
+    },
+    {
+      "bytes": 2274,
+      "path": "scripts/acquire-realtek-undi.py",
+      "sha256": "94752dae3944a3e0564a8cb43f45da48affe4b95d0ce71dbcd981129c9904450"
     },
     {
       "bytes": 1610,
@@ -671,24 +841,34 @@
       "sha256": "61783c74e86c3967d3fb8ac61a25571161c788913e36e76e79e8977c675301f3"
     },
     {
-      "bytes": 5486,
+      "bytes": 2167,
+      "path": "scripts/audit-realtek-lifecycle.py",
+      "sha256": "190f1d0484cbf60b77a5beed86613d0dab84c036fb1e9c6c0d8eb51720962aa5"
+    },
+    {
+      "bytes": 9357,
       "path": "scripts/build-arm64-image.py",
-      "sha256": "b1b0bac084ef1b52bb36b7edd0e845d2aae9ef8615c68f029f8362484b2c6fa4"
+      "sha256": "19f79ece1554e5fde5112c1b8f30065d231b9758691b71bd5f21638c9b41784f"
     },
     {
-      "bytes": 7790,
+      "bytes": 8315,
       "path": "scripts/build-development-image.py",
-      "sha256": "eff86b86af62004123beaa436bdd42e38226bbfcb1d388c6926e02e6f2d7a59e"
+      "sha256": "2b158a510253af91ded947f97b3641b1a95fde5ca3b4d34b02f865f6bd3fa6b4"
     },
     {
-      "bytes": 3268,
+      "bytes": 2439,
+      "path": "scripts/build-edk2-input-driver.sh",
+      "sha256": "2673d3521f3da03c5e8b48ffb67bbb2acdad6a5d4378312c66c8edc71b8507c7"
+    },
+    {
+      "bytes": 6116,
       "path": "scripts/build-edk2-network-stack.sh",
-      "sha256": "0d2705aa527751884825d4e124827d7f0559b9b31bfe61b57061f5f538edd537"
+      "sha256": "13d839bffe3835708aea6642bb5bb65f2d644579ddabebf23412ac41c64eacbf"
     },
     {
-      "bytes": 3626,
+      "bytes": 6294,
       "path": "scripts/build-opencore-audiodxe.sh",
-      "sha256": "e0a90f2d512c47b9683ace583d8bcb3757139695cb9052f091e06591f7b45850"
+      "sha256": "6a5475e5c721feae2d4bd3f2ec648e2ad3200fe598810921e5b700990f7b75dc"
     },
     {
       "bytes": 2373,
@@ -716,14 +896,14 @@
       "sha256": "28a2ae4c1913876a54fdb996416c694851854b48432a07d61980220eefc39ea2"
     },
     {
-      "bytes": 1812,
+      "bytes": 3080,
       "path": "scripts/build-update-crypto-dxe.sh",
-      "sha256": "9b28fc67365bc9cc869d7c0c1b2b03d7c4314bc638bff76d25c33e68058bdeeb"
+      "sha256": "a6d1b68fd9b3d5b162793dc0c84bfbe3a3b164d80b46c6014f9392206c47071c"
     },
     {
-      "bytes": 1765,
+      "bytes": 1925,
       "path": "scripts/ci-development-image-test.sh",
-      "sha256": "6a56305348eff436bdb7fdc3a8961477bc0e69ae607e1be081b3a12907099a17"
+      "sha256": "15abbe7699ca2d922ad3f67bfad14d40b15d93fcb1486d6b5154fe4a0fed34b0"
     },
     {
       "bytes": 1256,
@@ -731,9 +911,9 @@
       "sha256": "eb5599929715b82e743ef2a7ee84c908a96fd31fa228756367a633d4754dff17"
     },
     {
-      "bytes": 6056,
+      "bytes": 6070,
       "path": "scripts/export-public-repositories.py",
-      "sha256": "1bfb9cf829f39685ccf695d903e2475519990b316c21eab100e9119025c094e0"
+      "sha256": "743a914eb63d21b6861cac2af43af512f7b9a4007ffce4c0f462827a38026d97"
     },
     {
       "bytes": 1532,
@@ -741,9 +921,9 @@
       "sha256": "81f9da427b0b295b57a1fbfaf844038ae739556c39572c7dbd69e80e054a72ac"
     },
     {
-      "bytes": 4542,
+      "bytes": 5249,
       "path": "scripts/generate-release-metadata.py",
-      "sha256": "8f604e300b42ba3b0269e8990a5dd99515a564e062823bdcb3e8776e6bb9f78f"
+      "sha256": "5833b846558d7564d329487bccc73bd4d9bf67fabc4ef09e92e4cef083963a66"
     },
     {
       "bytes": 3087,
@@ -761,6 +941,16 @@
       "sha256": "44cecf6ba508f1060407719d539c19ae0b480f7cd61f8da289264de81e77c5ed"
     },
     {
+      "bytes": 11603,
+      "path": "scripts/install-openconsole-linux.py",
+      "sha256": "5fa3de6245e45294373787882dcd77392850c0a9e597fbce45b7400b41c62f66"
+    },
+    {
+      "bytes": 8810,
+      "path": "scripts/install-openconsole-windows.ps1",
+      "sha256": "179ae7d261f7939f78351df829e5946b48a4efae78f3979f788ffc25086d16d3"
+    },
+    {
       "bytes": 2472,
       "path": "scripts/normalize-fat.py",
       "sha256": "dff4cfb0cc78e52c91b136b9c8be3a406e99ef2bcc90eb7a6325079fc1b466d5"
@@ -771,14 +961,19 @@
       "sha256": "ae568f2a27de6f154ec245ba9fa2a0de3ca229397fb55e40ddf25e4dd6fd5233"
     },
     {
-      "bytes": 84408,
+      "bytes": 84936,
       "path": "scripts/ovmf_interaction_test.py",
-      "sha256": "3e2f60146f83250eb0082074223c9a3f8a3ed1f109a1aa9d1cdffffdf9dcb9a6"
+      "sha256": "704278c351c0c8e2e586327385f0cf453ec0a0fedc1c781d1a2bc69a009adc7c"
     },
     {
       "bytes": 1350,
       "path": "scripts/package-physical-test-esp.sh",
       "sha256": "a84630a19f9584f9bd772a0d6e77578538ac4813e634a417126ae656a93c7be7"
+    },
+    {
+      "bytes": 3404,
+      "path": "scripts/package-usb-installers.py",
+      "sha256": "998e17427531f71310c66735a3f3ede71d2c15b498dffc953afe43b03da08d01"
     },
     {
       "bytes": 3249,
@@ -806,9 +1001,19 @@
       "sha256": "f2912e0d736330bd95e0b72ef8a943df62557e7642f6259efaddafd19aa021fa"
     },
     {
-      "bytes": 8429,
+      "bytes": 1097,
+      "path": "scripts/stage-host-tools.py",
+      "sha256": "7ecd43971b4f4ec98d632d888f5fc8113ef9f4e551faf573b0e69a2fadb06760"
+    },
+    {
+      "bytes": 9543,
       "path": "scripts/test-arm64-aavmf.py",
-      "sha256": "63aa493ff2731343017b68513de6cbf2aa434e295af61170afad95a06efd54f0"
+      "sha256": "afbbc7aaf062bd310101c5d19444af73e152ec2bdce71adcb146e8b6eb2ff47c"
+    },
+    {
+      "bytes": 3181,
+      "path": "scripts/test-bootnext-ovmf.sh",
+      "sha256": "3035080ff71a0f35901f6dd79e8f0bd598e5fd1c91e8c5aaad277c71759f29b5"
     },
     {
       "bytes": 1195,
@@ -824,6 +1029,11 @@
       "bytes": 2269,
       "path": "scripts/test-runtime-integrity-ovmf.sh",
       "sha256": "86800c330bc87374bccc92064691fca9bdbae1f2b8a32ab15f0aa8ffee7f288a"
+    },
+    {
+      "bytes": 2165,
+      "path": "scripts/test-split-volume-firmware.sh",
+      "sha256": "ea8d1b96d840a17e7aced2d9cacc19b8079d6f604b047a1cc6349a724a1b5927"
     },
     {
       "bytes": 5239,
@@ -851,9 +1061,9 @@
       "sha256": "3c5cc04c7766e7cef010835a8c8b80ebcf460e978c04a8f5a6c0aa3166c68e07"
     },
     {
-      "bytes": 115436,
+      "bytes": 131888,
       "path": "src/boot/main.c",
-      "sha256": "0d3744cc446ca7efea7c9b4916a439d3378625c71e81068093f85825539e4e6e"
+      "sha256": "4f12677723324d057758ba1181cd1eb3e3fcc968cee302095629685ea8387457"
     },
     {
       "bytes": 3293,
@@ -876,9 +1086,9 @@
       "sha256": "be231c34ba0c9c7934f35a9a01e0a5ffca40ed13a1e406a1e88859eeac818760"
     },
     {
-      "bytes": 22410,
+      "bytes": 22990,
       "path": "src/core/game_storage.c",
-      "sha256": "ff005bbfa5da7a33779ce8277c4fb3d1aeeabd0f4acfec3dc9d2bc63a7127fd2"
+      "sha256": "46b39102563c5200ddb507a65241d493b930dfd704f29e44489cb35fa10744e1"
     },
     {
       "bytes": 3616,
@@ -926,14 +1136,19 @@
       "sha256": "78b8043635b5694dbbf46db0b39600d004e321951d0aaeafe118e58e8c7aaefa"
     },
     {
-      "bytes": 10715,
+      "bytes": 11514,
       "path": "src/core/uefi_game_storage.c",
-      "sha256": "f7b74dc7805aa7a0c6e2376d562fe553f219d81f379ad8c1c9c6b4763d5dab18"
+      "sha256": "b79cf6e602cf0bf7f31d9650aedb0857d6fd602fb37aac73cc37366efb69ae9e"
     },
     {
       "bytes": 12528,
       "path": "src/games/audio_probe.c",
       "sha256": "71d16e79a33b83ff27cb76e20d5c32b253266a1bca52e3944bee2b0d14230c9a"
+    },
+    {
+      "bytes": 965,
+      "path": "src/games/bootnext_armer.c",
+      "sha256": "2ca4339b9b5723f01132001cc31c85b5244c4fc33c246635d5f6ada644174c62"
     },
     {
       "bytes": 9060,
@@ -969,6 +1184,11 @@
       "bytes": 13948,
       "path": "src/games/network_probe.c",
       "sha256": "f14695e29f4cb9762574f73b91ec1717581c661d05dba6796840b5e665a0e299"
+    },
+    {
+      "bytes": 590,
+      "path": "src/games/normal_boot_sentinel.c",
+      "sha256": "cb07bde2c02f12191f54ea30d991c7bc011d32cad2cd6fb1bad9336e3f7f151f"
     },
     {
       "bytes": 13476,
@@ -1011,14 +1231,24 @@
       "sha256": "f898fdb8a19db164fae46c76d4e1310cf2ff0f2a780b16c7c33ff8be242e0b11"
     },
     {
+      "bytes": 3854,
+      "path": "src/net/ethernet_catalog.c",
+      "sha256": "d0c7046458cab8ac307218d92429a4a6ed558d6e785d883e21bae96efb5101c4"
+    },
+    {
+      "bytes": 7293,
+      "path": "src/net/ethernet_driver_selector.c",
+      "sha256": "f77ce7a46e4f6f554fa76bb8b5f5ab5cf837ae49ef08165d5f1cca34d15595ca"
+    },
+    {
       "bytes": 20613,
       "path": "src/net/provider.c",
       "sha256": "bfc76a683514dab0a50c99356edf3d5c9321fcabbd0c2090b9c65a24ba8e6d42"
     },
     {
-      "bytes": 4030,
+      "bytes": 6510,
       "path": "src/net/stack_loader.c",
-      "sha256": "2c718f039e33fd95e9769e5152849adb08945bf4408c389f4d523bb3d31cf125"
+      "sha256": "daee86d6167a93285de446c46e49b5b7e8e8ed0450ae0efd02cf91183e6b48b3"
     },
     {
       "bytes": 2331,
@@ -1076,9 +1306,9 @@
       "sha256": "cbdc116bbbb278df150774fc3c60612a53ab85d9db8217b75fdfa089efb468fc"
     },
     {
-      "bytes": 1501,
+      "bytes": 4703,
       "path": "tests/arm64_image_test.py",
-      "sha256": "1ec1c1422c9c68690c6d8de2f964270913d40461901c1497a9a4848c470c6327"
+      "sha256": "2083062539b7b99247eef706809ced58f4c88448bf316b9a694d08add2f9d768"
     },
     {
       "bytes": 5578,
@@ -1101,6 +1331,11 @@
       "sha256": "b043bed070cba6e21743f45c804bd4918644af64469fe058aafef0cb1792756c"
     },
     {
+      "bytes": 1571,
+      "path": "tests/baseline_driver_parity_test.py",
+      "sha256": "e8a2e40977c4f78be7942b9bc476ba008a938b393f86c34cd0fbd58862fe39d4"
+    },
+    {
       "bytes": 1472,
       "path": "tests/capabilities_test.c",
       "sha256": "1b439834cb5e876530633ae3b51f1a475d150222a73abbf401f3f7446344135b"
@@ -1119,6 +1354,61 @@
       "bytes": 2154,
       "path": "tests/details_input_test.c",
       "sha256": "cf80e3882e772bc4269fe23c5ca81eed4ecb1c93fe0039e0a5c53fca238484d7"
+    },
+    {
+      "bytes": 1470,
+      "path": "tests/ethernet_catalog_test.c",
+      "sha256": "53f3dbcc3310712cdbf5454c9de3f22b3660ca6eb5b7caf8a30ab172c90fda2d"
+    },
+    {
+      "bytes": 893,
+      "path": "tests/ethernet_catalog_test.py",
+      "sha256": "7430c80d2943131f1d0678614c689faa967384bf3fc0c4b16c6b302c0dc3885c"
+    },
+    {
+      "bytes": 3387,
+      "path": "tests/ethernet_driver_admission_test.py",
+      "sha256": "16aac40e36df2757e8cba8d2ccf81ae3a4f75e5f7c9033956e0430a0b6146183"
+    },
+    {
+      "bytes": 3037,
+      "path": "tests/ethernet_driver_manifest_test.py",
+      "sha256": "53459353c3968a9fcceab7a97f3c1175e9698151da5323418a4aff22431f1aa9"
+    },
+    {
+      "bytes": 7939,
+      "path": "tests/ethernet_driver_selector_test.c",
+      "sha256": "c189d97364a11a81cc315c9b9bce428912bb3330909cbd2ba18862292ef6b493"
+    },
+    {
+      "bytes": 2242,
+      "path": "tests/ethernet_lifecycle_audit_test.py",
+      "sha256": "222af570a26ae3438c3430b0640e5fd1eef33ee2db0c48c599369d4ad4fd5400"
+    },
+    {
+      "bytes": 1984,
+      "path": "tests/ethernet_matrix_test.py",
+      "sha256": "6ffa8a9c3bc53f3c0e88a5b1f8dba919bf897bdaa36f5e7b3901ee4c080276ee"
+    },
+    {
+      "bytes": 1283,
+      "path": "tests/ethernet_size_budget_test.py",
+      "sha256": "cc23af8ae0b84e1715b33172ae7319709cf6922417cd156ac67b3f7cbc050207"
+    },
+    {
+      "bytes": 902,
+      "path": "tests/fat32_formatter_test.py",
+      "sha256": "a489afd9ada55c85d6bfa32d45cd7c50f335c1a2e92aa205a495ec3ad8fa82ca"
+    },
+    {
+      "bytes": 159,
+      "path": "tests/fixtures/bootnext/startup.nsh",
+      "sha256": "f04d170ec41d8c26edf1bd1bbcc5f882376f4e0e827f77caa0ed22c11947cdb8"
+    },
+    {
+      "bytes": 535,
+      "path": "tests/fixtures/ethernet-catalog-x64.json",
+      "sha256": "1cb9b0b6b7f13ab69c01dd4be1184ac2c8fb75ba7b39250d78cab7f150725201"
     },
     {
       "bytes": 706,
@@ -1151,9 +1441,9 @@
       "sha256": "8e2279c8a4c2e6882ac57f0e0829554006a0c529a0b59a202246dbe50aab0338"
     },
     {
-      "bytes": 12663,
+      "bytes": 13193,
       "path": "tests/game_transaction_test.c",
-      "sha256": "7976c144feef90966bdac804e243b5626af90acb59d860201228348c2eb9e35a"
+      "sha256": "f71dd8674e5d3cc30026f1571437643962d5737fb1a227be0c1744d3b2cd2f4c"
     },
     {
       "bytes": 571,
@@ -1164,6 +1454,21 @@
       "bytes": 4984,
       "path": "tests/gles_provider_test.c",
       "sha256": "6e70b229cac4a297115e6f9439578058325eea6e50193882a34de232f87c006f"
+    },
+    {
+      "bytes": 3129,
+      "path": "tests/host_launcher_test.py",
+      "sha256": "0bc7d2efbd788a7d72d374fc855f22f8dbf35219afc199fd7b4a5ee2726b8684"
+    },
+    {
+      "bytes": 596,
+      "path": "tests/host_tools_stage_test.py",
+      "sha256": "6918e62f3cd608afa783d1d59b5aaee0eec160f2993569845b5bbf9531c4eb8d"
+    },
+    {
+      "bytes": 904,
+      "path": "tests/intel_preboot_audit_test.py",
+      "sha256": "5a695b08ff9d12d478fa2ac8c3d758646498d250bd5290e307297e4e2a8bd249"
     },
     {
       "bytes": 1841,
@@ -1181,9 +1486,24 @@
       "sha256": "c04860f141f4d7666a97c08cacda6299c461a527f80432f50bcf31dd4b140240"
     },
     {
+      "bytes": 961,
+      "path": "tests/ipxe_fallback_decision_test.py",
+      "sha256": "b4ec923084f3acb86990c7baa8d1dad7d8d71ada7fcf6cb4166a95ae82f0a107"
+    },
+    {
       "bytes": 941,
       "path": "tests/launch_recovery_test.c",
       "sha256": "9b18a3c30c402820c1c5d4ea1c98a8dc9b23baed2fcedcbb924a6dd80e4b915f"
+    },
+    {
+      "bytes": 7433,
+      "path": "tests/linux_installer_loop_test.py",
+      "sha256": "6bdc321386e7aef869cc1540291f845d8d3e2f501f3b171cd6f9819a9f0b22bf"
+    },
+    {
+      "bytes": 2756,
+      "path": "tests/linux_installer_test.py",
+      "sha256": "5f01957163380403ba5de12b31c3cba2cf554d8486d3d642bb0de111cd358134"
     },
     {
       "bytes": 1210,
@@ -1201,6 +1521,16 @@
       "sha256": "16c1cd6483497e9367942f787c8618b80b84f9033800db7435f0492262c75df0"
     },
     {
+      "bytes": 2109,
+      "path": "tests/media_layout_test.py",
+      "sha256": "b7c8fae3a569872d3267129ea2a6f3b74b1fab080c9847534c03c457588f57f5"
+    },
+    {
+      "bytes": 782,
+      "path": "tests/media_layout_verifier_test.py",
+      "sha256": "742fedcc7414b75bef96445cc226adf81ec1ee2d9c91bbcf5068191c1dfc05a3"
+    },
+    {
       "bytes": 6604,
       "path": "tests/net_failure_test.c",
       "sha256": "53f211c700d15229cef92719c685e138c1ff5f906a067dab2f77147d39461905"
@@ -1209,6 +1539,11 @@
       "bytes": 7896,
       "path": "tests/net_provider_test.c",
       "sha256": "1673526e5507adc46e000e39f2a822d720dccdbe09912dd5ac598da3195d8898"
+    },
+    {
+      "bytes": 2159,
+      "path": "tests/net_snp_bridge_test.c",
+      "sha256": "c240b7dce4b4257c00ad639737af797870cb2187c7af6a31641316575e839198"
     },
     {
       "bytes": 2522,
@@ -1306,6 +1641,11 @@
       "sha256": "b4f2fe92833ea32997c3a376d6b28bc7694ae35ad82dffbb45aa726b9f3aa2d1"
     },
     {
+      "bytes": 957,
+      "path": "tests/realtek_acquisition_test.py",
+      "sha256": "73834e46c74ab1addd4424cc86eac25429641bc19e72dffd426324d6128991b0"
+    },
+    {
       "bytes": 1244,
       "path": "tests/sdk_examples_test.py",
       "sha256": "a80659a05c64d50cba5a264181ce4bb79a6bedf2d2f11fe31fdff338e67ed45f"
@@ -1366,6 +1706,46 @@
       "sha256": "982728b48e49af6a82f28cb97e63c727e3222079667cf78167b8220e52f6cfcb"
     },
     {
+      "bytes": 1873,
+      "path": "tests/usb_installer_package_test.py",
+      "sha256": "b1673bac2e7656dd838865dd58a6295fbc6275db8c49a372d82f73f7b4f1f84a"
+    },
+    {
+      "bytes": 789,
+      "path": "tests/windows_host_launcher_contract_test.py",
+      "sha256": "64e62be60da19bfe9bdf31181828ffbf477daa389d2631702d055515586da6cb"
+    },
+    {
+      "bytes": 2194,
+      "path": "tests/windows_host_launcher_test.ps1",
+      "sha256": "42018a7a2570c5a56067299eaa41a6f0a0aa497c51a93bde7632b66ace71f547"
+    },
+    {
+      "bytes": 836,
+      "path": "tests/windows_installer_contract_test.py",
+      "sha256": "51a07c2a217dd591dbf8f333d3ace23a9cf770d5fc4f9c3e4f384c8f23d77d3d"
+    },
+    {
+      "bytes": 3745,
+      "path": "tests/windows_installer_vhd_test.ps1",
+      "sha256": "710792c0a78f5a993ccd5d7d24df569e76a875889e5ca7c5a09dac1bbdf052ef"
+    },
+    {
+      "bytes": 3182,
+      "path": "tools/admit_ethernet_driver.py",
+      "sha256": "1a691d49b969162337263fd65e83ea24c3447e99a03fee5feea7646259d468e1"
+    },
+    {
+      "bytes": 3287,
+      "path": "tools/ethernet_catalog.py",
+      "sha256": "428a26aacf61ebdee083e0291d52a9d8578b3b6018784c0717a6d8255e8abe99"
+    },
+    {
+      "bytes": 10558,
+      "path": "tools/ethernet_driver_manifest.py",
+      "sha256": "e6e8f88e55c5939b1e51e153e68909922188671fa52f4d818f7439eb3d8d2e5e"
+    },
+    {
       "bytes": 2490,
       "path": "tools/game_assets.py",
       "sha256": "5f22b84998cf37b05ce3aed95e4d71699874eba29cbe858524eb307b78e64c68"
@@ -1379,6 +1759,16 @@
       "bytes": 1650,
       "path": "tools/manifest-check.c",
       "sha256": "7cfe3e9b6f439646442afebf70531b7bb0be80db0c2552e2413025fa41b76445"
+    },
+    {
+      "bytes": 5897,
+      "path": "tools/media_layout.py",
+      "sha256": "eb3dae31d58ea8487d33517cd36cc76633c0bc0d3b366e7424b6f0d02df412b9"
+    },
+    {
+      "bytes": 4691,
+      "path": "tools/oc-fat32-format.c",
+      "sha256": "21696749821be54a21e2d22531bf672ca6f50ff4c532b8312f5f3a4d2ef04906"
     },
     {
       "bytes": 29645,
@@ -1401,6 +1791,16 @@
       "sha256": "d4cc1531f25300776d8fe4e929b886ab2dc348a91c29e337201b0581c961aed7"
     },
     {
+      "bytes": 6835,
+      "path": "tools/validate_ethernet_matrix.py",
+      "sha256": "22b7c59c0078e10209e1b680d467272aa29ffe68df6000266f6ad7ca46a755b7"
+    },
+    {
+      "bytes": 1704,
+      "path": "tools/verify_baseline_driver_parity.py",
+      "sha256": "3125fac2d1e084fdcc3d81eb50dceb2fa11a3486cca759f8bef59b66a0db1a9b"
+    },
+    {
       "bytes": 3263,
       "path": "tools/verify_efi.py",
       "sha256": "b9b7e05a9a6583901593669a13f39d3aae1215ab769bc35fc7fd9debcb1522f7"
@@ -1409,6 +1809,16 @@
       "bytes": 1391,
       "path": "tools/verify_efi_tree.py",
       "sha256": "fccec5a6e88a54ac956cfcdbef6d7b563302e1582918f50ff91c8531ee394090"
+    },
+    {
+      "bytes": 3132,
+      "path": "tools/verify_ethernet_size_budget.py",
+      "sha256": "e6520683306742f619c0488cf8c6c6217d11cb7081608a01d6a7f27801262f21"
+    },
+    {
+      "bytes": 2408,
+      "path": "tools/verify_media_layout.py",
+      "sha256": "a63bf9839a11a08babc9c7c83e077456ed511f506dead85982255bb1b36224bf"
     },
     {
       "bytes": 2747,
@@ -1426,6 +1836,16 @@
       "sha256": "3e8beec261921cf1476d175d020157d0577157a7ea92295a02aff635f61e8953"
     },
     {
+      "bytes": 1105,
+      "path": "vendor/opencore/OcAudioLoadOptionsStub/OcAudioLoadOptionsStub.c",
+      "sha256": "e1012ae665f93ee03473e723a566b94bd0b53dd4924c46239f0a4b503a60cb8a"
+    },
+    {
+      "bytes": 420,
+      "path": "vendor/opencore/OcAudioLoadOptionsStub/OcAudioLoadOptionsStub.inf",
+      "sha256": "25d16922c0b56c62c02f82548bedc0e524939495c93bc85d410628c35e0b9c71"
+    },
+    {
       "bytes": 2049,
       "path": "vendor/opencore/README.openconsole.md",
       "sha256": "1f65740657a94f4a9a93eb3e2741f2c34fc7dfde15c037857ebc25a0b3f449ef"
@@ -1441,5 +1861,5 @@
     "include/openconsole/uefi.h": "ff12621a19e1dc3215d8a60b69927aa7641e657465b6aa4f33222421e720f60f",
     "tools/ocg2.py": "8b58480135e291b5756c7642589f010b3cef5b8918200ee04cad69a79f15a415"
   },
-  "upstreamRevision": "15b5211819e40ed7d98e327478069f637b0fe391"
+  "upstreamRevision": "2c98d32d9a619cb041e1c30239caf151441810b8"
 }

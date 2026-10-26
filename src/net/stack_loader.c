@@ -1,4 +1,62 @@
 #include "openconsole/net_stack_loader.h"
+#include "openconsole/net_snp_bridge.h"
+
+static void clear_bridge_report(oc_net_snp_bridge_report *report) {
+    uint8_t *bytes = (uint8_t *)report;
+    UINTN count = sizeof(*report);
+    while (count-- != 0u) *bytes++ = 0u;
+}
+
+EFI_STATUS oc_net_bridge_nii_to_snp(int existing_snp,
+                                    const EFI_HANDLE *nii_handles,
+                                    UINTN nii_count,
+                                    const oc_net_snp_bridge_ops *ops,
+                                    oc_net_snp_bridge_report *report) {
+    EFI_HANDLE wrapper = 0;
+    uint8_t connected[OC_NET_SNP_MAX_NII_HANDLES];
+    UINTN index;
+    EFI_STATUS status;
+    if (ops == 0 || report == 0 || ops->load_wrapper == 0 ||
+        ops->connect == 0 || ops->snp_present == 0 ||
+        ops->disconnect == 0 || ops->unload == 0 ||
+        nii_count > OC_NET_SNP_MAX_NII_HANDLES ||
+        (nii_count != 0u && nii_handles == 0)) return EFI_INVALID_PARAMETER;
+    clear_bridge_report(report);
+    report->nii_handles = nii_count;
+    if (existing_snp) return EFI_SUCCESS;
+    if (nii_count == 0u) return EFI_NOT_FOUND;
+    for (index = 0u; index < nii_count; ++index) connected[index] = 0u;
+    status = ops->load_wrapper(ops->context, &wrapper);
+    if (EFI_ERROR(status) || wrapper == 0)
+        return EFI_ERROR(status) ? status : EFI_NOT_FOUND;
+    report->wrapper_image = wrapper;
+    for (index = 0u; index < nii_count; ++index) {
+        ++report->connect_attempts;
+        status = ops->connect(ops->context, nii_handles[index], wrapper);
+        if (EFI_ERROR(status)) {
+            ++report->connect_failures;
+            continue;
+        }
+        connected[index] = 1u;
+        if (ops->snp_present(ops->context, nii_handles[index])) {
+            UINTN prior;
+            for (prior = 0u; prior < index; ++prior)
+                if (connected[prior] && EFI_ERROR(ops->disconnect(
+                        ops->context, nii_handles[prior], wrapper)))
+                    ++report->rollback_failures;
+            report->selected_controller = nii_handles[index];
+            return EFI_SUCCESS;
+        }
+    }
+    for (index = 0u; index < nii_count; ++index)
+        if (connected[index] && EFI_ERROR(ops->disconnect(
+                ops->context, nii_handles[index], wrapper)))
+            ++report->rollback_failures;
+    if (EFI_ERROR(ops->unload(ops->context, wrapper)))
+        ++report->rollback_failures;
+    report->wrapper_image = 0;
+    return EFI_NOT_FOUND;
+}
 
 typedef struct {
     const CHAR16 *file_name;

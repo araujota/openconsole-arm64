@@ -1,0 +1,44 @@
+{
+  "schema": "openconsole.vendor-ethernet-package-audit.v1",
+  "vendor": "Intel",
+  "package": "Ethernet Connections Boot Utility, Preboot Images, and EFI Drivers",
+  "version": "31.3",
+  "downloadedAt": "2026-10-26",
+  "archive": {
+    "name": "Preboot.tar.gz",
+    "url": "https://downloadmirror.intel.com/931395/Preboot.tar.gz",
+    "bytes": 3436980,
+    "sha256": "7bd45a5a5bc5036793032e93c168679afa7ee0c2e2290e11e10322182c4db664",
+    "sha512": "8a6355a2d5de07d7bdbc34a10592c0ec0786513d221bcd32beca80771338dfdbb732b97c07c7f49c48628a6ce9dc897db185630bd9c3b0e271e6a082ef5febd5",
+    "publishedSha512Matched": true,
+    "detachedSignature": "not-provided"
+  },
+  "payload": {
+    "name": "APPS/BootUtil/BootIMG.FLB",
+    "bytes": 2167653,
+    "sha256": "03ef92231c2f4b86f268d7d994140815e58e8bc163ccfd3f83730668c71993ac",
+    "format": "proprietary-option-rom-container",
+    "looseEfiImages": false,
+    "authenticodeStatus": "not-applicable-container-not-pe"
+  },
+  "imageInventory": [
+    {"name": "UEFI x64 PCI-E gigabit driver", "version": "9.9.25", "architecture": "x64", "consumerBaselineRelevant": true},
+    {"name": "UEFI x64 10 gigabit driver", "version": "8.3.65", "architecture": "x64", "consumerBaselineRelevant": false},
+    {"name": "UEFI x64 40 gigabit driver", "version": "5.0.85", "architecture": "x64", "consumerBaselineRelevant": false},
+    {"name": "UEFI AArch64 10 gigabit driver", "version": "8.3.65", "architecture": "arm64", "consumerBaselineRelevant": false},
+    {"name": "Intel 800 Series Ethernet Driver (AArch64)", "version": "4.4.62", "architecture": "arm64", "consumerBaselineRelevant": false}
+  ],
+  "documentedFamilies": ["I210", "I219", "I225", "I226"],
+  "notDocumentedAsSupported": ["I211"],
+  "exactPciTableExtracted": false,
+  "expectedProtocols": ["nii", "undi"],
+  "expectedProtocolsEvidence": "container strings and UEFI option-ROM role; runtime publication remains unverified",
+  "lomPolicy": "Intel states BootUtil is not intended for LAN-on-motherboard implementations and its UEFI option-ROM programming path is for add-in adapters.",
+  "redistributionDecision": "user-acquired-only",
+  "redistributionReason": "The limited distribution agreement is product- and Intel-component-bound, non-transferable, revocable, and contains CNDA language; baseline redistribution is not approved.",
+  "openConsoleDecision": {
+    "x64": "not-admitted-no-loose-efi-or-exact-id-table",
+    "arm64": "unsupported-for-consumer-baseline",
+    "bundled": false
+  }
+}

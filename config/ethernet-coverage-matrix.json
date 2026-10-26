@@ -1,0 +1,229 @@
+{
+  "schema": "openconsole.ethernet-coverage-matrix.v1",
+  "asOf": "2026-10-26",
+  "scope": "wired-ethernet-only",
+  "architectures": ["x64", "arm64"],
+  "evidenceTiers": ["declared", "host-observed", "firmware-inventoried", "vm-validated", "physical-validated"],
+  "admissionStates": ["firmware", "source-build", "redistributable", "user-acquired", "candidate", "unsupported"],
+  "coverageStates": {
+    "build": ["built", "not-built", "not-applicable"],
+    "vm": ["validated", "not-validated", "not-applicable"],
+    "catalogMatch": ["exact", "family-only", "none"],
+    "physical": ["validated", "inventory-only", "not-tested"],
+    "delivery": ["bundled", "downloadable", "user-acquired", "unavailable"],
+    "support": ["supported", "unverified", "unsupported"]
+  },
+  "connectionTypes": [
+    {"id": "firmware-snp", "link": "firmware-published interface", "speedsGbps": [], "x64": "baseline", "arm64": "baseline", "provider": "platform firmware", "notes": "Preferred whenever controller-associated SNP passes runtime checks."},
+    {"id": "pci-lom-1g", "link": "PCIe onboard copper", "speedsGbps": [1], "x64": "critical-mass", "arm64": "platform-dependent", "families": ["Realtek RTL8111/8168", "Intel I219/I211"]},
+    {"id": "pci-lom-2.5g", "link": "PCIe onboard copper", "speedsGbps": [2.5], "x64": "critical-mass", "arm64": "platform-dependent", "families": ["Realtek RTL8125", "Intel I225/I226"]},
+    {"id": "pci-lom-5g", "link": "PCIe onboard copper", "speedsGbps": [5], "x64": "emerging", "arm64": "unobserved", "families": ["Realtek RTL8126"]},
+    {"id": "pci-10g", "link": "PCIe onboard or add-in copper", "speedsGbps": [10], "x64": "premium-workstation", "arm64": "workstation-server", "families": ["Intel X550", "Marvell AQC107/AQC113"]},
+    {"id": "soc-mac", "link": "SoC MAC plus board PHY", "speedsGbps": [1], "x64": "not-baseline", "arm64": "common-sbc-embedded", "families": ["Broadcom BCM2712 integrated MAC", "NVIDIA Orin RGMII"], "notes": "Not discoverable as a portable PCI NIC; requires platform firmware SNP or a platform-specific provider."}
+  ],
+  "upstreams": [
+    {
+      "id": "edk2-networkpkg-0a503bc",
+      "name": "TianoCore EDK II NetworkPkg",
+      "revision": "0a503bc2f5bd37c7a5d39d0ba31008f446f0298d",
+      "source": "https://github.com/tianocore/edk2",
+      "license": "BSD-2-Clause-Patent",
+      "architectures": ["x64", "arm64"],
+      "admission": "source-build",
+      "components": {
+        "upperStack": ["DpcDxe", "MnpDxe", "ArpDxe", "Dhcp4Dxe", "Ip4Dxe", "Udp4Dxe", "TcpDxe", "DnsDxe", "TlsDxe", "HttpUtilitiesDxe", "HttpDxe"],
+        "undiToSnpWrapper": ["SnpDxe"]
+      },
+      "limitations": [
+        "The upper stack and SnpDxe cannot create networking when neither firmware nor a hardware UNDI provider owns the controller."
+      ]
+    },
+    {
+      "id": "realtek-undi-2.081",
+      "name": "Realtek PCIe Ethernet UEFI UNDI Driver",
+      "version": "2.081",
+      "released": "2026-10-21",
+      "source": "https://www.realtek.com/Download/List?cate_id=584",
+      "downloadId": 3413,
+      "advertisedBytes": 320512,
+      "architectures": ["ia32", "x64", "arm", "loongarch64"],
+      "openConsoleArchitectures": {"x64": "rejected-baseline-persistent-config-capability", "arm64": "user-acquired-lifecycle-blocked"},
+      "admission": "user-acquired",
+      "acquisition": "official-altcha-proof-of-work",
+      "redistribution": "not-granted-package-contains-no-license",
+      "digest": "sha256:4c4ce542c4aefe4b653e5c7490739e1e942703fe49bd8e0ca2ab80662cc14464",
+      "signature": "Microsoft Option ROM UEFI Signer/Microsoft Option ROM UEFI CA 2023",
+      "protocols": ["NII", "UNDI"],
+      "families": ["RTL8101E-RTL8107E", "RTL8111B-RTL8111K", "RTL8116AF", "RTL8118A", "RTL8119i", "RTL8168B-RTL8168H", "RTL8125", "RTL8125B(G)", "RTL8125D", "RTL8125K", "RTL8125BP", "RTL8125CP", "RTL8126", "RTL8127"],
+      "exactDeviceIds": ["8125", "8126", "8127", "8136", "8161", "8162", "8168", "9151"],
+      "bundleDecision": "not-bundled-user-acquired-only-no-redistribution-grant"
+    },
+    {
+      "id": "intel-preboot-31.3",
+      "name": "Intel Ethernet Connections Boot Utility, Preboot Images, and EFI Drivers",
+      "version": "31.3",
+      "source": "https://www.intel.com/content/www/us/en/download/15755/intel-ethernet-connections-boot-utility-preboot-images-and-efi-drivers.html",
+      "artifact": "Preboot.tar.gz",
+      "artifactUrl": "https://downloadmirror.intel.com/931395/Preboot.tar.gz",
+      "sha512": "8a6355a2d5de07d7bdbc34a10592c0ec0786513d221bcd32beca80771338dfdbb732b97c07c7f49c48628a6ce9dc897db185630bd9c3b0e271e6a082ef5febd5",
+      "architectures": ["x64", "arm64"],
+      "openConsoleArchitectures": {"x64": "not-admitted-no-separable-exact-lom-artifact", "arm64": "unsupported-consumer-lom"},
+      "admission": "user-acquired",
+      "acquisition": "license-acceptance-required",
+      "redistribution": "requires-package-redist-review",
+      "digest": "sha256:7bd45a5a5bc5036793032e93c168679afa7ee0c2e2290e11e10322182c4db664",
+      "signature": "no-detached-signature-published",
+      "protocols": ["NII", "UNDI"],
+      "limitations": [
+        "Intel states BootUtil is not intended for LAN-on-motherboard implementations.",
+        "The public download page does not establish support for consumer I219/I225/I226 LOM variants or ARM64."
+      ],
+      "bundleDecision": "not-bundled-user-acquired-only-no-loose-efi-or-exact-id-table"
+    },
+    {
+      "id": "marvell-aqc107-aqc113",
+      "name": "Marvell AQtion AQC107/AQC113",
+      "source": "https://www.marvell.com/content/dam/marvell/en/drivers/marvell/software-release-notes-and-versions-v2/FastLinQ-User-Release-Notes-2020E-GU.pdf",
+      "architectures": [],
+      "openConsoleArchitectures": {"x64": "candidate", "arm64": "candidate"},
+      "admission": "candidate",
+      "redistribution": "unverified",
+      "bundleDecision": "not-admitted-no-current-exact-package"
+    },
+    {
+      "id": "broadcom-netxtreme",
+      "name": "Broadcom NetXtreme",
+      "source": null,
+      "architectures": [],
+      "openConsoleArchitectures": {"x64": "candidate", "arm64": "candidate"},
+      "admission": "candidate",
+      "redistribution": "unverified",
+      "bundleDecision": "not-admitted-no-current-exact-package"
+    }
+  ],
+  "priorityFamilies": [
+    {"vendor": "Realtek", "pciVendor": "10ec", "families": ["RTL8111/RTL8168", "RTL8125", "RTL8126"], "priority": "P0", "x64": "rejected-baseline", "arm64": "lifecycle-blocked"},
+    {"vendor": "Intel", "pciVendor": "8086", "families": ["I219", "I211", "I225", "I226"], "priority": "P0", "x64": "firmware-or-replacement-required", "arm64": "unsupported"},
+    {"vendor": "Marvell", "pciVendor": "1d6a", "families": ["AQC107", "AQC113"], "priority": "P1", "x64": "candidate", "arm64": "candidate"},
+    {"vendor": "Broadcom", "pciVendor": "14e4", "families": ["NetXtreme BCM5719/BCM5720"], "priority": "P2", "x64": "candidate", "arm64": "candidate"}
+  ],
+  "motherboards": [
+    {
+      "manufacturer": "MSI", "model": "MAG X670E TOMAHAWK WIFI", "boardRevision": "1.0", "platform": "AMD AM5", "architecture": "x64",
+      "ethernet": {"declared": "Realtek RTL8125 2.5GbE", "pci": {"vendor": "10ec", "device": "8125", "subsystemVendor": "1462", "subsystemDevice": "7e12", "revision": "05"}},
+      "firmware": {"vendor": "American Megatrends International, LLC.", "version": "1.G0", "networkStackSetting": "not-yet-captured", "ipv4PxeSetting": "not-yet-captured"},
+      "source": "local-host-inventory",
+      "evidence": "host-observed",
+      "support": "unverified"
+    },
+    {
+      "manufacturer": "ASRock", "model": "X870 Steel Legend WiFi", "boardRevision": "unspecified", "platform": "AMD AM5", "architecture": "x64",
+      "ethernet": {"declared": "Realtek RTL8125BG 2.5GbE", "pci": null},
+      "firmware": {"vendor": "AMI UEFI declared", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://asrock.com/mb/AMD/X870%20Steel%20Legend%20WiFi/index.asp",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "ASUS", "model": "TUF GAMING X870-PLUS WIFI", "boardRevision": "unspecified", "platform": "AMD AM5", "architecture": "x64",
+      "ethernet": {"declared": "Realtek 2.5Gb Ethernet", "pci": null},
+      "firmware": {"vendor": "unobserved", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-x870-plus-wifi/techspec/",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "MSI", "model": "MAG X870 TOMAHAWK WIFI", "boardRevision": "unspecified", "platform": "AMD AM5", "architecture": "x64",
+      "ethernet": {"declared": "Realtek RTL8126-CG 5GbE", "pci": null},
+      "firmware": {"vendor": "unobserved", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://www.msi.com/Motherboard/MAG-X870-TOMAHAWK-WIFI/Specification",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "Gigabyte", "model": "X870E EAGLE WIFI7", "boardRevision": "unspecified", "platform": "AMD AM5", "architecture": "x64",
+      "ethernet": {"declared": "Realtek 5GbE", "pci": null},
+      "firmware": {"vendor": "unobserved", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://download.gigabyte.com/FileList/Manual/mb_manual_x870e-eagle-wifi7_1001_e.pdf",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "Gigabyte", "model": "Z790 AORUS ELITE X WIFI7", "boardRevision": "1.x", "platform": "Intel LGA1700", "architecture": "x64",
+      "ethernet": {"declared": "Intel 2.5GbE", "pci": null},
+      "firmware": {"vendor": "unobserved", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://www.gigabyte.com/ca/Motherboard/Z790-AORUS-ELITE-X-WIFI7/sp",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "Dell", "model": "OptiPlex 3090 SFF", "boardRevision": "unspecified", "platform": "Intel OEM", "architecture": "x64",
+      "ethernet": {"declared": "Intel I219-LM or Realtek RTL8111KD", "pci": null},
+      "firmware": {"vendor": "Dell UEFI", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://www.dell.com/support/manuals/en-ca/optiplex-3090-sff/optiplex3090_sff_ss/Ethernet",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "HP", "model": "EliteDesk 8 SFF G1i", "boardRevision": "unspecified", "platform": "Intel OEM", "architecture": "x64",
+      "ethernet": {"declared": "Intel I219-LM LOM; optional Intel I226-T1", "pci": null},
+      "firmware": {"vendor": "HP UEFI", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://support.hp.com/in-en/document/ish_12141274-12141325-16",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "HP", "model": "AlpaltaW consumer motherboard", "boardRevision": "unspecified", "platform": "Intel consumer OEM", "architecture": "x64",
+      "ethernet": {"declared": "Realtek RTL8111HSH", "pci": null},
+      "firmware": {"vendor": "HP UEFI", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://support.hp.com/my-en/document/c07965620",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "Lenovo", "model": "ThinkCentre M920z AIO", "boardRevision": "unspecified", "platform": "Intel OEM", "architecture": "x64",
+      "ethernet": {"declared": "Intel I219-LM", "pci": null},
+      "firmware": {"vendor": "Lenovo UEFI", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkCentre/ThinkCentre_M920z_AIO/ThinkCentre_M920z_AIO_Spec.html",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "Lenovo", "model": "ThinkStation PX", "boardRevision": "unspecified", "platform": "Intel workstation", "architecture": "x64",
+      "ethernet": {"declared": "Intel I219-LM plus Marvell AQC-113C", "pci": null},
+      "firmware": {"vendor": "Lenovo UEFI", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://psref.lenovo.com/syspool/Sys/PDF/ThinkStation/ThinkStation_PX/ThinkStation_PX_Spec.PDF",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "ASRock Rack", "model": "ALTRAD8UD-1L2T", "boardRevision": "unspecified", "platform": "Ampere Altra ARM64 workstation/server", "architecture": "arm64",
+      "ethernet": {"declared": "Intel I210 1GbE plus dual Intel X550 10GbE", "transport": "pci-lom", "pci": null},
+      "firmware": {"vendor": "AMI Aptio V", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://www.asrockrack.com/general/productdetail.pl.asp?Model=ALTRAD8UD-1L2T",
+      "evidence": "declared", "support": "unverified"
+    },
+    {
+      "manufacturer": "Raspberry Pi", "model": "Raspberry Pi 5 Model B", "boardRevision": "unspecified", "platform": "Broadcom BCM2712 ARM64 SBC", "architecture": "arm64",
+      "ethernet": {"declared": "integrated Gigabit Ethernet", "transport": "soc-mac", "pci": null},
+      "firmware": {"vendor": "Raspberry Pi boot firmware; no vendor UEFI/SNP claim", "version": "unobserved", "networkStackSetting": "not-applicable", "ipv4PxeSetting": "not-applicable"},
+      "source": "https://datasheets.raspberrypi.com/rpi5/raspberry-pi-5-product-brief.pdf",
+      "evidence": "declared", "support": "unsupported"
+    },
+    {
+      "manufacturer": "NVIDIA", "model": "Jetson AGX Orin Developer Kit", "boardRevision": "unspecified", "platform": "NVIDIA Orin ARM64 developer platform", "architecture": "arm64",
+      "ethernet": {"declared": "Orin RGMII Gigabit MAC with carrier-board PHY", "transport": "soc-mac", "pci": null},
+      "firmware": {"vendor": "NVIDIA UEFI bootloader", "version": "unobserved", "networkStackSetting": "unobserved", "ipv4PxeSetting": "unobserved"},
+      "source": "https://developer.nvidia.com/embedded/jetson-linux-r3564",
+      "evidence": "declared", "support": "unverified"
+    }
+  ],
+  "exactIdentities": [
+    {
+      "pci": {"vendor": "10ec", "device": "8125", "subsystemVendor": "1462", "subsystemDevice": "7e12", "revision": "05"},
+      "board": {"manufacturer": "MSI", "model": "MAG X670E TOMAHAWK WIFI", "revision": "1.0", "firmwareVersion": "1.G0"},
+      "architectures": {
+        "x64": {"build": "not-built", "vm": "not-validated", "catalogMatch": "family-only", "physical": "inventory-only", "delivery": "unavailable", "support": "unverified", "provider": null},
+        "arm64": {"build": "not-built", "vm": "not-validated", "catalogMatch": "family-only", "physical": "not-tested", "delivery": "unavailable", "support": "unverified", "provider": null}
+      },
+      "notes": ["Realtek 2.081 includes the device ID and both architectures, but lacks a redistribution grant and has not passed physical UEFI qualification on this exact subsystem/revision."]
+    }
+  ],
+  "arm64Baseline": {
+    "status": "matrix-ready-no-physical-motherboard-qualified",
+    "firmwareSnp": "preferred",
+    "realtekUndi": "audited-arm64-binary-user-acquired-no-exact-arm64-platform-tuple",
+    "intelPreboot": "unsupported-until-arm64-artifact-or-source-is-proven",
+    "rules": ["Never place an x64 EFI driver in the ARM64 suitcase.", "Never infer ARM64 support from an x64 motherboard result."]
+  }
+}

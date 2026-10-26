@@ -35,7 +35,12 @@ else
 $(error Unsupported TARGET '$(TARGET)'; expected x64 or arm64)
 endif
 
-.PHONY: test-game-storage-ovmf-matrix test-runtime-integrity-ovmf arm64 arm64-parent arm64-child arm64-image test-targets test-arm64-host test-arm64-aavmf
+QEMU_TEST_DEFINES := -DOPENCONSOLE_QEMU_TEST=1 -DOPENCONSOLE_DATA_VOLUME_TEST=1
+ifeq ($(TARGET),arm64)
+QEMU_TEST_DEFINES += -DOPENCONSOLE_REAL_NET_TEST=1
+endif
+
+.PHONY: test-game-storage-ovmf-matrix test-runtime-integrity-ovmf test-split-volume-firmware test-bootnext-ovmf arm64 arm64-parent arm64-child arm64-image test-targets test-arm64-host test-arm64-aavmf test-usb-installers test-linux-installer-loop stage-host-tools test-host-launchers
 .PHONY: all clean FORCE_PLATFORM_TRUST esp esp-network-stack esp-audio-driver esp-crypto-driver development-image physical-test-esp physical-test-package physical-test-image physical-network-test-esp audio-test-esp integrated-io-test-esp slice-test-esp crypto-test-esp update-storage-test-esp update-e2e-test-esp https-test-esp edk2-network-stack edk2-input-driver update-crypto-dxe ovmf-snp-only ovmf-pointer audit-edk2-network-stack opencore-audiodxe audit-opencore-audiodxe test-esp pointer-pagination-test-esp game-details-test-esp gles-test-esp io-test-esp real-net-test-esp network-fixture-test-esp packaged-network-fixture-test-esp test test-host test-analyzer test-ovmf test-dashboard-ovmf test-pointer-pagination-ovmf test-game-details-ovmf test-gles-ovmf test-io-ovmf test-real-net-ovmf test-network-fixture-ovmf test-packaged-network-fixture-ovmf test-physical-inventory-ovmf test-physical-network-ovmf test-audio-ovmf test-audio-no-output-ovmf test-integrated-io-ovmf test-slice-ovmf test-crypto-ovmf test-update-storage-ovmf test-update-e2e-ovmf test-https-ovmf test-offline-ovmf test-virtio-gpu check-efi-core check-examples run
 
 all: $(BUILD_DIR)/BOOTX64.EFI esp
@@ -47,7 +52,7 @@ arm64-parent: $(BUILD_DIR)/BOOTAA64.EFI
 
 arm64-child: $(BUILD_DIR)/INPUT-PROBE-AA64.EFI
 
-arm64-image:
+arm64-image: edk2-network-stack edk2-input-driver update-crypto-dxe opencore-audiodxe
 	$(MAKE) TARGET=arm64 BUILD_DIR=build/arm64 build/arm64/BOOTAA64-TEST.EFI arm64-child
 	$(MAKE) build/jacket.ocj
 	python3 scripts/build-arm64-image.py
@@ -58,12 +63,44 @@ test-arm64-aavmf: arm64-image
 
 test-targets:
 	python3 tests/target_matrix_test.py
+	python3 tests/ethernet_size_budget_test.py
+
+test-usb-installers:
+	python3 tests/media_layout_test.py
+	python3 tests/media_layout_verifier_test.py
+	python3 tests/linux_installer_test.py
+	python3 tests/windows_installer_contract_test.py
+	python3 tests/fat32_formatter_test.py
+	python3 tests/usb_installer_package_test.py
+
+test-host-launchers:
+	python3 tests/host_launcher_test.py
+	python3 tests/windows_host_launcher_contract_test.py
+	python3 tests/host_tools_stage_test.py
+
+test-bootnext-ovmf: $(BUILD_DIR)/BOOTX64-BOOTNEXT-TEST.EFI $(BUILD_DIR)/NORMAL-BOOT-SENTINEL.EFI $(BUILD_DIR)/BOOTNEXT-ARMER.EFI
+	./scripts/test-bootnext-ovmf.sh
+
+stage-host-tools:
+	python3 scripts/stage-host-tools.py $(BUILD_DIR)/esp
+
+test-linux-installer-loop:
+	python3 tests/linux_installer_loop_test.py
+
+test-split-volume-firmware:
+	./scripts/test-split-volume-firmware.sh
 
 test-arm64-host: $(BUILD_DIR)/INPUT-PROBE.EFI arm64 test-targets
 	python3 tests/ocg2_arm64_test.py
 
 $(BUILD_DIR):
 	mkdir -p $@
+
+$(BUILD_DIR)/ethernet-catalog-x64.oec: tests/fixtures/ethernet-catalog-x64.json tools/ethernet_catalog.py | $(BUILD_DIR)
+	python3 tools/ethernet_catalog.py $< $@
+
+$(BUILD_DIR)/ethernet-catalog-test: tests/ethernet_catalog_test.c src/net/ethernet_catalog.c include/openconsole/ethernet_catalog.h $(BUILD_DIR)/ethernet-catalog-x64.oec | $(BUILD_DIR)
+	$(CC) -std=c11 -Wall -Wextra -Werror -pedantic -Iinclude tests/ethernet_catalog_test.c src/net/ethernet_catalog.c -o $@
 
 # main.c owns the concrete provider/backend objects, so any public or private
 # OpenConsole header may alter its compiled layout. Keep every launcher variant
@@ -81,6 +118,12 @@ $(SHA256_OBJ): src/core/sha256.c include/openconsole/sha256.h | $(BUILD_DIR)
 	clang $(CFLAGS) -c $< -o $@
 
 $(CAPABILITIES_OBJ): src/core/capabilities.c include/openconsole/capabilities.h include/openconsole/manifest.h | $(BUILD_DIR)
+	clang $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/ethernet-catalog-efi.obj: src/net/ethernet_catalog.c include/openconsole/ethernet_catalog.h | $(BUILD_DIR)
+	clang $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/ethernet-driver-selector-efi.obj: src/net/ethernet_driver_selector.c include/openconsole/ethernet_driver_selector.h | $(BUILD_DIR)
 	clang $(CFLAGS) -c $< -o $@
 
 $(TIME_FORMAT_OBJ): src/core/time_format.c include/openconsole/time_format.h | $(BUILD_DIR)
@@ -113,6 +156,8 @@ $(BUILD_DIR)/BOOTX64-DEVELOPMENT.EFI: $(DASHBOARD_OBJ) $(TIME_FORMAT_OBJ) $(PACK
 $(BUILD_DIR)/BOOTX64-DEVELOPMENT-MUTATION-TEST.EFI \
 $(BUILD_DIR)/BOOTX64-DEVELOPMENT-WATCHDOG-TEST.EFI: $(DASHBOARD_OBJ) $(TIME_FORMAT_OBJ) $(PACKAGE_MEASURE_OBJ) $(DETAILS_INPUT_OBJ) $(DELETE_POLICY_OBJ) $(CAPABILITIES_OBJ)
 
+$(BUILD_DIR)/BOOTX64-BOOTNEXT-TEST.EFI: $(DASHBOARD_OBJ) $(TIME_FORMAT_OBJ) $(PACKAGE_MEASURE_OBJ) $(DETAILS_INPUT_OBJ) $(DELETE_POLICY_OBJ) $(CAPABILITIES_OBJ)
+
 $(BUILD_DIR)/boot.obj: $(SRC) $(BOOT_HEADERS) | $(BUILD_DIR)
 	clang $(CFLAGS) -c $< -o $@
 
@@ -133,7 +178,7 @@ $(BUILD_DIR)/BOOTAA64.EFI: $(BUILD_DIR)/boot.obj $(BUILD_DIR)/manifest-efi.obj $
 	$(LD) $(LDFLAGS) $^ -o $@
 	python3 tools/verify_efi.py --arch arm64 --role application --require-zero-timestamp $@
 
-$(BUILD_DIR)/BOOTAA64-TEST.EFI: $(BUILD_DIR)/boot-test.obj $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/io-mock-provider-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj $(DASHBOARD_OBJ) $(TIME_FORMAT_OBJ) $(PACKAGE_MEASURE_OBJ) $(DETAILS_INPUT_OBJ) $(DELETE_POLICY_OBJ) $(CAPABILITIES_OBJ)
+$(BUILD_DIR)/BOOTAA64-TEST.EFI: $(BUILD_DIR)/boot-test.obj $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/io-mock-provider-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/net-stack-loader-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj $(DASHBOARD_OBJ) $(TIME_FORMAT_OBJ) $(PACKAGE_MEASURE_OBJ) $(DETAILS_INPUT_OBJ) $(DELETE_POLICY_OBJ) $(CAPABILITIES_OBJ)
 	@test "$(TARGET)" = arm64 || { echo "BOOTAA64-TEST.EFI requires TARGET=arm64" >&2; exit 2; }
 	$(LD) $(LDFLAGS) $^ -o $@
 	python3 tools/verify_efi.py --arch arm64 --role application --require-zero-timestamp $@
@@ -151,7 +196,7 @@ $(BUILD_DIR)/generated/openconsole_platform_trust.h: FORCE_PLATFORM_TRUST $(BUIL
 $(BUILD_DIR)/boot-development.obj: $(SRC) $(BOOT_HEADERS) $(BUILD_DIR)/generated/openconsole_platform_trust.h | $(BUILD_DIR)
 	clang $(CFLAGS) -I$(BUILD_DIR)/generated -DOPENCONSOLE_PINNED_PLATFORM_TRUST=1 -c $< -o $@
 
-$(BUILD_DIR)/BOOTX64-DEVELOPMENT.EFI: $(BUILD_DIR)/boot-development.obj $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/net-stack-loader-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj $(SHA256_OBJ) $(BUILD_DIR)/pe-image-efi.obj $(BUILD_DIR)/platform-inventory-efi.obj $(BUILD_DIR)/publisher-keys-efi.obj $(BUILD_DIR)/ocg2-efi.obj $(BUILD_DIR)/authenticated-load-efi.obj $(BUILD_DIR)/game-storage-efi.obj $(BUILD_DIR)/uefi-game-storage-efi.obj $(BUILD_DIR)/launch-recovery-efi.obj $(BUILD_DIR)/freestanding-memory-efi.obj
+$(BUILD_DIR)/BOOTX64-DEVELOPMENT.EFI: $(BUILD_DIR)/boot-development.obj $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/net-stack-loader-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj $(SHA256_OBJ) $(BUILD_DIR)/pe-image-efi.obj $(BUILD_DIR)/platform-inventory-efi.obj $(BUILD_DIR)/publisher-keys-efi.obj $(BUILD_DIR)/ocg2-efi.obj $(BUILD_DIR)/authenticated-load-efi.obj $(BUILD_DIR)/game-storage-efi.obj $(BUILD_DIR)/uefi-game-storage-efi.obj $(BUILD_DIR)/launch-recovery-efi.obj $(BUILD_DIR)/freestanding-memory-efi.obj $(BUILD_DIR)/ethernet-catalog-efi.obj $(BUILD_DIR)/ethernet-driver-selector-efi.obj
 	$(LD) $(LDFLAGS) $^ -o $@
 
 $(BUILD_DIR)/boot-development-mutation-test.obj: $(SRC) $(BOOT_HEADERS) $(BUILD_DIR)/generated/openconsole_platform_trust.h | $(BUILD_DIR)
@@ -162,7 +207,7 @@ $(BUILD_DIR)/boot-development-watchdog-test.obj: $(SRC) $(BOOT_HEADERS) $(BUILD_
 	clang $(CFLAGS) -I$(BUILD_DIR)/generated -DOPENCONSOLE_PINNED_PLATFORM_TRUST=1 \
 		-DOPENCONSOLE_TEST_WATCHDOG_UNSUPPORTED=1 -c $< -o $@
 
-DEVELOPMENT_LINK_OBJECTS := $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/net-stack-loader-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj $(SHA256_OBJ) $(BUILD_DIR)/pe-image-efi.obj $(BUILD_DIR)/platform-inventory-efi.obj $(BUILD_DIR)/publisher-keys-efi.obj $(BUILD_DIR)/ocg2-efi.obj $(BUILD_DIR)/authenticated-load-efi.obj $(BUILD_DIR)/game-storage-efi.obj $(BUILD_DIR)/uefi-game-storage-efi.obj $(BUILD_DIR)/launch-recovery-efi.obj $(BUILD_DIR)/freestanding-memory-efi.obj
+DEVELOPMENT_LINK_OBJECTS := $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/net-stack-loader-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj $(SHA256_OBJ) $(BUILD_DIR)/pe-image-efi.obj $(BUILD_DIR)/platform-inventory-efi.obj $(BUILD_DIR)/publisher-keys-efi.obj $(BUILD_DIR)/ocg2-efi.obj $(BUILD_DIR)/authenticated-load-efi.obj $(BUILD_DIR)/game-storage-efi.obj $(BUILD_DIR)/uefi-game-storage-efi.obj $(BUILD_DIR)/launch-recovery-efi.obj $(BUILD_DIR)/freestanding-memory-efi.obj $(BUILD_DIR)/ethernet-catalog-efi.obj $(BUILD_DIR)/ethernet-driver-selector-efi.obj
 
 $(BUILD_DIR)/BOOTX64-DEVELOPMENT-MUTATION-TEST.EFI: $(BUILD_DIR)/boot-development-mutation-test.obj $(DEVELOPMENT_LINK_OBJECTS)
 	$(LD) $(LDFLAGS) $^ -o $@
@@ -180,13 +225,31 @@ $(BUILD_DIR)/BOOTX64-PHYSICAL-TEST.EFI: $(BUILD_DIR)/boot-physical-test.obj $(BU
 	$(LD) $(LDFLAGS) $^ -o $@
 
 $(BUILD_DIR)/boot-test.obj: $(SRC) $(BOOT_HEADERS) | $(BUILD_DIR)
-	clang $(CFLAGS) -DOPENCONSOLE_QEMU_TEST=1 -c $< -o $@
+	clang $(CFLAGS) $(QEMU_TEST_DEFINES) -c $< -o $@
 
 $(BUILD_DIR)/io-mock-provider-efi.obj: src/io/mock_provider.c include/openconsole/io_mock_provider.h include/openconsole/net_protocol.h include/openconsole/audio_protocol.h | $(BUILD_DIR)
 	clang $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/BOOTX64-TEST.EFI: $(BUILD_DIR)/boot-test.obj $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/io-mock-provider-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj
 	$(LD) $(LDFLAGS) $^ -o $@
+
+$(BUILD_DIR)/boot-bootnext-test.obj: $(SRC) $(BOOT_HEADERS) | $(BUILD_DIR)
+	clang $(CFLAGS) -DOPENCONSOLE_QEMU_TEST=1 -DOPENCONSOLE_BOOTNEXT_TEST=1 -c $< -o $@
+
+$(BUILD_DIR)/BOOTX64-BOOTNEXT-TEST.EFI: $(BUILD_DIR)/boot-bootnext-test.obj $(BUILD_DIR)/manifest-efi.obj $(BUILD_DIR)/gpu-probe.obj $(BUILD_DIR)/gles-provider-efi.obj $(BUILD_DIR)/io-inventory-efi.obj $(BUILD_DIR)/io-mock-provider-efi.obj $(BUILD_DIR)/net-provider-efi.obj $(BUILD_DIR)/uefi-net-backend-efi.obj $(BUILD_DIR)/tls-ca-efi.obj $(BUILD_DIR)/audio-provider-efi.obj $(BUILD_DIR)/audioio-backend-efi.obj
+	$(LD) $(LDFLAGS) $^ -o $@
+
+$(BUILD_DIR)/normal-boot-sentinel.obj: src/games/normal_boot_sentinel.c include/openconsole/uefi.h | $(BUILD_DIR)
+	clang $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/NORMAL-BOOT-SENTINEL.EFI: $(BUILD_DIR)/normal-boot-sentinel.obj
+	$(LD) $(LDFLAGS) $< -o $@
+
+$(BUILD_DIR)/bootnext-armer.obj: src/games/bootnext_armer.c include/openconsole/uefi.h include/openconsole/platform_debug.h | $(BUILD_DIR)
+	clang $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/BOOTNEXT-ARMER.EFI: $(BUILD_DIR)/bootnext-armer.obj
+	$(LD) $(LDFLAGS) $< -o $@
 
 $(BUILD_DIR)/boot-real-net-test.obj: $(SRC) $(BOOT_HEADERS) | $(BUILD_DIR)
 	clang $(CFLAGS) -DOPENCONSOLE_QEMU_TEST=1 -DOPENCONSOLE_REAL_NET_TEST=1 -c $< -o $@
@@ -195,7 +258,7 @@ $(BUILD_DIR)/BOOTX64-REAL-NET-TEST.EFI: $(BUILD_DIR)/boot-real-net-test.obj $(BU
 	$(LD) $(LDFLAGS) $^ -o $@
 
 $(BUILD_DIR)/boot-network-fixture-test.obj: $(SRC) $(BOOT_HEADERS) | $(BUILD_DIR)
-	clang $(CFLAGS) -DOPENCONSOLE_QEMU_TEST=1 -DOPENCONSOLE_REAL_NET_TEST=1 -DOPENCONSOLE_QEMU_REPEAT_TEST=1 -c $< -o $@
+	clang $(CFLAGS) -DOPENCONSOLE_QEMU_TEST=1 -DOPENCONSOLE_DATA_VOLUME_TEST=1 -DOPENCONSOLE_REAL_NET_TEST=1 -DOPENCONSOLE_QEMU_REPEAT_TEST=1 -c $< -o $@
 
 $(BUILD_DIR)/boot-audio-test.obj: $(SRC) $(BOOT_HEADERS) | $(BUILD_DIR)
 	clang $(CFLAGS) -DOPENCONSOLE_QEMU_TEST=1 -DOPENCONSOLE_REAL_AUDIO_TEST=1 -c $< -o $@
@@ -328,13 +391,13 @@ esp: $(BUILD_DIR)/BOOTX64.EFI $(BUILD_DIR)/INPUT-PROBE.EFI $(BUILD_DIR)/GLES-TRI
 	cp examples/games/gles/game.toml $(BUILD_DIR)/esp/games/gles/game.toml
 	cp $(BUILD_DIR)/GLES-TRIANGLE.EFI $(BUILD_DIR)/esp/games/gles/game.efi
 	cp $(BUILD_DIR)/jacket.ocj $(BUILD_DIR)/esp/games/gles/jacket.ocj
+	python3 scripts/stage-host-tools.py $(BUILD_DIR)/esp
 
 edk2-network-stack:
 	./scripts/build-edk2-network-stack.sh
 
-edk2-input-driver: ovmf-pointer
-	mkdir -p $(BUILD_DIR)/edk2-input-driver
-	cp $(OPENCONSOLE_EDK2_SOURCE)/Build/OvmfX64/RELEASE_GCCNOLTO/X64/UsbMouseDxe.efi $(BUILD_DIR)/edk2-input-driver/UsbMouseDxe.efi
+edk2-input-driver: edk2-network-stack
+	./scripts/build-edk2-input-driver.sh
 
 update-crypto-dxe: edk2-network-stack
 	./scripts/build-update-crypto-dxe.sh
@@ -353,6 +416,8 @@ audit-opencore-audiodxe: opencore-audiodxe
 		--source "$(abspath $(BUILD_DIR)/vendor-src/audk-$(AUDK_AUDIO_PIN)/OpenCorePkg)" \
 		--patch "$(abspath patches/opencore-audiodxe/0001-failure-cleanup.patch)" \
 		--patch "$(abspath patches/opencore-audiodxe/0002-instance-safe-playback-setup.patch)" \
+		--patch "$(abspath patches/opencore-audiodxe/0003-aarch64-build-profile.patch)" \
+		--patch "$(abspath patches/opencore-audiodxe/0004-aarch64-audio-load-options-stub.patch)" \
 		--binary "$(abspath $(BUILD_DIR)/opencore-audiodxe/AudioDxe.efi)" \
 		--output "$(abspath $(BUILD_DIR)/opencore-audiodxe/failure-audit.json)"
 
@@ -606,6 +671,14 @@ $(BUILD_DIR)/net-stack-loader-test: tests/net_stack_loader_test.c src/net/stack_
 	$(CC) -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
 		-Iinclude tests/net_stack_loader_test.c src/net/stack_loader.c -o $@
 
+$(BUILD_DIR)/net-snp-bridge-test: tests/net_snp_bridge_test.c src/net/stack_loader.c include/openconsole/net_snp_bridge.h | $(BUILD_DIR)
+	$(CC) -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
+		-Iinclude tests/net_snp_bridge_test.c src/net/stack_loader.c -o $@
+
+$(BUILD_DIR)/ethernet-driver-selector-test: tests/ethernet_driver_selector_test.c src/net/ethernet_driver_selector.c include/openconsole/ethernet_driver_selector.h | $(BUILD_DIR)
+	$(CC) -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
+		-Iinclude tests/ethernet_driver_selector_test.c src/net/ethernet_driver_selector.c -o $@
+
 $(BUILD_DIR)/update-metadata-test: tests/update_metadata_test.c src/net/update_metadata.c include/openconsole/update_metadata.h | $(BUILD_DIR)
 	$(CC) -std=c11 -Wall -Wextra -Werror -pedantic -fsanitize=address,undefined \
 		-Iinclude tests/update_metadata_test.c src/net/update_metadata.c -o $@
@@ -717,7 +790,9 @@ $(BUILD_DIR)/launch-recovery-test: tests/launch_recovery_test.c src/core/launch_
 
 test-host: $(BUILD_DIR)/dashboard-test $(BUILD_DIR)/time-format-test $(BUILD_DIR)/package-measure-test $(BUILD_DIR)/game-storage-test $(BUILD_DIR)/game-transaction-test $(BUILD_DIR)/launch-recovery-test $(BUILD_DIR)/pe-image-test $(BUILD_DIR)/INPUT-PROBE.EFI $(BUILD_DIR)/details-input-test $(BUILD_DIR)/delete-policy-test $(BUILD_DIR)/sha256-test $(BUILD_DIR)/platform-inventory-c-test $(BUILD_DIR)/publisher-keys-c-test $(BUILD_DIR)/ocg2-c-test $(BUILD_DIR)/authenticated-load-test
 
-test-host: $(BUILD_DIR)/manifest-test $(BUILD_DIR)/capabilities-test $(BUILD_DIR)/gles-abi-test $(BUILD_DIR)/gles-provider-test $(BUILD_DIR)/io-inventory-test $(BUILD_DIR)/io-abi-test $(BUILD_DIR)/io-mock-provider-test $(BUILD_DIR)/net-provider-test $(BUILD_DIR)/uefi-net-backend-test $(BUILD_DIR)/net-failure-test $(BUILD_DIR)/net-stack-loader-test $(BUILD_DIR)/update-metadata-test $(BUILD_DIR)/update-verify-test $(BUILD_DIR)/update-storage-test $(BUILD_DIR)/uefi-update-crypto-test $(BUILD_DIR)/tls-ca-test $(BUILD_DIR)/audio-provider-test $(BUILD_DIR)/audio-golden-test $(BUILD_DIR)/audioio-backend-test
+test-host: $(BUILD_DIR)/manifest-test $(BUILD_DIR)/capabilities-test $(BUILD_DIR)/gles-abi-test $(BUILD_DIR)/gles-provider-test $(BUILD_DIR)/io-inventory-test $(BUILD_DIR)/io-abi-test $(BUILD_DIR)/io-mock-provider-test $(BUILD_DIR)/net-provider-test $(BUILD_DIR)/uefi-net-backend-test $(BUILD_DIR)/net-failure-test $(BUILD_DIR)/net-stack-loader-test $(BUILD_DIR)/net-snp-bridge-test $(BUILD_DIR)/ethernet-driver-selector-test $(BUILD_DIR)/ethernet-catalog-test $(BUILD_DIR)/update-metadata-test $(BUILD_DIR)/update-verify-test $(BUILD_DIR)/update-storage-test $(BUILD_DIR)/uefi-update-crypto-test $(BUILD_DIR)/tls-ca-test $(BUILD_DIR)/audio-provider-test $(BUILD_DIR)/audio-golden-test $(BUILD_DIR)/audioio-backend-test
+	python3 tests/ethernet_catalog_test.py
+	./$(BUILD_DIR)/ethernet-catalog-test $(BUILD_DIR)/ethernet-catalog-x64.oec
 	./tests/ocg2_tool_test.py
 	./tests/game_assets_test.py
 	./tests/sdk_examples_test.py
@@ -734,6 +809,8 @@ test-host: $(BUILD_DIR)/manifest-test $(BUILD_DIR)/capabilities-test $(BUILD_DIR
 	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/uefi-net-backend-test
 	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/net-failure-test
 	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/net-stack-loader-test
+	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/net-snp-bridge-test
+	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/ethernet-driver-selector-test
 	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/update-metadata-test
 	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/update-verify-test
 	ASAN_OPTIONS=detect_leaks=1 ./$(BUILD_DIR)/update-storage-test
@@ -760,6 +837,13 @@ test-host: $(BUILD_DIR)/manifest-test $(BUILD_DIR)/capabilities-test $(BUILD_DIR
 	./tests/physical_inventory_analyzer_test.py
 	./tests/physical_audio_analyzer_test.py
 	./tests/physical_network_analyzer_test.py
+	./tests/ethernet_matrix_test.py
+	./tests/ethernet_driver_manifest_test.py
+	./tests/ethernet_driver_admission_test.py
+	./tests/ipxe_fallback_decision_test.py
+	./tests/intel_preboot_audit_test.py
+	./tests/realtek_acquisition_test.py
+	./tests/ethernet_lifecycle_audit_test.py
 	./tests/physical_media_verifier_test.py
 	./tests/uefi_driver_inspector_test.py
 

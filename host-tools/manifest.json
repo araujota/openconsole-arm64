@@ -1,0 +1,1 @@
+{"architectures":{"arm64":{"bootPath":"\\EFI\\BOOT\\BOOTAA64.EFI","machineNames":["aarch64","arm64"]},"x64":{"bootPath":"\\EFI\\BOOT\\BOOTX64.EFI","machineNames":["amd64","x86_64"]}},"maxBcdBytes":1048576,"maxEfibootmgrBytes":1048576,"schema":"openconsole.host-launcher.v1","version":1}

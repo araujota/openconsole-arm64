@@ -1,0 +1,14 @@
+{
+  "schema": "openconsole.baseline-driver-roles.v1",
+  "roles": {
+    "audio": ["AudioDxe.efi"],
+    "crypto": ["OpenConsoleCryptoDxe.efi"],
+    "input": ["UsbMouseDxe.efi"],
+    "network": [
+      "ArpDxe.efi", "Dhcp4Dxe.efi", "DnsDxe.efi", "DpcDxe.efi",
+      "Hash2DxeCrypto.efi", "HttpDxe.efi", "HttpUtilitiesDxe.efi",
+      "Ip4Dxe.efi", "MnpDxe.efi", "SnpDxe.efi", "TcpDxe.efi",
+      "TlsDxe.efi", "Udp4Dxe.efi"
+    ]
+  }
+}

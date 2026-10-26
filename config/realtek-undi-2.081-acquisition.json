@@ -1,0 +1,25 @@
+{
+  "schema": "openconsole.vendor-ethernet-acquisition.v1",
+  "vendor": "Realtek", "version": "2.081", "downloadId": 3413,
+  "officialPage": "https://www.realtek.com/Download/List?cate_id=584",
+  "artifact": {
+    "filename": "RtkUndiDxe.2.081.2026.09.11_09182026.zip", "bytes": 319890,
+    "sha256": "4c4ce542c4aefe4b653e5c7490739e1e942703fe49bd8e0ca2ab80662cc14464",
+    "sha512": "7c3bfc849d278d6c01b4056a09ce54078e46451d5b5d8d8d569b86c7c3f77cdc3275e2c6a97e32b35bbb765f5cfc5bc8ebdb8b56366ea0161b45a4a1a88bcb11",
+    "licenseFiles": [], "redistributionGrant": false
+  },
+  "images": {
+    "x64": {"bytes": 201616, "sha256": "2f7f22e0a76230308d1a8ea67b9be51dc23d55705f40efef7e8c3d964f0bba20", "machine": "x86_64", "subsystem": "EFI boot service driver"},
+    "arm64": {"bytes": 168336, "sha256": "5792be910d2522a2c002a2f032b13f34cebd5fae2f67ce7cda3aba12a3ff5398", "machine": "aarch64", "subsystem": "EFI boot service driver"}
+  },
+  "authenticode": {"present": true, "leaf": "Microsoft Option ROM UEFI Signer", "issuer": "Microsoft Option ROM UEFI CA 2023"},
+  "protocols": ["NII", "UNDI"],
+  "supportedPci": {
+    "vendor": "10ec", "class": "0200",
+    "deviceIdsFromX64SupportedRoutine": ["8125", "8126", "8127", "8136", "8161", "8162", "8168", "9151"],
+    "subsystemFiltering": false, "revisionFiltering": false
+  },
+  "acquisition": {"status": "official-artifact-inspected", "challenge": "ALTCHA SHA-256 proof-of-work capped at 500000", "artifactObtained": true, "reproducibleScript": "scripts/acquire-realtek-undi.py"},
+  "admission": "user-acquired-not-redistributable",
+  "admissionReason": "The archive contains binaries and one ARM64 DEPEX only; it contains no license or redistribution grant."
+}

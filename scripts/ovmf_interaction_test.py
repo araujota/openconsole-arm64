@@ -543,6 +543,10 @@ def main():
         "-device", "isa-debug-exit,iobase=0xf4,iosize=0x04",
         "-qmp", f"unix:{qmp_path},server=on,wait=off",
     ] + gpu_arguments
+    for extra in filter(None, os.environ.get(
+            "OPENCONSOLE_TEST_EXTRA_DRIVES", "").split(os.pathsep)):
+        command += ["-drive", (f"format=raw,file={extra}" if os.path.isfile(extra)
+                                else f"format=raw,file=fat:rw:{extra}")]
     if scene in ("pointer-pagination", "game-details", "integrated", "slice"):
         command += ["-usb", "-device", "usb-mouse,id=ocmouse"]
     if os.environ.get("OPENCONSOLE_TEST_PACKAGED_NETWORK") == "1":
@@ -1245,6 +1249,9 @@ def main():
             "OPENCONSOLE_CHILD_STARTING",
             "OPENCONSOLE_CHILD_RETURNED",
         ]
+        expected_data_volume = os.environ.get("OPENCONSOLE_EXPECT_DATA_VOLUME")
+        if expected_data_volume and not log_contains(log, expected_data_volume):
+            raise RuntimeError(f"missing data-volume routing evidence: {expected_data_volume}")
         if scene == "gles":
             required += ["OPENCONSOLE_GLES_PROVIDER_READY", "OPENCONSOLE_GLES_SCENE_READY", "OPENCONSOLE_GLES_KEY_RECEIVED"]
         elif scene == "io":

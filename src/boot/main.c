@@ -5,6 +5,9 @@
 #include "openconsole/io_inventory.h"
 #include "openconsole/net_provider.h"
 #include "openconsole/net_stack_loader.h"
+#include "openconsole/net_snp_bridge.h"
+#include "openconsole/ethernet_catalog.h"
+#include "openconsole/ethernet_driver_selector.h"
 #include "openconsole/uefi_net_backend.h"
 #include "openconsole/audioio_backend.h"
 #include "openconsole/crypto_protocol.h"
@@ -61,6 +64,12 @@ static const EFI_GUID usb_io_guid =
 static const EFI_GUID pci_io_guid =
     {0x4cf5b200u, 0x68b8u, 0x4ca5u, {0x9e,0xec,0xb2,0x3e,0x3f,0x50,0x02,0x9a}};
 #endif
+#if !OPENCONSOLE_QEMU_TEST || OPENCONSOLE_REAL_NET_TEST || OPENCONSOLE_INTEGRATED_IO_TEST
+static const EFI_GUID simple_network_guid =
+    {0xa19832b9u,0xac25u,0x11d3u,{0x9a,0x2d,0x00,0x90,0x27,0x3f,0xc1,0x4d}};
+static const EFI_GUID nii31_guid =
+    {0x1aced566u,0x76edu,0x4218u,{0xbc,0x81,0x76,0x7f,0x1f,0x97,0x7a,0x89}};
+#endif
 
 typedef struct {
     CHAR16 directory[129];
@@ -81,6 +90,8 @@ typedef struct {
     EFI_SYSTEM_TABLE *st;
     EFI_BOOT_SERVICES *bs;
     EFI_FILE_PROTOCOL *root;
+    EFI_FILE_PROTOCOL *boot_root;
+    uint8_t data_volume_ambiguous;
     EFI_FILE_PROTOCOL *inventory_log;
     EFI_GRAPHICS_OUTPUT_PROTOCOL *gop;
     EFI_SIMPLE_POINTER_PROTOCOL *pointer;
@@ -104,7 +115,7 @@ typedef struct {
     UINTN net_allocation_bytes;
     UINTN net_peak_allocation_bytes;
     UINTN net_allocation_count;
-    EFI_HANDLE net_stack_drivers[OC_NET_STACK_MODULE_COUNT];
+    EFI_HANDLE net_stack_drivers[OC_NET_DRIVER_HANDLE_CAPACITY];
     UINTN net_stack_driver_count;
     uint8_t net_ready;
     uint8_t net_online;
@@ -119,6 +130,14 @@ typedef struct {
     oc_platform_inventory platform_inventory;
     UINTN crypto_driver_size;
     uint8_t platform_inventory_ready;
+#if defined(OPENCONSOLE_PINNED_PLATFORM_TRUST)
+    void *ethernet_catalog_blob;
+    oc_eth_catalog ethernet_catalog;
+    oc_eth_catalog_entry ethernet_entries[OC_ETH_CATALOG_MAX_ENTRIES];
+    oc_eth_candidate ethernet_candidates[OC_ETH_CATALOG_MAX_ENTRIES];
+    char ethernet_ids[OC_ETH_CATALOG_MAX_ENTRIES][OC_ETH_CATALOG_ID_BYTES];
+    UINTN ethernet_candidate_count;
+#endif
     void *publisher_keys_blob;
     oc_publisher_key_store publisher_keys;
     uint8_t publisher_keys_ready;
@@ -182,7 +201,7 @@ static EFI_STATUS ensure_update_crypto(launcher *app) {
 #else
     if (!EFI_ERROR(status)) { app->crypto_protocol = protocol; return EFI_SUCCESS; }
 #endif
-    status = read_file(app, app->root, driver_path, 2u * 1024u * 1024u,
+    status = read_file(app, app->boot_root, driver_path, 2u * 1024u * 1024u,
                        &image_data, &image_size);
     if (EFI_ERROR(status)) {
         debug_write("OPENCONSOLE_CRYPTO_OFFLINE_NO_DRIVER\n");
@@ -283,7 +302,7 @@ static EFI_STATUS read_authorized_platform_image(launcher *app,const CHAR16 *pat
     char canonical[OC_PLATFORM_MAX_PATH+1u];oc_platform_record record;oc_pe_info pe;
     oc_platform_result result;EFI_STATUS status;
     if(!app->platform_inventory_ready||!canonical_ascii_path(path,canonical))return EFI_SECURITY_VIOLATION;
-    status=read_file(app,app->root,path,maximum,data,size);if(EFI_ERROR(status))return status;
+    status=read_file(app,app->boot_root,path,maximum,data,size);if(EFI_ERROR(status))return status;
     result=oc_platform_inventory_find(&app->platform_inventory,canonical,role,&record);
     if(result==OC_PLATFORM_OK)result=oc_platform_record_verify_bytes(&record,*data,*size);
     if(result==OC_PLATFORM_OK&&oc_pe_validate_native_efi(*data,*size,maximum,OC_PE_ROLE_DRIVER,&pe)!=OC_PE_OK)result=OC_PLATFORM_FILE_DIGEST;
@@ -291,12 +310,52 @@ static EFI_STATUS read_authorized_platform_image(launcher *app,const CHAR16 *pat
     debug_write("OPENCONSOLE_INTEGRITY_PLATFORM_IMAGE_AUTHORIZED\n");return EFI_SUCCESS;
 }
 
+static EFI_STATUS read_authorized_platform_blob(launcher *app,const CHAR16 *path,
+    uint16_t role,UINTN maximum,void **data,UINTN *size) {
+    char canonical[OC_PLATFORM_MAX_PATH+1u];oc_platform_record record;
+    oc_platform_result result;EFI_STATUS status;
+    if(!app->platform_inventory_ready||!canonical_ascii_path(path,canonical))return EFI_SECURITY_VIOLATION;
+    status=read_file(app,app->boot_root,path,maximum,data,size);if(EFI_ERROR(status))return status;
+    result=oc_platform_inventory_find(&app->platform_inventory,canonical,role,&record);
+    if(result==OC_PLATFORM_OK)result=oc_platform_record_verify_bytes(&record,*data,*size);
+    if(result!=OC_PLATFORM_OK){app->bs->free_pool(*data);*data=0;*size=0;return EFI_SECURITY_VIOLATION;}
+    return EFI_SUCCESS;
+}
+
+static EFI_STATUS load_ethernet_catalog(launcher *app) {
+    static const CHAR16 path[]=L"\\EFI\\OpenConsole\\Drivers\\Network\\catalog.oec";
+    void *blob=0;UINTN size=0u,index;EFI_STATUS status;oc_eth_catalog_result parsed;
+    status=read_authorized_platform_blob(app,path,OC_PLATFORM_ROLE_NETWORK,
+        32u+OC_ETH_CATALOG_MAX_ENTRIES*192u,&blob,&size);
+    if(EFI_ERROR(status)){debug_write("OPENCONSOLE_ETH_CATALOG_NOT_AVAILABLE\n");return status;}
+    parsed=oc_eth_catalog_parse(blob,size,&app->ethernet_catalog);
+    if(parsed!=OC_ETH_CATALOG_OK){app->bs->free_pool(blob);debug_write("OPENCONSOLE_ETH_CATALOG_REJECTED\n");return EFI_SECURITY_VIOLATION;}
+    app->ethernet_catalog_blob=blob;
+    app->ethernet_candidate_count=app->ethernet_catalog.entry_count;
+    for(index=0u;index<app->ethernet_candidate_count;index++){
+        oc_eth_catalog_entry *entry=&app->ethernet_entries[index];
+        oc_eth_candidate *candidate=&app->ethernet_candidates[index];UINTN text;
+        if(oc_eth_catalog_entry_at(&app->ethernet_catalog,(uint32_t)index,entry)!=OC_ETH_CATALOG_OK)return EFI_SECURITY_VIOLATION;
+        for(text=0u;text<entry->manifest_id_size;text++)app->ethernet_ids[index][text]=(char)entry->manifest_id[text];
+        app->ethernet_ids[index][entry->manifest_id_size]='\0';
+        candidate->manifest_id=app->ethernet_ids[index];candidate->artifact=entry;
+        candidate->artifact_size=(UINTN)entry->artifact_size;
+        candidate->architecture=(oc_eth_architecture)entry->architecture;
+        candidate->vendor=entry->vendor;candidate->device=entry->device;
+        candidate->subsystem_vendor=entry->subsystem_vendor;
+        candidate->subsystem_device=entry->subsystem_device;
+        candidate->revision_min=entry->revision_min;candidate->revision_max=entry->revision_max;
+        candidate->expected_protocols=entry->protocols;candidate->priority=entry->priority;
+    }
+    debug_write("OPENCONSOLE_ETH_CATALOG_AUTHENTICATED\n");return EFI_SUCCESS;
+}
+
 static EFI_STATUS load_publisher_keys(launcher *app) {
     static const CHAR16 path[]=L"\\EFI\\OpenConsole\\Trust\\PublisherKeys.ocpk";
     static const char canonical[]="EFI/OpenConsole/Trust/PublisherKeys.ocpk";
     void *blob=0;UINTN size=0;oc_platform_record record;oc_platform_result platform;
     oc_publisher_keys_result parsed;EFI_STATUS status;
-    status=read_file(app,app->root,path,128u*1024u,&blob,&size);if(EFI_ERROR(status))return status;
+    status=read_file(app,app->boot_root,path,128u*1024u,&blob,&size);if(EFI_ERROR(status))return status;
     platform=oc_platform_inventory_find(&app->platform_inventory,canonical,OC_PLATFORM_ROLE_TRUST,&record);
     if(platform==OC_PLATFORM_OK)platform=oc_platform_record_verify_bytes(&record,blob,size);
     if(platform!=OC_PLATFORM_OK){app->bs->free_pool(blob);debug_write("OPENCONSOLE_INTEGRITY_PUBLISHER_KEYS_REJECTED\n");return EFI_SECURITY_VIOLATION;}
@@ -366,7 +425,7 @@ static void install_fixture_tls_ca(launcher *app) {
     static const CHAR16 path[] = L"\\EFI\\OpenConsole\\Trust\\ca.der";
     void *der = 0;
     UINTN der_size = 0u;
-    EFI_STATUS status = read_file(app, app->root, path, OC_TLS_CA_MAX_DER_BYTES,
+    EFI_STATUS status = read_file(app, app->boot_root, path, OC_TLS_CA_MAX_DER_BYTES,
                                   &der, &der_size);
     if (EFI_ERROR(status)) return;
     status = oc_tls_ca_install(app->bs, app->st->runtime_services, der, der_size);
@@ -387,7 +446,7 @@ static EFI_STATUS ensure_simple_pointer_driver(launcher *app) {
     status = read_authorized_platform_image(app,driver_path,OC_PLATFORM_ROLE_INPUT,
         2u*1024u*1024u,&image_data,&image_size);
 #else
-    status = read_file(app, app->root, driver_path, 2u * 1024u * 1024u,
+    status = read_file(app, app->boot_root, driver_path, 2u * 1024u * 1024u,
                        &image_data, &image_size);
 #endif
     if (EFI_ERROR(status)) {
@@ -430,7 +489,7 @@ static EFI_STATUS ensure_audioio(launcher *app) {
     status = read_authorized_platform_image(app,driver_path,OC_PLATFORM_ROLE_AUDIO,
         4u*1024u*1024u,&image_data,&image_size);
 #else
-    status = read_file(app, app->root, driver_path, 4u * 1024u * 1024u,
+    status = read_file(app, app->boot_root, driver_path, 4u * 1024u * 1024u,
                        &image_data, &image_size);
 #endif
     if (EFI_ERROR(status)) return status;
@@ -701,6 +760,8 @@ static EFI_STATUS net_stack_load_driver(void *context, const CHAR16 *file_name,
     UINTN image_size = 0u;
     EFI_HANDLE driver = 0;
     EFI_STATUS status;
+    if (app->net_stack_driver_count >= OC_NET_DRIVER_HANDLE_CAPACITY)
+        return EFI_OUT_OF_RESOURCES;
     debug_write("OPENCONSOLE_NET_STACK_DRIVER_BEGIN_");
     while (file_name[index] != 0u) debug_putc((char)file_name[index++]);
     debug_putc('\n');
@@ -732,8 +793,6 @@ static EFI_STATUS net_stack_load_driver(void *context, const CHAR16 *file_name,
     debug_write("OPENCONSOLE_NET_STACK_DRIVER_STARTED\n");
     debug_write("OPENCONSOLE_NET_STACK_DRIVER_COUNT_");
     debug_hex_uintn(app->net_stack_driver_count);
-    if (app->net_stack_driver_count >= OC_NET_STACK_MODULE_COUNT)
-        return EFI_OUT_OF_RESOURCES;
     app->net_stack_drivers[app->net_stack_driver_count++] = driver;
     (void)produced_protocol;
     return EFI_SUCCESS;
@@ -780,6 +839,153 @@ static void load_missing_network_stack(launcher *app) {
         debug_write("OPENCONSOLE_NET_STACK_PACKAGED_LOADED\n");
 }
 
+static EFI_STATUS snp_wrapper_load(void *context, EFI_HANDLE *image) {
+    static const CHAR16 name[] = L"SnpDxe.efi";
+    launcher *app = context;
+    EFI_STATUS status = net_stack_load_driver(app, name, &simple_network_guid);
+    if (!EFI_ERROR(status) && app->net_stack_driver_count != 0u)
+        *image = app->net_stack_drivers[app->net_stack_driver_count - 1u];
+    return status;
+}
+
+static EFI_STATUS snp_wrapper_connect(void *context, EFI_HANDLE controller,
+                                      EFI_HANDLE image) {
+    launcher *app = context;
+    EFI_HANDLE drivers[2] = {image, 0};
+    return app->bs->connect_controller(controller, drivers, 0, 0u);
+}
+
+static int snp_wrapper_present(void *context, EFI_HANDLE controller) {
+    launcher *app = context;
+    void *protocol = 0;
+    return !EFI_ERROR(app->bs->handle_protocol(
+        controller, &simple_network_guid, &protocol)) && protocol != 0;
+}
+
+static EFI_STATUS snp_wrapper_disconnect(void *context, EFI_HANDLE controller,
+                                         EFI_HANDLE image) {
+    launcher *app = context;
+    return app->bs->disconnect_controller(controller, image, 0);
+}
+
+static EFI_STATUS snp_wrapper_unload(void *context, EFI_HANDLE image) {
+    launcher *app = context;
+    EFI_STATUS status = app->bs->unload_image(image);
+    if (!EFI_ERROR(status) && app->net_stack_driver_count != 0u &&
+        app->net_stack_drivers[app->net_stack_driver_count - 1u] == image)
+        --app->net_stack_driver_count;
+    return status;
+}
+
+#if defined(OPENCONSOLE_PINNED_PLATFORM_TRUST)
+static UINTN device_path_prefix_size(const uint8_t *path) {
+    UINTN used=0u;while(path!=0&&used<=4092u){UINTN node=(UINTN)path[used+2u]|((UINTN)path[used+3u]<<8u);if(node<4u||node>4096u-used)return 0u;if(path[used]==0x7fu)return used;used+=node;}return 0u;
+}
+
+static int path_is_child(const uint8_t *parent,const uint8_t *child) {
+    UINTN size=device_path_prefix_size(parent),index;if(size==0u||device_path_prefix_size(child)<size)return 0;
+    for(index=0u;index<size;index++)if(parent[index]!=child[index])return 0;return 1;
+}
+
+static int controller_has_protocol(launcher *app,EFI_HANDLE controller,const EFI_GUID *guid) {
+    EFI_HANDLE *handles=0;UINTN count=0u,index;void *controller_path=0;int found=0;
+    if(!EFI_ERROR(app->bs->handle_protocol(controller,&device_path_guid,&controller_path))&&controller_path!=0&&
+       !EFI_ERROR(app->bs->locate_handle_buffer(EFI_LOCATE_BY_PROTOCOL,guid,0,&count,&handles))){
+        for(index=0u;index<count&&!found;index++){void *path=0;if(!EFI_ERROR(app->bs->handle_protocol(handles[index],&device_path_guid,&path))&&path!=0&&path_is_child(controller_path,path))found=1;}
+    }
+    if(handles!=0)(void)app->bs->free_pool(handles);return found;
+}
+
+static EFI_STATUS ethernet_verify(void *context,const oc_eth_candidate *candidate) {
+    (void)context;return candidate!=0&&candidate->artifact!=0?EFI_SUCCESS:EFI_SECURITY_VIOLATION;
+}
+
+static int ethernet_path(const oc_eth_catalog_entry *entry,CHAR16 out[100]) {
+    UINTN index;if(entry==0||entry->path_size+2u>100u)return 0;out[0]='\\';
+    for(index=0u;index<entry->path_size;index++)out[index+1u]=(CHAR16)(entry->path[index]=='/'?'\\':entry->path[index]);
+    out[entry->path_size+1u]=0u;return 1;
+}
+
+static EFI_STATUS ethernet_load(void *context,const oc_eth_candidate *candidate,EFI_HANDLE *image) {
+    launcher *app=context;const oc_eth_catalog_entry *entry=candidate->artifact;CHAR16 path[100];
+    void *bytes=0;UINTN size=0u,index;uint8_t digest[32];oc_pe_info pe;EFI_STATUS status;
+    if(image==0||!ethernet_path(entry,path)||candidate->artifact_size!=entry->artifact_size)return EFI_INVALID_PARAMETER;
+    status=read_file(app,app->root,path,4u*1024u*1024u,&bytes,&size);if(EFI_ERROR(status))return status;
+    if(size!=entry->artifact_size||!oc_sha256(bytes,size,digest)){app->bs->free_pool(bytes);return EFI_SECURITY_VIOLATION;}
+    for(index=0u;index<32u;index++)if(digest[index]!=entry->sha256[index])break;
+    if(index!=32u||oc_pe_validate_native_efi(bytes,size,4u*1024u*1024u,OC_PE_ROLE_DRIVER,&pe)!=OC_PE_OK){app->bs->free_pool(bytes);return EFI_SECURITY_VIOLATION;}
+    status=app->bs->load_image(0u,app->image,0,bytes,size,image);app->bs->free_pool(bytes);if(EFI_ERROR(status))return status;
+    status=app->bs->start_image(*image,0,0);if(EFI_ERROR(status)){app->bs->unload_image(*image);*image=0;return status;}
+    if(app->net_stack_driver_count>=OC_NET_DRIVER_HANDLE_CAPACITY){app->bs->unload_image(*image);*image=0;return EFI_OUT_OF_RESOURCES;}
+    app->net_stack_drivers[app->net_stack_driver_count++]=*image;return EFI_SUCCESS;
+}
+
+static EFI_STATUS ethernet_connect(void *context,EFI_HANDLE controller,EFI_HANDLE image) {
+    launcher *app=context;EFI_HANDLE drivers[2]={image,0};return app->bs->connect_controller(controller,drivers,0,0u);
+}
+
+static EFI_STATUS ethernet_probe(void *context,EFI_HANDLE controller,uint32_t expected) {
+    launcher *app=context;if((expected&OC_ETH_PROTOCOL_SNP)&&!controller_has_protocol(app,controller,&simple_network_guid))return EFI_NOT_FOUND;
+    if((expected&(OC_ETH_PROTOCOL_NII|OC_ETH_PROTOCOL_UNDI))&&!controller_has_protocol(app,controller,&nii31_guid))return EFI_NOT_FOUND;
+    return EFI_SUCCESS;
+}
+
+static EFI_STATUS ethernet_disconnect(void *context,EFI_HANDLE controller,EFI_HANDLE image) {
+    launcher *app=context;return app->bs->disconnect_controller(controller,image,0);
+}
+
+static EFI_STATUS ethernet_unload(void *context,EFI_HANDLE image) {
+    launcher *app=context;UINTN index;EFI_STATUS status=app->bs->unload_image(image);if(EFI_ERROR(status))return status;
+    for(index=0u;index<app->net_stack_driver_count;index++)if(app->net_stack_drivers[index]==image){for(;index+1u<app->net_stack_driver_count;index++)app->net_stack_drivers[index]=app->net_stack_drivers[index+1u];--app->net_stack_driver_count;break;}return EFI_SUCCESS;
+}
+
+static void ethernet_emit(void *context,oc_eth_diagnostic diagnostic,UINTN controller,UINTN candidate,EFI_STATUS status) {
+    (void)context;debug_write("OPENCONSOLE_ETH_SELECT_");debug_hex_uintn((UINTN)diagnostic);debug_write("OPENCONSOLE_ETH_CONTROLLER_");debug_hex_uintn(controller);debug_write("OPENCONSOLE_ETH_CANDIDATE_");debug_hex_uintn(candidate);debug_write("OPENCONSOLE_ETH_STATUS_");debug_hex_uintn((UINTN)status);
+}
+
+static void load_ethernet_hardware_drivers(launcher *app) {
+    EFI_HANDLE *handles=0;UINTN count=0u,index,used=0u;oc_eth_controller controllers[OC_ETH_MAX_CONTROLLERS];oc_eth_selection_report report;
+    oc_eth_selector_ops ops={app,ethernet_verify,ethernet_load,ethernet_connect,ethernet_probe,ethernet_disconnect,ethernet_unload,ethernet_emit};
+    oc_eth_architecture architecture=OC_TARGET_ARCH_X64?OC_ETH_ARCH_X64:OC_ETH_ARCH_ARM64;
+    if(EFI_ERROR(load_ethernet_catalog(app)))return;
+    if(EFI_ERROR(app->bs->locate_handle_buffer(EFI_LOCATE_BY_PROTOCOL,&pci_io_guid,0,&count,&handles)))return;
+    for(index=0u;index<count&&used<OC_ETH_MAX_CONTROLLERS;index++){EFI_PCI_IO_PROTOCOL *pci=0;uint32_t config[12];UINTN word;
+        if(EFI_ERROR(app->bs->handle_protocol(handles[index],&pci_io_guid,(void **)&pci))||pci==0||EFI_ERROR(pci->pci.read(pci,2u,0u,12u,config)))continue;
+        if((config[2]>>24u)!=0x02u||((config[2]>>16u)&0xffu)!=0x00u)continue;
+        controllers[used].handle=handles[index];controllers[used].vendor=(uint16_t)config[0];controllers[used].device=(uint16_t)(config[0]>>16u);
+        controllers[used].revision=(uint8_t)config[2];controllers[used].subsystem_vendor=(uint16_t)config[11];controllers[used].subsystem_device=(uint16_t)(config[11]>>16u);
+        word=(UINTN)controller_has_protocol(app,handles[index],&simple_network_guid);controllers[used].firmware_snp_present=(uint8_t)word;controllers[used].firmware_snp_usable=(uint8_t)word;++used;
+    }
+    app->bs->free_pool(handles);
+    (void)oc_eth_select_drivers(controllers,used,app->ethernet_candidates,
+        app->ethernet_candidate_count,architecture,&ops,&report);
+}
+#endif
+
+static EFI_STATUS ensure_snp_from_nii(launcher *app) {
+    EFI_HANDLE *nii = 0;
+    UINTN count = 0u;
+    void *existing = 0;
+    oc_net_snp_bridge_report report;
+    oc_net_snp_bridge_ops ops = {app, snp_wrapper_load, snp_wrapper_connect,
+        snp_wrapper_present, snp_wrapper_disconnect, snp_wrapper_unload};
+    EFI_STATUS locate = app->bs->locate_handle_buffer(
+        EFI_LOCATE_BY_PROTOCOL, &nii31_guid, 0, &count, &nii);
+    int has_snp = !EFI_ERROR(app->bs->locate_protocol(
+        &simple_network_guid, 0, &existing)) && existing != 0;
+    EFI_STATUS status = oc_net_bridge_nii_to_snp(has_snp,
+        EFI_ERROR(locate) ? 0 : nii, EFI_ERROR(locate) ? 0u : count,
+        &ops, &report);
+    if (nii != 0) (void)app->bs->free_pool(nii);
+    if (!EFI_ERROR(status) && report.wrapper_image != 0)
+        debug_write("OPENCONSOLE_NET_SNP_WRAPPER_SELECTED\n");
+    else if (has_snp)
+        debug_write("OPENCONSOLE_NET_SNP_FIRMWARE_PRESENT\n");
+    else
+        debug_write("OPENCONSOLE_NET_SNP_WRAPPER_UNAVAILABLE\n");
+    return status;
+}
+
 static void install_network_provider(launcher *app) {
     oc_net_platform platform;
     EFI_STATUS status = app->bs->allocate_pool(
@@ -793,6 +999,10 @@ static void install_network_provider(launcher *app) {
         debug_write("OPENCONSOLE_NET_OFFLINE_NO_MEMORY\n");
         return;
     }
+#if defined(OPENCONSOLE_PINNED_PLATFORM_TRUST)
+    load_ethernet_hardware_drivers(app);
+#endif
+    (void)ensure_snp_from_nii(app);
     status = oc_uefi_net_backend_initialize(app->net_backend, app->bs);
     if (EFI_ERROR(status)) {
         (void)app->bs->free_pool(app->net_provider);
@@ -1077,8 +1287,77 @@ static EFI_STATUS open_boot_volume(launcher *app) {
     status = app->bs->handle_protocol(
         loaded->device_handle, &simple_fs_guid, (void **)&fs);
     if (EFI_ERROR(status)) return status;
-    return fs->open_volume(fs, &app->root);
+    status = fs->open_volume(fs, &app->root);
+    if (!EFI_ERROR(status)) app->boot_root = app->root;
+    return status;
 }
+
+#if defined(OPENCONSOLE_PINNED_PLATFORM_TRUST) || defined(OPENCONSOLE_DATA_VOLUME_TEST)
+static int marker_hex(uint8_t value) {
+    return (value >= '0' && value <= '9') || (value >= 'a' && value <= 'f');
+}
+
+static int valid_data_volume_marker(const uint8_t *bytes, UINTN size) {
+    static const char prefix[] = "{\"installationId\":\"";
+    static const char suffix[] = "\",\"schema\":\"openconsole.data-volume.v1\"}\n";
+    UINTN i, offset = sizeof(prefix) - 1u;
+    if (size != (sizeof(prefix) - 1u) + 36u + (sizeof(suffix) - 1u)) return 0;
+    for (i = 0u; i < sizeof(prefix) - 1u; ++i) if (bytes[i] != (uint8_t)prefix[i]) return 0;
+    for (i = 0u; i < 36u; ++i) {
+        uint8_t value = bytes[offset + i];
+        if (i == 8u || i == 13u || i == 18u || i == 23u) {
+            if (value != '-') return 0;
+        } else if (!marker_hex(value)) return 0;
+    }
+    if (bytes[offset + 14u] != '4' ||
+        !(bytes[offset + 19u] == '8' || bytes[offset + 19u] == '9' ||
+          bytes[offset + 19u] == 'a' || bytes[offset + 19u] == 'b')) return 0;
+    offset += 36u;
+    for (i = 0u; i < sizeof(suffix) - 1u; ++i) if (bytes[offset + i] != (uint8_t)suffix[i]) return 0;
+    return 1;
+}
+
+static EFI_STATUS select_data_volume(launcher *app) {
+    static const CHAR16 marker_path[] = L"\\EFI\\OpenConsole\\data-volume.json";
+    EFI_HANDLE *handles = 0;
+    UINTN count = 0u, index, matches = 0u;
+    EFI_FILE_PROTOCOL *selected = 0;
+    EFI_STATUS status = app->bs->locate_handle_buffer(EFI_LOCATE_BY_PROTOCOL,
+        &simple_fs_guid, 0, &count, &handles);
+    if (EFI_ERROR(status)) return EFI_SUCCESS;
+    if (count > 64u) count = 64u;
+    for (index = 0u; index < count; ++index) {
+        EFI_SIMPLE_FILE_SYSTEM_PROTOCOL *fs = 0;
+        EFI_FILE_PROTOCOL *candidate = 0;
+        void *marker = 0;
+        UINTN marker_size = 0u;
+        if (EFI_ERROR(app->bs->handle_protocol(handles[index], &simple_fs_guid,
+                (void **)&fs)) || fs == 0 || EFI_ERROR(fs->open_volume(fs, &candidate))) continue;
+        status = read_file(app, candidate, marker_path, 512u, &marker, &marker_size);
+        if (!EFI_ERROR(status) && valid_data_volume_marker(marker, marker_size)) {
+            ++matches;
+            if (selected != 0) selected->close(selected);
+            selected = candidate;
+            candidate = 0;
+        }
+        if (marker != 0) app->bs->free_pool(marker);
+        if (candidate != 0) candidate->close(candidate);
+    }
+    app->bs->free_pool(handles);
+    if (matches == 1u) {
+        app->root = selected;
+        debug_write("OPENCONSOLE_DATA_VOLUME_SELECTED\n");
+    } else {
+        if (selected != 0) selected->close(selected);
+        app->root = app->boot_root;
+        if (matches > 1u) {
+            app->data_volume_ambiguous = 1u;
+            debug_write("OPENCONSOLE_DATA_VOLUME_AMBIGUOUS_MUTATIONS_DISABLED\n");
+        } else debug_write("OPENCONSOLE_DATA_VOLUME_BOOT_FALLBACK\n");
+    }
+    return EFI_SUCCESS;
+}
+#endif
 
 static EFI_STATUS read_file(launcher *app, EFI_FILE_PROTOCOL *directory,
                             const CHAR16 *path, UINTN limit,
@@ -2028,6 +2307,7 @@ static void release_discovered_games(launcher *app) {
 }
 
 static EFI_STATUS delete_modal_game(launcher *app) {
+    if (app->data_volume_ambiguous) return EFI_SECURITY_VIOLATION;
 #if defined(OPENCONSOLE_PINNED_PLATFORM_TRUST)
     EFI_STATUS status;
     game_entry *game;
@@ -2298,6 +2578,10 @@ EFI_STATUS EFIAPI efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_tab
     debug_write("OPENCONSOLE_PARENT_BOOTED\n");
     status = open_boot_volume(&app);
     if (EFI_ERROR(status)) return status;
+#if defined(OPENCONSOLE_DATA_VOLUME_TEST) && !defined(OPENCONSOLE_PINNED_PLATFORM_TRUST)
+    status = select_data_volume(&app);
+    if (EFI_ERROR(status)) return status;
+#endif
     status = ensure_update_crypto(&app);
 #if defined(OPENCONSOLE_PINNED_PLATFORM_TRUST)
     if (EFI_ERROR(status)) return status;
@@ -2305,13 +2589,17 @@ EFI_STATUS EFIAPI efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_tab
     if (EFI_ERROR(status)) return status;
     status = load_publisher_keys(&app);
     if (EFI_ERROR(status)) return status;
-    status = oc_uefi_game_storage_initialize(&app.game_storage, app.bs, app.root,
-        app.crypto_protocol, &app.publisher_keys);
+    status = select_data_volume(&app);
     if (EFI_ERROR(status)) return status;
-    app.game_storage_ready = 1u;
-    debug_write("OPENCONSOLE_GAME_STORAGE_READY\n");
-    status = load_launch_recovery(&app);
-    if (EFI_ERROR(status)) return status;
+    if (!app.data_volume_ambiguous) {
+        status = oc_uefi_game_storage_initialize(&app.game_storage, app.bs, app.root,
+            app.crypto_protocol, &app.publisher_keys);
+        if (EFI_ERROR(status)) return status;
+        app.game_storage_ready = 1u;
+        debug_write("OPENCONSOLE_GAME_STORAGE_READY\n");
+        status = load_launch_recovery(&app);
+        if (EFI_ERROR(status)) return status;
+    }
 #else
     (void)status;
 #endif
@@ -2401,6 +2689,10 @@ EFI_STATUS EFIAPI efi_main(EFI_HANDLE image_handle, EFI_SYSTEM_TABLE *system_tab
     debug_write("OPENCONSOLE_DASHBOARD_HEADER_READY\n");
     debug_dashboard_state(&app);
     debug_write("OPENCONSOLE_MENU_READY\n");
+#if OPENCONSOLE_QEMU_TEST && OPENCONSOLE_BOOTNEXT_TEST
+    debug_write("OPENCONSOLE_BOOTNEXT_PARENT_REACHED\n");
+    qemu_exit(0x10);
+#endif
     for (;;) {
         UINTN index = 0u;
         EFI_EVENT events[3];

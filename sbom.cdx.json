@@ -5,6 +5,27 @@
       "hashes": [
         {
           "alg": "SHA-256",
+          "content": "21696749821be54a21e2d22531bf672ca6f50ff4c532b8312f5f3a4d2ef04906"
+        }
+      ],
+      "licenses": [
+        {
+          "expression": "Apache-2.0"
+        }
+      ],
+      "name": "oc-fat32-format",
+      "properties": [
+        {
+          "name": "openconsole:sourcePath",
+          "value": "tools/oc-fat32-format.c"
+        }
+      ],
+      "type": "application"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
           "content": "82bb2d45f55c4b4fabcc5896b376cbcbcee1e99f3ccc28e4d475d72cf5c3e29c"
         }
       ],
@@ -45,7 +66,7 @@
       "hashes": [
         {
           "alg": "SHA-256",
-          "content": "c02e3a2cec36f6caf6afdcba19d1569a1e5d16e0c147af12f942307b94abdab5"
+          "content": "da655b5dab21538ecd515d4dd464a5400a93a90de93d576bd689de0481f2cf3c"
         }
       ],
       "name": "patches/edk2/0004-networkpkg-http-timeout-fixed.patch",
@@ -69,6 +90,26 @@
         }
       ],
       "name": "patches/opencore-audiodxe/0002-instance-safe-playback-setup.patch",
+      "type": "file"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "be9e245d0b011ca7cfea3b0c114dc48c9bd7641e4e57bf2ca5f8b2085ab3a375"
+        }
+      ],
+      "name": "patches/opencore-audiodxe/0003-aarch64-build-profile.patch",
+      "type": "file"
+    },
+    {
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "e1cb40128555eeade561cd2df7f73a414abda61623bbec46f8a99b74fb6efa05"
+        }
+      ],
+      "name": "patches/opencore-audiodxe/0004-aarch64-audio-load-options-stub.patch",
       "type": "file"
     },
     {

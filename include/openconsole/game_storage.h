@@ -12,6 +12,7 @@
 #define OC_GAME_INVENTORY_MAX (256u * 1024u)
 #define OC_GAME_GC_MAX_DELETES 32u
 #define OC_GAME_INSTALL_MAX_FILES 256u
+#define OC_FAT32_MAX_FILE_BYTES UINT64_C(4294967295)
 
 typedef enum {
     OC_GAME_STORAGE_OK = 0,
@@ -21,7 +22,8 @@ typedef enum {
     OC_GAME_STORAGE_IO,
     OC_GAME_STORAGE_FLUSH,
     OC_GAME_STORAGE_VERIFY,
-    OC_GAME_STORAGE_CLEANUP
+    OC_GAME_STORAGE_CLEANUP,
+    OC_GAME_STORAGE_NO_SPACE
 } oc_game_storage_result;
 
 typedef enum {
@@ -66,6 +68,8 @@ typedef struct {
     int (*cleanup_slot)(void *, const char *, size_t, size_t *, int *);
     int (*validate_slot)(void *, const char *, const char *,
                          const oc_game_selection *);
+    /* Returns 1 with currently available bytes, otherwise 0. */
+    int (*available_bytes)(void *, uint64_t *);
 } oc_game_storage_ops;
 
 oc_game_storage_result oc_game_selection_encode(

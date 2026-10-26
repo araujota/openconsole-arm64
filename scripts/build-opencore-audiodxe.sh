@@ -33,6 +33,8 @@ test "$(git -C "$source_dir/OpenCorePkg" rev-parse HEAD)" = "$opencore_commit"
 patches=(
     "$repo_root/patches/opencore-audiodxe/0001-failure-cleanup.patch"
     "$repo_root/patches/opencore-audiodxe/0002-instance-safe-playback-setup.patch"
+    "$repo_root/patches/opencore-audiodxe/0003-aarch64-build-profile.patch"
+    "$repo_root/patches/opencore-audiodxe/0004-aarch64-audio-load-options-stub.patch"
 )
 for patch in "${patches[@]}"; do
     if git -C "$source_dir/OpenCorePkg" apply --reverse --check "$patch" 2>/dev/null; then
@@ -42,6 +44,10 @@ for patch in "${patches[@]}"; do
         git -C "$source_dir/OpenCorePkg" apply "$patch"
     fi
 done
+
+mkdir -p "$source_dir/OpenConsolePkg/OcAudioLoadOptionsStub"
+cp "$repo_root/vendor/opencore/OcAudioLoadOptionsStub/"* \
+   "$source_dir/OpenConsolePkg/OcAudioLoadOptionsStub/"
 
 # Package DEC files name include paths from these submodules even though the
 # AudioDxe link does not consume every library.
@@ -62,22 +68,60 @@ submodules=(
 git -C "$source_dir" submodule update --init --depth 1 -- "${submodules[@]}"
 
 make -C "$source_dir/BaseTools" -j"${OPENCONSOLE_JOBS:-2}"
-mkdir -p "$source_dir/Conf"
+mkdir -p "$source_dir/Conf" "$output_dir/AARCH64" "$output_dir/.llvm-bin"
+find_tool() {
+    local name=$1 candidate suffix
+    if candidate=$(command -v "$name" 2>/dev/null); then printf '%s\n' "$candidate"; return; fi
+    for suffix in 20 19 18 17 16; do
+        if candidate=$(command -v "$name-$suffix" 2>/dev/null); then printf '%s\n' "$candidate"; return; fi
+    done
+    echo "Missing LLVM tool: $name" >&2; return 1
+}
+ln -sfn "$(find_tool clang)" "$output_dir/.llvm-bin/clang"
+ln -sfn "$(find_tool llvm-ar)" "$output_dir/.llvm-bin/llvm-ar"
+ln -sfn "$(find_tool llvm-objcopy)" "$output_dir/.llvm-bin/llvm-objcopy"
 cd "$source_dir"
 # shellcheck disable=SC1091
 set +u
 source edksetup.sh
 set -u
+# AUDK's legacy CLANGDWARF/AARCH64 profile incorrectly combines LLVM LTO
+# objects with its GCC pass-through archive. The link then silently emits an
+# ELF containing only debug sections. Disable those two template macros for
+# this build; this is the same supported no-LTO path exposed by tools_def.
+sed -i \
+    -e 's/^DEFINE LTO .*$/DEFINE LTO         =/' \
+    -e 's/^DEFINE AARCH64_LTO .*$/DEFINE AARCH64_LTO =/' \
+    -e '/^RELEASE_CLANGDWARF_AARCH64_CC_FLAGS/ s/ -flto//' \
+    -e '/^RELEASE_CLANGDWARF_AARCH64_DLINK_FLAGS/c\RELEASE_CLANGDWARF_AARCH64_DLINK_FLAGS = DEF(CLANGDWARF_AARCH64_DLINK_FLAGS)' \
+    Conf/tools_def.txt
+if grep -Eq '^DEFINE (LTO|AARCH64_LTO) += .+|^RELEASE_CLANGDWARF_AARCH64_.*flto' Conf/tools_def.txt; then
+    echo "Failed to disable AUDK AArch64 LTO macros" >&2
+    exit 1
+fi
+# Newer LLVM emits an allocated GNU AArch64 feature note which AUDK's pinned
+# ELF-to-PE converter does not represent. UEFI images do not consume it.
+if ! grep -q '\*(\.note.gnu.property)' BaseTools/Scripts/Base.lds; then
+    sed -i '/\*(\.note.GNU-stack)/a\    *(.note.gnu.property)' BaseTools/Scripts/Base.lds
+fi
 export SOURCE_DATE_EPOCH
 SOURCE_DATE_EPOCH=$(git -C OpenCorePkg show -s --format=%ct "$opencore_commit")
 build -a X64 -t GCC -b RELEASE -p OpenCorePkg/OpenCorePkg.dsc \
     -m OpenCorePkg/Staging/AudioDxe/AudioDxe.inf -n "${OPENCONSOLE_JOBS:-2}"
+CLANG_BIN="$output_dir/.llvm-bin/" build -a AARCH64 -t CLANGDWARF -b RELEASE \
+    -p OpenCorePkg/OpenCorePkg.dsc \
+    -m OpenCorePkg/Staging/AudioDxe/AudioDxe.inf -n "${OPENCONSOLE_JOBS:-2}"
 
-mkdir -p "$output_dir"
 install -m 0644 Build/OpenCorePkg/RELEASE_GCC/X64/AudioDxe.efi "$output_dir/AudioDxe.efi"
+install -m 0644 Build/OpenCorePkg/RELEASE_CLANGDWARF/AARCH64/AudioDxe.efi \
+    "$output_dir/AARCH64/AudioDxe.efi"
+python3 "$repo_root/tools/verify_efi.py" "$output_dir/AudioDxe.efi" \
+    --arch x64 --role driver --require-zero-timestamp >/dev/null
+python3 "$repo_root/tools/verify_efi.py" "$output_dir/AARCH64/AudioDxe.efi" \
+    --arch arm64 --role driver --require-zero-timestamp >/dev/null
 (
     cd "$output_dir"
-    sha256sum AudioDxe.efi > SHA256SUMS
+    find . -type f -name '*.efi' -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
 )
 printf '%s\n' "$audk_commit" > "$output_dir/AUDK_COMMIT"
 printf '%s\n' "$opencore_commit" > "$output_dir/OPENCORE_COMMIT"

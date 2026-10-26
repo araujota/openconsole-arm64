@@ -11,7 +11,7 @@ import shutil
 import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-RUNTIME_DIRS = (".github", "config", "docs", "examples", "include", "patches", "research", "scripts", "src", "tests", "tools", "vendor")
+RUNTIME_DIRS = (".github", "config", "docs", "examples", "host-tools", "include", "patches", "research", "scripts", "src", "tests", "tools", "vendor")
 RUNTIME_FILES = (".gitignore", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "dependency-provenance.json", "LICENSE", "Makefile", "NOTICE", "README.md", "release-version.json", "requirements-analyzer.txt", "sbom.cdx.json", "SECURITY.md", "THIRD_PARTY_NOTICES.md")
 CATALOG_FILES = ("CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "LICENSE", "NOTICE", "SECURITY.md", "release-version.json")
 SKIP_PARTS = {".git", ".next", ".vercel", ".convex", ".quickstart-logs", "node_modules", "test-results", "__pycache__", ".agents", ".claude"}

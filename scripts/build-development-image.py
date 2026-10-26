@@ -10,6 +10,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 import platform_inventory as ocp
 import publisher_keys as ocpk
+import ethernet_catalog as oec
 
 DRIVER_ROLES = {"Input": "input", "Network": "network", "Audio": "audio",
                 "Crypto": "crypto", "Graphics": "graphics"}
@@ -61,6 +62,8 @@ def main() -> int:
             shutil.copyfile(source, target)
         if not any((ocroot / "Drivers/Network").glob("*.efi")):
             raise SystemExit("missing baseline packaged network stack")
+        catalog_source = json.loads((ROOT / "config/ethernet-catalog-x64.json").read_text(encoding="utf-8"))
+        (ocroot / "Drivers/Network/catalog.oec").write_bytes(oec.build(catalog_source))
         if not (ocroot / "Drivers/Crypto/OpenConsoleCryptoDxe.efi").is_file():
             raise SystemExit("missing baseline integrity provider")
         key = ocp.private_key(a.platform_key)
@@ -82,6 +85,11 @@ def main() -> int:
             if not path.is_file() or path.name == "platform.ocp" or path.relative_to(stage).as_posix() == "EFI/BOOT/BOOTX64.EFI":
                 continue
             rel = path.relative_to(stage).as_posix()
+            # Host launchers are inert OS-side convenience files. They are
+            # distributed on the volume but are not part of the EFI execution
+            # authorization inventory.
+            if pathlib.PurePosixPath(rel).parts[:2] == ("OpenConsole", "Host"):
+                continue
             role, baseline, scope = "notices", False, 1
             parts = pathlib.PurePosixPath(rel).parts
             if len(parts) >= 5 and parts[:3] == ("EFI", "OpenConsole", "Drivers"):

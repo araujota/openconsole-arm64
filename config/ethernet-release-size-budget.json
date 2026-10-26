@@ -1,0 +1,25 @@
+{
+  "schema": "openconsole.ethernet-release-size-budget.v1",
+  "portfolio": "edk2-network-upper-stack",
+  "imageBytes": 67108864,
+  "limits": {
+    "perArchitectureBytes": 2097152,
+    "perModuleBytes": 1310720,
+    "maximumImageFractionPermille": 40
+  },
+  "requiredModules": [
+    "ArpDxe.efi",
+    "Dhcp4Dxe.efi",
+    "DnsDxe.efi",
+    "DpcDxe.efi",
+    "Hash2DxeCrypto.efi",
+    "HttpDxe.efi",
+    "HttpUtilitiesDxe.efi",
+    "Ip4Dxe.efi",
+    "MnpDxe.efi",
+    "SnpDxe.efi",
+    "TcpDxe.efi",
+    "TlsDxe.efi",
+    "Udp4Dxe.efi"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "images": [
+    {
+      "architecture": "x64",
+      "bytes": 201616,
+      "markers": {
+        "Realtek Ethernet Controller Configuration": {"asciiOffset": null, "utf16leOffset": 153594},
+        "Save RealManage Configuration to NvRam": {"asciiOffset": null, "utf16leOffset": 154201},
+        "Warning Reset Required": {"asciiOffset": 184431, "utf16leOffset": null}
+      },
+      "sha256": "2f7f22e0a76230308d1a8ea67b9be51dc23d55705f40efef7e8c3d964f0bba20"
+    },
+    {
+      "architecture": "arm64",
+      "bytes": 168336,
+      "markers": {
+        "Realtek Ethernet Controller Configuration": {"asciiOffset": null, "utf16leOffset": null},
+        "Save RealManage Configuration to NvRam": {"asciiOffset": null, "utf16leOffset": null},
+        "Warning Reset Required": {"asciiOffset": null, "utf16leOffset": null}
+      },
+      "sha256": "5792be910d2522a2c002a2f032b13f34cebd5fae2f67ce7cda3aba12a3ff5398"
+    }
+  ],
+  "interpretation": {
+    "arm64": "markers-absent-not-proof-of-no-persistent-write",
+    "dma": "not-provable-by-string-scan-physical-evidence-required",
+    "x64": "persistent-configuration-capability-present-release-rejected"
+  },
+  "schema": "openconsole.realtek-static-lifecycle-evidence.v1",
+  "version": "2.081"
+}

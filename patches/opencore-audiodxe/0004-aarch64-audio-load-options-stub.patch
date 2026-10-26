@@ -1,0 +1,34 @@
+diff --git a/OpenCorePkg.dsc b/OpenCorePkg.dsc
+--- a/OpenCorePkg.dsc
++++ b/OpenCorePkg.dsc
+@@ -190,4 +190,12 @@
+   !include Ext4Pkg/Ext4Defines.dsc.inc
+   !include Ext4Pkg/Ext4Libs.dsc.inc
+ 
++[LibraryClasses.AARCH64]
++  OcBootManagementLib|OpenConsolePkg/OcAudioLoadOptionsStub/OcAudioLoadOptionsStub.inf
++  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
++  ArmGenericTimerCounterLib|ArmPkg/Library/ArmGenericTimerVirtCounterLib/ArmGenericTimerVirtCounterLib.inf
++  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
++  DebugLib|OpenCorePkg/Library/OcDebugLibNull/OcDebugLibNull.inf
++  BaseMemoryLib|MdePkg/Library/BaseMemoryLibOptDxe/BaseMemoryLibOptDxe.inf
++
+ [Components]
+@@ -480,6 +488,7 @@
+   GCC:DEBUG_*_*_CC_FLAGS        = $(OCPKG_BUILD_OPTIONS_GEN) $(OCPKG_ANAL_OPTIONS_GEN) -fstack-protector-strong -mstack-protector-guard=global -Wuninitialized
+   GCC:NOOPT_*_*_CC_FLAGS        = $(OCPKG_BUILD_OPTIONS_GEN) $(OCPKG_ANAL_OPTIONS_GEN) -fstack-protector-strong -mstack-protector-guard=global -Wuninitialized
+   GCC:RELEASE_*_*_CC_FLAGS      = $(OCPKG_BUILD_OPTIONS_GEN) $(OCPKG_ANAL_OPTIONS_GEN) -fstack-protector-strong -mstack-protector-guard=global -Wuninitialized
++  GCC:RELEASE_CLANGDWARF_AARCH64_CC_FLAGS = -fno-stack-protector
+   CLANGPDB:DEBUG_*_*_CC_FLAGS   = $(OCPKG_BUILD_OPTIONS_GEN) $(OCPKG_ANAL_OPTIONS_GEN) -fstack-protector-strong -mstack-protector-guard=global -ftrivial-auto-var-init=pattern
+   CLANGPDB:NOOPT_*_*_CC_FLAGS   = $(OCPKG_BUILD_OPTIONS_GEN) $(OCPKG_ANAL_OPTIONS_GEN) -fstack-protector-strong -mstack-protector-guard=global -ftrivial-auto-var-init=pattern
+   CLANGPDB:RELEASE_*_*_CC_FLAGS = $(OCPKG_BUILD_OPTIONS_GEN) $(OCPKG_ANAL_OPTIONS_GEN) -fstack-protector-strong -mstack-protector-guard=global -ftrivial-auto-var-init=pattern
+diff --git a/Library/OcDriverEntryPoint/UefiDriverEntryPoint.inf b/Library/OcDriverEntryPoint/UefiDriverEntryPoint.inf
+--- a/Library/OcDriverEntryPoint/UefiDriverEntryPoint.inf
++++ b/Library/OcDriverEntryPoint/UefiDriverEntryPoint.inf
+@@ -52,5 +52,5 @@
+   X64/GS.nasm          | MSFT
+ 
+-[Sources.EBC, Sources.ARM, Sources.AARM64, Sources.RISCV64]
++[Sources.EBC, Sources.ARM, Sources.AARCH64, Sources.RISCV64]
+   CanaryDummy.c
+ 
