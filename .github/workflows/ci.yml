@@ -16,7 +16,7 @@ jobs:
       - name: Install cross-build and AAVMF dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y clang lld qemu-system-arm qemu-efi-aarch64 dosfstools mtools python3-pip
+          sudo apt-get install -y clang lld qemu-system-arm qemu-efi-aarch64 dosfstools mtools python3-pip uuid-dev
           python3 -m pip install --break-system-packages -r requirements-analyzer.txt
       - name: Host contracts and native images
         run: make test-arm64-host arm64-image
